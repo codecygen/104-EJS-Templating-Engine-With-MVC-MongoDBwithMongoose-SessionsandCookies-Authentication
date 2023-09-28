@@ -71,4 +71,16 @@ exports.getSignUpPage = async (req, res, next) => {
   });
 };
 
-exports.postSignUpPage = async (req, res, next) => {};
+exports.postSignUpPage = async (req, res, next) => {
+  const {
+    "entered-username": enteredName,
+    "entered-email": enteredEmail,
+    "entered-password": enteredPass,
+    "entered-password-repeat": enteredPassConfirm,
+    "is-admin": adminCheckbox,
+  } = req.body;
+
+  isAdminChecked = adminCheckbox === "on" ? true : false;
+
+  res.redirect("/signup");
+};
