@@ -1,0 +1,6 @@
+.product-cart {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}

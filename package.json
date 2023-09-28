@@ -1,0 +1,23 @@
+{
+  "name": "092-ejs-templating-engine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon start"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "connect-mongodb-session": "^3.1.1",
+    "dotenv": "^16.1.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "gitignore": "^0.7.0",
+    "mongodb": "^5.7.0",
+    "mongoose": "^7.5.1",
+    "nodemon": "^2.0.21"
+  }
+}

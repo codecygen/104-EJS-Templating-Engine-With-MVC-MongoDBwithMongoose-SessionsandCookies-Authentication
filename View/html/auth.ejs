@@ -1,0 +1,24 @@
+<%- include('includes/head.ejs') %>
+    <link rel="stylesheet" href="/shop/productList.css" />
+</head>
+<body>
+    <%- include('includes/nav.ejs') %>
+
+    <form action="/auth" class="centered" method="POST">
+        <label for="login">Login with your username</label>
+        <select name="logged-in-user-id" id="login">
+            <% if(userList.length > 0) { %>
+                <% userList.forEach(user => { %>
+                    <!-- Express-Session-Keep-Cookie-in-req.session -->
+                    <!-- here we assign the selected admin as a selected (default value) -->
+                    <option value="<%= user._id.toString() %>" <% if(user._id.toString() === selectedUser.userId) {%>selected<%}%> %>>
+                        <%= user.userName %> <% if (user.adminId) { %>(Admin)<% } %>
+                    </option>
+                <% }); %>
+            <% } %>
+            
+        </select>
+        <br><br>
+        <button class="btn" type="submit">Login</button>
+    </form>
+</body>

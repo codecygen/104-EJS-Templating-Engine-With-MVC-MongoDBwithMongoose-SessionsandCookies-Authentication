@@ -1,0 +1,26 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #a69090;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+
+.card {
+    text-align: center;
+}
+
+.centered {
+    text-align: center;
+}
+
+.same-line {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}

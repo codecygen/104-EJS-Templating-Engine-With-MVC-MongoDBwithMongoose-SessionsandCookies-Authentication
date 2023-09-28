@@ -1,0 +1,23 @@
+<%- include('includes/head.ejs') %>
+    <link rel="stylesheet" href="/shop/productList.css" />
+</head>
+<body>
+    <%- include('includes/nav.ejs') %>
+
+    <% if (selectedUser.userId) { %>
+        <p class="centered">Welcome <%= selectedUser.userName %></p>
+        <form action="/logout" class="centered" method="POST">
+            <button class="btn" type="submit">Logout</button>
+        </form>
+    <% } else { %>
+        <form action="/login" class="centered" method="POST">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="entered-username">
+    
+            <label for="password">Password</label>
+            <input type="password" id="password" name="entered-password">
+    
+            <button class="btn" type="submit">Login</button>
+        </form>
+    <% } %>
+</body>

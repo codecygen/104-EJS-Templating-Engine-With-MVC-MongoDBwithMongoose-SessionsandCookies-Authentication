@@ -1,0 +1,73 @@
+<header>
+    <h3>
+        <%= selectedUser.userName %> <% if (selectedUser.adminId) { %>(Admin)<% } %> logged in
+    </h3>
+    <nav>
+        <div>
+            <h3>Shop</h3>
+            <ul>
+                <li>
+                    <!-- could be said path === '/' ? 'active' : '' -->
+                    <!-- pagePath is an argument passed from either productAddRoute.js -->
+                    <!-- or productViewroute.js -->
+                    <a  
+                    class="<%= pagePath === '/' ? 'active' : '' %>"
+                    href="/">
+                        Shop
+                    </a>
+                </li>
+                <li>
+                    <a 
+                    class="<%= pagePath === '/products' ? 'active' : '' %>"
+                    href="/products">
+                        Products
+                    </a>
+                </li>
+                <li>
+                    <a 
+                    class="<%= pagePath === '/cart' ? 'active' : '' %>"
+                    href="/cart">
+                        Cart
+                    </a>
+                </li>
+                <li>
+                    <a 
+                    class="<%= pagePath === '/orders' ? 'active' : '' %>"
+                    href="/orders">
+                        Orders
+                    </a>
+                </li>
+                <li>
+                    <a 
+                    class="<%= pagePath === '/login' ? 'active' : '' %>"
+                    href="/login">
+                        Login
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <% if (selectedUser.adminId) { %> 
+            <div>
+                <h3>Admin Controls</h3>
+                <ul>
+                    <li>
+                        <!-- could be said path === '/' ? 'active' : '' -->
+                        <!-- pagePath is an argument passed from either productAddRoute.js -->
+                        <!-- or productViewRoute.js -->
+                        <a 
+                        class="<%= pagePath === '/admin/add-product' ? 'active' : '' %>"
+                        href="/admin/add-product">
+                            Add Product
+                        </a>
+                    </li>
+                    <li>
+                        <a 
+                        class="<%= pagePath === '/admin/products' ? 'active' : '' %>"
+                        href="/admin/products">
+                            Admin Products
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        <% } %>
+    </nav>

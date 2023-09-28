@@ -1,0 +1,71 @@
+<!-- This is the common file for both editing and updating -->
+<!-- a product -->
+
+
+<!-- res.render("admin/addEditProduct", {
+    renderTitle: "Edit Product",
+    pagePath: "/admin/edit-product",
+    editing: true, 
+    product: foundProduct
+}); -->
+
+<!-- exports.getAddProduct = (req, res, next) => {
+    res.render("admin/addEditProduct", {
+      renderTitle: "Add Product",
+      pagePath: "/admin/add-product",
+      editing: false
+    });
+}; -->
+
+<%- include('../includes/head.ejs') %>
+</head>
+<body>
+    <%- include('../includes/nav.ejs') %>
+
+    <main>
+        <!-- action indicates where the data will be submitted -->
+        <!-- basically, adminRoute.js will be responsible -->
+        <!-- of getting the post request! -->
+
+        <!-- POST request will be done to different links depending on if -->
+        <!-- editing=true or false -->
+        <form action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST">
+            <div class="form-control">
+                <label for="productname">Product Name</label>
+                <!-- in the label section for, should match with id in input -->
+                <!-- This way, when you click on label, it will automatically -->
+                <!-- focus on input element. -->
+                <!-- name section is the key of the value pair of the input data -->
+
+                <!-- Here, value will be given if the form is in editing=true mode -->
+                <input type="text" name="newProductName" id="productname" value="<% if (editing) { %><%= product.productName %><% } %>" />
+
+                <label for="productprice">Product Price</label>
+                <!-- Here, value will be given if the form is in editing=true mode -->
+                <input type="number" name="newProductPrice" id="productprice" step="0.01" value="<% if (editing) { %><%= product.productPrice %><% } %>" />
+
+                <label for="productdescription">Product Description</label>
+                <!-- Here, value will be given if the form is in editing=true mode -->
+                <input type="text" name="newProductDescription" id="productdescription" value="<% if (editing) { %><%= product.productDesc %><% } %>" />
+
+                <label for="productimage">Product Image</label>
+                <!-- Here, value will be given if the form is in editing=true mode -->
+                <input type="text" name="newProductImage" id="productimage" value="<% if (editing) { %><%= product.productImg %><% } %>" />
+
+                <% if (editing) { %>
+                    <input type="hidden" name="editedProductId" value="<%= product._id %>" />
+                <% } %>
+            </div>
+            
+            <button class="btn" type="submit">
+                <% if (editing) { %>
+                    <%= "Update Product" %>
+                <% } else { %>
+                    <%= "Add Product" %>
+                <% } %>
+            </button>
+        </form>
+    </main>
+
+</body>
+</html>

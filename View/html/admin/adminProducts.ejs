@@ -1,0 +1,47 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/shop/productList.css" />
+</head>
+<body>
+    <%- include('../includes/nav.ejs') %>
+
+    <main>
+        <% if(productList.length > 0) { %>
+            <ul class="product-cart">
+                <!-- for (let product of productList) { -->
+                    <!-- ...Content Here... -->
+                <!-- } -->
+                <!-- The above for loop could have also be used  -->
+                <!-- instead of forEach -->
+                <% productList.forEach(product => { %>
+                    
+                    <li class="card">
+                        <!-- These are coming from  -->
+                        <!-- products.push({ -->
+                            <!-- productName: req.body.newProductName, -->
+                            <!-- productPrice: req.body.newProductPrice, -->
+                        <!-- }); -->
+                        <!-- section in productAddRoute.js file. -->
+                        <div><%= product.productName %></div>
+                        <img 
+                            src=<%= product.productImg %> 
+                            alt=<%= product.productName %> 
+                            width="200" 
+                            height="300"
+                        >
+                        <div><%= product.productDesc %></div>
+                        <div>$<%= product.productPrice %></div>
+                        <a href="/admin/edit-product/<%= product._id %>?edit=true">Edit</a>
+                        <form action="/admin/delete-product" method="POST">
+                            <input type="hidden" name="deletedProductId" value="<%= product._id %>" />
+                            <button type="submit">Delete</button>
+                        </form>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>No Product Found!</p>
+        <% } %>
+    </main>
+
+</body>
+</html>

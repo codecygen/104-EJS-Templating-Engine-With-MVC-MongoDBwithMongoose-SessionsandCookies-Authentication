@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- This section will be passed to the 404.ejs from app.js file -->
+    <!-- As an argument. check out the section -->
+    <!-- res.status(404).render("404", { renderTitle: "No Page Found!" }); -->
+    <!-- in index.js -->
+    <title><%= renderTitle %></title>
+
+    <!-- It only starts with css instead of styles/main.css -->
+    <!-- Because, middleware in index.js already directs this html  -->
+    <!-- file to that folder name with -->
+    <!-- app.use(express.static(path.join(__dirname, "styles-ejs"))); -->
+    <link rel="stylesheet" href="/main.css" >
+    <link rel="stylesheet" href="/nav.css" >
