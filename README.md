@@ -311,3 +311,6 @@ app.use(
 ```
 
 After this, whenever you store any info in req.session, it will automatically be saved into database to "sessions" collection.
+
+# Authentication
+![Authentication Photo](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-MongoDBwithMongoose-SessionsandCookies-Authentication/blob/main/Images/Screenshot%20from%202023-09-28%2015-18-35.png)
