@@ -5,7 +5,7 @@
     margin: auto;
 }
 
-.flex * {
+.flex > * {
     padding: 10px;
 }
 
@@ -13,6 +13,11 @@
     padding: 0;
 }
 
-.flex input {
+.flex > input {
     margin: 10px 0 10px 0;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin: 10px;
+    transform: scale(2);
 }
