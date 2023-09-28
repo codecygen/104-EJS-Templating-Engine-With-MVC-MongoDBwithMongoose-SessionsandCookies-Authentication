@@ -1,16 +1,16 @@
 <%- include('includes/head.ejs') %>
-    <link rel="stylesheet" href="/shop/productList.css" />
+<link rel="stylesheet" href="signup-and-login.css" />
 </head>
 <body>
     <%- include('includes/nav.ejs') %>
 
     <% if (selectedUser.userId) { %>
-        <p class="centered">Welcome <%= selectedUser.userName %></p>
+        <p class="centered flex">Welcome <%= selectedUser.userName %></p>
         <form action="/logout" class="centered" method="POST">
             <button class="btn" type="submit">Logout</button>
         </form>
     <% } else { %>
-        <form action="/login" class="centered" method="POST">
+        <form action="/login" class="centered flex" method="POST">
             <label for="username">Username</label>
             <input type="text" id="username" name="entered-username">
     
