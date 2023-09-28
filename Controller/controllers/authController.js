@@ -59,6 +59,16 @@ exports.postLogout = async (req, res, next) => {
   req.session.userName = "No One";
   req.session.userEmail = null;
   req.session.adminId = null;
-  
+
   res.redirect("/login");
 };
+
+exports.getSignUpPage = async (req, res, next) => {
+  res.render("signup", {
+    pagePath: "/signup",
+    renderTitle: "Signup",
+    // selectedUser: res.locals.selectedUser,
+  });
+};
+
+exports.postSignUpPage = async (req, res, next) => {};
