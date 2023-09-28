@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 
 exports.getLoginPage = async (req, res, next) => {
@@ -67,6 +68,7 @@ exports.getSignUpPage = async (req, res, next) => {
   res.render("signup", {
     pagePath: "/signup",
     renderTitle: "Signup",
+    signupFeedback: false,
     // selectedUser: res.locals.selectedUser,
   });
 };
@@ -80,7 +82,39 @@ exports.postSignUpPage = async (req, res, next) => {
     "is-admin": adminCheckbox,
   } = req.body;
 
-  isAdminChecked = adminCheckbox === "on" ? true : false;
+  const isAdminBoxChecked = adminCheckbox === "on" ? true : false;
 
-  res.redirect("/signup");
+  let validityMessage = "successful";
+
+  // VALIDATION OF INPUTS
+  const emailValidityHandler = (email) => {
+    const emailTest = email
+      .toString()
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+
+    return emailTest;
+  };
+
+  if (!enteredName || !enteredEmail || !enteredPass || !enteredPassConfirm) {
+    validityMessage = "empty-fields";
+  } else if (!emailValidityHandler(enteredEmail)) {
+    validityMessage = "invalid-email";
+  } else if (enteredPass !== enteredPassConfirm) {
+    validityMessage = "password-mismatch";
+  }
+  // VALIDATION OF INPUTS
+
+  const newUserData = {
+    userName: enteredName,
+    userEmail: enteredEmail,
+    password: enteredPass,
+    adminId: isAdminBoxChecked ? new mongoose.Types.ObjectId() : null,
+  };
+
+  console.log(newUserData);
+
+  res.redirect(`/signup?message=${encodeURIComponent(validityMessage)}`);
 };
