@@ -84,7 +84,7 @@ exports.postSignUpPage = async (req, res, next) => {
 
   const isAdminBoxChecked = adminCheckbox === "on" ? true : false;
 
-  let validityMessage = "successful";
+  let validityMessage;
 
   // VALIDATION OF INPUTS
   const emailValidityHandler = (email) => {
@@ -104,6 +104,8 @@ exports.postSignUpPage = async (req, res, next) => {
     validityMessage = "invalid-email";
   } else if (enteredPass !== enteredPassConfirm) {
     validityMessage = "password-mismatch";
+  } else {
+    validityMessage = "successful";
   }
   // VALIDATION OF INPUTS
 
