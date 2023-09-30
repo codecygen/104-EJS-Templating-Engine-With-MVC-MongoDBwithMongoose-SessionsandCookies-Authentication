@@ -10,12 +10,15 @@
             <button class="btn" type="submit">Logout</button>
         </form>
     <% } else { %>
+        <% if (pageMessage) { %>
+            <p class="centered warning"><%= pageMessage %></p>
+        <% } %>
         <form action="/signup" class="centered flex" method="POST">
             <label for="username">Username</label>
             <input type="text" id="username" name="entered-username">
 
             <label for="email">Email</label>
-            <input type="text" id="email" name="entered-email">
+            <input type="email" id="email" name="entered-email">
     
             <label for="password">Password</label>
             <input type="password" id="password" name="entered-password">
@@ -25,7 +28,7 @@
 
             <div class="checkbox-container">
                 <input type="checkbox" id="admin" name="is-admin">
-                <label for="admin">Are you an admin?</label>
+                <label for="admin">Are you an admin? (Optional)</label>
             </div>
     
             <button class="btn" type="submit">Signup</button>

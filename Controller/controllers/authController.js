@@ -65,10 +65,39 @@ exports.postLogout = async (req, res, next) => {
 };
 
 exports.getSignUpPage = async (req, res, next) => {
+  const queryOutput = req.query.message;
+  let pageMessage;
+
+  validityMessage = "empty-fields";
+  validityMessage = "invalid-email";
+  validityMessage = "password-mismatch";
+  validityMessage = "successful";
+
+  switch (queryOutput) {
+    case "empty-fields":
+      pageMessage = "Please fill out the required fields!";
+      break;
+
+    case "invalid-email":
+      pageMessage = "Please enter a valid email address!";
+      break;
+
+    case "password-mismatch":
+      pageMessage = "Please make sure passwords match!";
+      break;
+
+    case "successful":
+      pageMessage = "Congratulations! You successfully registered!";
+      break;
+    default:
+      pageMessage = null;
+  }
+
   res.render("signup", {
     pagePath: "/signup",
     renderTitle: "Signup",
     signupFeedback: false,
+    pageMessage: pageMessage,
     // selectedUser: res.locals.selectedUser,
   });
 };

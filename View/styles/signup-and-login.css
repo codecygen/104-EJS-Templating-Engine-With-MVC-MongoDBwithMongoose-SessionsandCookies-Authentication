@@ -21,3 +21,10 @@
     margin: 10px;
     transform: scale(2);
 }
+
+.warning {
+    color: red;
+    background-color: antiquewhite;
+    font-size: 20px;
+    padding: 2px;
+}
