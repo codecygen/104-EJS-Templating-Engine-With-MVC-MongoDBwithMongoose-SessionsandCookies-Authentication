@@ -2,7 +2,9 @@ const Tables = require("../dbAssociation");
 
 const registerUser = async (newUserData) => {
   const newUser = new Tables.UserTable(newUserData);
-  await newUser.createUser();
+  const registerResult = await newUser.createUser();
+  
+  return registerResult;
 };
 
 module.exports = { registerUser };

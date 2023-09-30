@@ -82,9 +82,14 @@ exports.getSignUpPage = async (req, res, next) => {
       pageMessage = "Please make sure passwords match!";
       break;
 
+    case "duplicate-email":
+      pageMessage = "Email is already registered!";
+      break;
+
     case "successful":
       pageMessage = "Congratulations! You successfully registered!";
       break;
+
     default:
       pageMessage = null;
   }
@@ -142,7 +147,20 @@ exports.postSignUpPage = async (req, res, next) => {
     userCart: [],
   };
 
-  await dbAuthOperation.registerUser(newUserData);
+  const registerResult = await dbAuthOperation.registerUser(newUserData);
 
-  res.redirect(`/signup?message=${encodeURIComponent(validityMessage)}`);
+  switch (registerResult) {
+    case "successful":
+      validityMessage = "successful";
+      break;
+
+    case "duplicate-email":
+      validityMessage = "duplicate-email";
+      break;
+
+    default:
+      validityMessage = "server-error";
+  }
+
+  await res.redirect(`/signup?message=${encodeURIComponent(validityMessage)}`);
 };

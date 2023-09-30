@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema(
     userEmail: {
       type: String,
       required: true,
+      unique: true,
     },
 
     password: {
@@ -45,11 +46,21 @@ const userSchema = new mongoose.Schema(
 // methods keyword creates a function that can be used with
 // creating class instance
 userSchema.methods.createUser = async function () {
+  let result;
+
   // Create a new user
+  // Email has to be unique due to how model is set up.
+  // Thats why if user enters an email that is already registered
+  // system will throw MongoServerError.
   try {
-    await this.save();
+    result = await this.save();
+    return "successful";
   } catch (err) {
-    console.error(err);
+    if (err.code === 11000 && err.keyValue && err.keyValue.userEmail) {
+      return "duplicate-email";
+    }
+
+    return "failed";
   }
 };
 
