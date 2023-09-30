@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
+const dbAuthOperation = require("../../Model/operations/dbAuthOperation");
 
 exports.getLoginPage = async (req, res, next) => {
   // Gets cookie from front end with Get request for the page.
@@ -67,11 +68,6 @@ exports.postLogout = async (req, res, next) => {
 exports.getSignUpPage = async (req, res, next) => {
   const queryOutput = req.query.message;
   let pageMessage;
-
-  validityMessage = "empty-fields";
-  validityMessage = "invalid-email";
-  validityMessage = "password-mismatch";
-  validityMessage = "successful";
 
   switch (queryOutput) {
     case "empty-fields":
@@ -143,9 +139,10 @@ exports.postSignUpPage = async (req, res, next) => {
     userEmail: enteredEmail,
     password: enteredPass,
     adminId: isAdminBoxChecked ? new mongoose.Types.ObjectId() : null,
+    userCart: [],
   };
 
-  console.log(newUserData);
+  await dbAuthOperation.registerUser(newUserData);
 
   res.redirect(`/signup?message=${encodeURIComponent(validityMessage)}`);
 };
