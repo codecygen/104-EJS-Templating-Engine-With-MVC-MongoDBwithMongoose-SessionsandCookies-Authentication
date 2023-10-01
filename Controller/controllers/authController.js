@@ -5,18 +5,26 @@ const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 const dbAuthOperation = require("../../Model/operations/dbAuthOperation");
 
 exports.getLoginPage = async (req, res, next) => {
-  // Gets cookie from front end with Get request for the page.
-  // req.get("Cookie") will only return not expired cookies
-  // if (req.get("Cookie")) {
-  // console.log(req.get("Cookie"));
-  // console.log(req.cookies);
-  // Output:
-  // connect.sid=s%3AEc9Ke1LRkapkR1oCWsJhLAQ135sZJvip.FOzakumJ0zFCgJNOUdqtiG0j%2BCyRLGLTF0qrw5Rm88E; loggedIn=true
-  // }
+  const queryOutput = req.query.message;
+  let pageMessage;
+
+  switch (queryOutput) {
+    case "no-user":
+      pageMessage = "Please register first!";
+      break;
+
+    case "wrong-pass":
+      pageMessage = "Your password is incorrect!";
+      break;
+
+    default:
+      pageMessage = null;
+  }
 
   res.render("login", {
     pagePath: "/login",
     renderTitle: "Login",
+    pageMessage: pageMessage,
     // selectedUser: res.locals.selectedUser,
   });
 };
@@ -30,11 +38,13 @@ exports.postLoginPage = async (req, res, next) => {
   const foundUser = await dbAdminOperation.checkLogin(enteredUsername);
 
   if (!foundUser) {
-    return;
+    return await res.redirect(
+      `/login?message=${encodeURIComponent("no-user")}`
+    );
   }
 
   // Comparing hashed password
-  bcrypt.compare(enteredPassword, foundUser.password, (err, result) => {
+  bcrypt.compare(enteredPassword, foundUser.password, async (err, result) => {
     if (err) {
       console.error(err);
     }
@@ -48,7 +58,7 @@ exports.postLoginPage = async (req, res, next) => {
       return res.redirect("/");
     }
 
-    res.redirect("/login");
+    await res.redirect(`/login?message=${encodeURIComponent("wrong-pass")}`);
   });
 };
 
