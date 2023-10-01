@@ -50,20 +50,6 @@ exports.postLoginPage = async (req, res, next) => {
 
     res.redirect("/login");
   });
-
-  // req.session.isLoggedIn = true;
-
-  // Sets cookie upon post request to the front end.
-  // loggedIn=true
-  // It will expire 2023/09/25 00:00AM UTC
-  // const expiryDate = new Date("2050-09-25T00:00:00Z").toUTCString();
-  // res.setHeader("Set-Cookie", `loggedIn=true; Expires=${expiryDate}`);
-
-  // Max-Age sets the expiry of the cookie in seconds
-  // Even though this cookie will be invalid after 10 seconds
-  // It will still stay in browser but will be deleted by browser eventually
-  // const expirySecond = 10;
-  // res.setHeader("Set-Cookie", `tenSeconds=true; Max-Age=${expirySecond}`);
 };
 
 exports.postLogout = async (req, res, next) => {
