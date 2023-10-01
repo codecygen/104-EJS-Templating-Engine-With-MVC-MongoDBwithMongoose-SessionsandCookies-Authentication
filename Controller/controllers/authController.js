@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+
 const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 const dbAuthOperation = require("../../Model/operations/dbAuthOperation");
 
@@ -139,28 +141,39 @@ exports.postSignUpPage = async (req, res, next) => {
   }
   // VALIDATION OF INPUTS
 
-  const newUserData = {
-    userName: enteredName,
-    userEmail: enteredEmail,
-    password: enteredPass,
-    adminId: isAdminBoxChecked ? new mongoose.Types.ObjectId() : null,
-    userCart: [],
-  };
+  const saltRounds = 12;
 
-  const registerResult = await dbAuthOperation.registerUser(newUserData);
+  bcrypt.hash(enteredPass, saltRounds, async (err, hashedPass) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
 
-  switch (registerResult) {
-    case "successful":
-      validityMessage = "successful";
-      break;
+    const newUserData = {
+      userName: enteredName,
+      userEmail: enteredEmail,
+      password: hashedPass,
+      adminId: isAdminBoxChecked ? new mongoose.Types.ObjectId() : null,
+      userCart: [],
+    };
 
-    case "duplicate-email":
-      validityMessage = "duplicate-email";
-      break;
+    const registerResult = await dbAuthOperation.registerUser(newUserData);
 
-    default:
-      validityMessage = "server-error";
-  }
+    switch (registerResult) {
+      case "successful":
+        validityMessage = "successful";
+        break;
 
-  await res.redirect(`/signup?message=${encodeURIComponent(validityMessage)}`);
+      case "duplicate-email":
+        validityMessage = "duplicate-email";
+        break;
+
+      default:
+        validityMessage = "server-error";
+    }
+
+    await res.redirect(
+      `/signup?message=${encodeURIComponent(validityMessage)}`
+    );
+  });
 };
