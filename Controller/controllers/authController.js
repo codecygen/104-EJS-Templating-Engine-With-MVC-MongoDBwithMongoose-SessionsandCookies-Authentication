@@ -47,8 +47,10 @@ exports.postLoginPage = async (req, res, next) => {
   bcrypt.compare(enteredPassword, foundUser.password, async (err, result) => {
     if (err) {
       console.error(err);
+      return res.redirect("/login");
     }
 
+    // set session if user successfully logs in
     if (result === true) {
       req.session.userId = foundUser._id;
       req.session.userName = foundUser.userName;
