@@ -27,21 +27,29 @@ exports.postLoginPage = async (req, res, next) => {
     "entered-password": enteredPassword,
   } = req.body;
 
-  const foundUser = await dbAdminOperation.checkLogin(
-    enteredUsername,
-    enteredPassword
-  );
+  const foundUser = await dbAdminOperation.checkLogin(enteredUsername);
 
   if (!foundUser) {
     return;
   }
 
-  req.session.userId = foundUser._id;
-  req.session.userName = foundUser.userName;
-  req.session.userEmail = foundUser.userEmail;
-  req.session.adminId = foundUser.adminId;
+  // Comparing hashed password
+  bcrypt.compare(enteredPassword, foundUser.password, (err, result) => {
+    if (err) {
+      console.error(err);
+    }
 
-  res.redirect("/");
+    if (result === true) {
+      req.session.userId = foundUser._id;
+      req.session.userName = foundUser.userName;
+      req.session.userEmail = foundUser.userEmail;
+      req.session.adminId = foundUser.adminId;
+
+      return res.redirect("/");
+    }
+
+    res.redirect("/login");
+  });
 
   // req.session.isLoggedIn = true;
 
@@ -141,6 +149,7 @@ exports.postSignUpPage = async (req, res, next) => {
   }
   // VALIDATION OF INPUTS
 
+  // Password hashing and salting
   const saltRounds = 12;
 
   bcrypt.hash(enteredPass, saltRounds, async (err, hashedPass) => {

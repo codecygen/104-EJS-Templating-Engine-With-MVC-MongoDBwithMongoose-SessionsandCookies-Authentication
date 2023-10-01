@@ -12,10 +12,9 @@ const getOneUser = async (userId) => {
   return foundUser;
 };
 
-const checkLogin = async (username, password) => {
+const checkLogin = async (username) => {
   const foundUser = await Tables.UserTable.checkUserLogin(
-    username,
-    password
+    username
   );
 
   return foundUser;

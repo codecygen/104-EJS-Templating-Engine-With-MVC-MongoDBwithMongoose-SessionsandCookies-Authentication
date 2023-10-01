@@ -84,13 +84,12 @@ userSchema.statics.getSingleUser = async function (userId) {
   }
 };
 
-userSchema.statics.checkUserLogin = async function (userName, password) {
+userSchema.statics.checkUserLogin = async function (userName, encryptedPass) {
   try {
-    const result = await this.findOne({
+    const foundUser = await this.findOne({
       userName: userName,
-      password: password,
     });
-    return result;
+    return foundUser;
   } catch (err) {
     console.error(err);
   }
