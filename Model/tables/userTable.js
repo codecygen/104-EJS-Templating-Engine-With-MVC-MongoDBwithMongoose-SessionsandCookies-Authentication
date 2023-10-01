@@ -64,14 +64,6 @@ userSchema.methods.createUser = async function () {
   }
 };
 
-userSchema.statics.createUsers = async function (newUsers) {
-  try {
-    await this.insertMany(newUsers);
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 userSchema.statics.getUsers = async function () {
   try {
     // this refers to UserTable
