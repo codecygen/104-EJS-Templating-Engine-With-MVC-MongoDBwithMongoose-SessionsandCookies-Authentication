@@ -3,10 +3,10 @@ const shopController = require("../controllers/shopController");
 const router = express.Router();
 
 // Express-Session-Keep-Cookie-in-req.session
-const populateSelectedUser = require("../../middleware/populateSelectedUser");
+const populateSelectedUser = require("../../Middleware/populateSelectedUser");
 router.use(populateSelectedUser);
 
-const { isLoggedIn } = require("../../middleware/authMiddleware");
+const { isLoggedIn } = require("../../Middleware/authMiddleware");
 
 router.get("/", shopController.getIndex);
 
