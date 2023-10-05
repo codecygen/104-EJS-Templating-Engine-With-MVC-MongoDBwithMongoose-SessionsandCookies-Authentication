@@ -1,5 +1,5 @@
 // Middleware to check if the user is an admin
-const checkAdmin = (req, res, next) => {
+const isAdmin = (req, res, next) => {
   if (res.locals.selectedUser.adminId) {
     next(); // User is an admin, proceed to the next middleware or route handler
   } else {
@@ -7,4 +7,4 @@ const checkAdmin = (req, res, next) => {
   }
 };
 
-module.exports = checkAdmin;
+module.exports = { isAdmin };
