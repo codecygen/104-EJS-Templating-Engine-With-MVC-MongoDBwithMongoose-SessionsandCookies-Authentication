@@ -4,7 +4,7 @@ const router = express.Router();
 const authController = require("../controllers/authController");
 
 // Express-Session-Keep-Cookie-in-req.session
-const populateSelectedUser = require("../middleware/populateSelectedUser");
+const populateSelectedUser = require("../../middleware/populateSelectedUser");
 router.use(populateSelectedUser);
 
 router.get("/login", authController.getLoginPage);
