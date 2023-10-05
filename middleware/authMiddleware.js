@@ -1,3 +1,11 @@
+const isLoggedIn = (req, res, next) => {
+  if (res.locals.selectedUser.userId) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+};
+
 // Middleware to check if the user is an admin
 const isAdmin = (req, res, next) => {
   if (res.locals.selectedUser.adminId) {
@@ -7,4 +15,4 @@ const isAdmin = (req, res, next) => {
   }
 };
 
-module.exports = { isAdmin };
+module.exports = { isLoggedIn, isAdmin };

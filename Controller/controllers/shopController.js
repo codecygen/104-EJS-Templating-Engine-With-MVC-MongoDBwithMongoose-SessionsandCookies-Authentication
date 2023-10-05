@@ -12,9 +12,6 @@ const dbOrderOperation = require("../../Model/operations/dbOrderOperation");
 // "/display/products"
 
 exports.getProducts = async (req, res, next) => {
-  if (res.locals.selectedUser.userId === null) {
-    return res.redirect("/login");
-  }
 
   const allProducts = await dbProductOperation.getAllProducts();
 
@@ -32,9 +29,6 @@ exports.getProducts = async (req, res, next) => {
 };
 
 exports.getIndex = async (req, res, next) => {
-  if (res.locals.selectedUser.userId === null) {
-    return res.redirect("/login");
-  }
 
   const products = await dbProductOperation.getAllProducts();
 
@@ -50,9 +44,6 @@ exports.getIndex = async (req, res, next) => {
 };
 
 exports.getCart = async (req, res, next) => {
-  if (res.locals.selectedUser.userId === null) {
-    return res.redirect("/login");
-  }
 
   const currentUser = await dbAdminOperation.getOneUser(req.session.userId);
 
@@ -83,9 +74,6 @@ exports.postCart = async (req, res, next) => {
 };
 
 exports.getProduct = async (req, res, next) => {
-  if (res.locals.selectedUser.userId === null) {
-    res.redirect("/login");
-  }
 
   const productId = req.params.productId;
 
@@ -112,9 +100,6 @@ exports.postDeleteCartItem = async (req, res, next) => {
 };
 
 exports.getOrders = async (req, res, next) => {
-  if (res.locals.selectedUser.userId === null) {
-    return res.redirect("/login");
-  }
   
   const loggedInUser = res.locals.selectedUser;
 

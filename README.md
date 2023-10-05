@@ -314,3 +314,37 @@ After this, whenever you store any info in req.session, it will automatically be
 
 # Authentication
 ![Authentication Photo](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-MongoDBwithMongoose-SessionsandCookies-Authentication/blob/main/Images/Screenshot%20from%202023-09-28%2015-18-35.png)
+
+Authorization is all about which person can view which page and can perform which actions.
+
+For authentication, middleware functions are used.
+
+```javascript
+// authMiddleware.js
+
+const isLoggedIn = (req, res, next) => {
+  if (res.locals.selectedUser.userId) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+};
+
+// Middleware to check if the user is an admin
+const isAdmin = (req, res, next) => {
+  if (res.locals.selectedUser.adminId) {
+    next(); // User is an admin, proceed to the next middleware or route handler
+  } else {
+    res.redirect("/"); // Redirect to a different page or show an error message
+  }
+};
+
+module.exports = { isLoggedIn, isAdmin };
+```
+
+Then in the routes file
+```javascript
+const { isLoggedIn } = require("../../middleware/authMiddleware");
+
+router.get("/products", isLoggedIn, shopController.getProducts);
+```

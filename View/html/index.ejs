@@ -30,10 +30,6 @@
                         >
                         <div><%= product.productDesc %></div>
                         <div>$<%= product.productPrice %></div>
-                        <%- include(
-                            'includes/buttons/addCartButton.ejs', 
-                            { productId: product._id }) 
-                        %>
                     </li>
                 <% }) %>
             </ul>
