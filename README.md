@@ -315,7 +315,10 @@ After this, whenever you store any info in req.session, it will automatically be
 ## Authentication
 ![Authentication Photo](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-MongoDBwithMongoose-SessionsandCookies-Authentication/blob/main/Images/Screenshot%20from%202023-09-28%2015-18-35.png)
 
-For authentication, middleware functions are used.
+## Authorization
+Authorization is all about which person can view which page and can perform which actions.
+
+For authorization, middleware functions are used.
 
 ```javascript
 // authMiddleware.js
@@ -346,9 +349,6 @@ const { isLoggedIn } = require("../../middleware/authMiddleware");
 
 router.get("/products", isLoggedIn, shopController.getProducts);
 ```
-
-## Authorization
-Authorization is all about which person can view which page and can perform which actions.
 
 ## CSRF Attacks
 **CSRF-Attacks-Prevention** is the keyword to search for it.
