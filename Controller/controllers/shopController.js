@@ -12,7 +12,6 @@ const dbOrderOperation = require("../../Model/operations/dbOrderOperation");
 // "/display/products"
 
 exports.getProducts = async (req, res, next) => {
-
   const allProducts = await dbProductOperation.getAllProducts();
 
   // This means render productList.ejs
@@ -25,11 +24,13 @@ exports.getProducts = async (req, res, next) => {
     productList: allProducts,
     renderTitle: "All Products",
     selectedUser: res.locals.selectedUser,
+
+    // Prevents-CSRF-attacks
+    csrfToken: req.session.csrfToken,
   });
 };
 
 exports.getIndex = async (req, res, next) => {
-
   const products = await dbProductOperation.getAllProducts();
 
   res.render("index", {
@@ -44,7 +45,6 @@ exports.getIndex = async (req, res, next) => {
 };
 
 exports.getCart = async (req, res, next) => {
-
   const currentUser = await dbAdminOperation.getOneUser(req.session.userId);
 
   const [cartProductList, cartTotalPrice, userCartDB] =
@@ -59,6 +59,9 @@ exports.getCart = async (req, res, next) => {
     // because it is stored in res.locals, res.render template
     // can reach to selectedUser that is in res.locals
     // selectedUser: res.locals.selectedUser,
+
+    // Prevents-CSRF-attacks
+    csrfToken: req.session.csrfToken,
   });
 };
 
@@ -74,7 +77,6 @@ exports.postCart = async (req, res, next) => {
 };
 
 exports.getProduct = async (req, res, next) => {
-
   const productId = req.params.productId;
 
   const foundProduct = await dbProductOperation.getOneProduct(productId);
@@ -87,6 +89,9 @@ exports.getProduct = async (req, res, next) => {
     // because it is stored in res.locals, res.render template
     // can reach to selectedUser that is in res.locals
     // selectedUser: res.locals.selectedUser,
+
+    // Prevents-CSRF-attacks
+    csrfToken: req.session.csrfToken,
   });
 };
 
@@ -100,7 +105,6 @@ exports.postDeleteCartItem = async (req, res, next) => {
 };
 
 exports.getOrders = async (req, res, next) => {
-  
   const loggedInUser = res.locals.selectedUser;
 
   const orderList = await dbOrderOperation.getOrders(loggedInUser);

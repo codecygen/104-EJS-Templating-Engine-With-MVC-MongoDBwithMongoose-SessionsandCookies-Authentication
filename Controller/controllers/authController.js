@@ -60,6 +60,8 @@ exports.postLoginPage = async (req, res, next) => {
       req.session.userName = foundUser.userName;
       req.session.userEmail = foundUser.userEmail;
       req.session.adminId = foundUser.adminId;
+
+      // Prevents-CSRF-attacks
       req.session.csrfToken = createdToken;
 
       return res.redirect("/");

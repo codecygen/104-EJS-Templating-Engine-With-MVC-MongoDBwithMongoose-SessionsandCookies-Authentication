@@ -14,6 +14,9 @@ exports.getAddProduct = (req, res, next) => {
     // because it is stored in res.locals, res.render template
     // can reach to selectedUser that is in res.locals
     // selectedUser: res.locals.selectedUser,
+
+    // Prevents-CSRF-attacks
+    csrfToken: req.session.csrfToken,
   });
 };
 
@@ -50,6 +53,9 @@ exports.getProducts = async (req, res, next) => {
     // because it is stored in res.locals, res.render template
     // can reach to selectedUser that is in res.locals
     // selectedUser: res.locals.selectedUser,
+
+    // Prevents-CSRF-attacks
+    csrfToken: req.session.csrfToken,
   });
 };
 
@@ -82,6 +88,9 @@ exports.editProduct = async (req, res, next) => {
     // because it is stored in res.locals, res.render template
     // can reach to selectedUser that is in res.locals
     // selectedUser: res.locals.selectedUser,
+
+    // Prevents-CSRF-attacks
+    csrfToken: req.session.csrfToken,
   });
 };
 

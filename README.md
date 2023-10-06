@@ -312,10 +312,8 @@ app.use(
 
 After this, whenever you store any info in req.session, it will automatically be saved into database to "sessions" collection.
 
-# Authentication
+## Authentication
 ![Authentication Photo](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-MongoDBwithMongoose-SessionsandCookies-Authentication/blob/main/Images/Screenshot%20from%202023-09-28%2015-18-35.png)
-
-Authorization is all about which person can view which page and can perform which actions.
 
 For authentication, middleware functions are used.
 
@@ -348,3 +346,11 @@ const { isLoggedIn } = require("../../middleware/authMiddleware");
 
 router.get("/products", isLoggedIn, shopController.getProducts);
 ```
+
+## Authorization
+Authorization is all about which person can view which page and can perform which actions.
+
+## CSRF Attacks
+**Prevents-CSRF-attacks** is the keyword to search for it.
+
+A Cross-Site Request Forgery (CSRF) attack is a type of security exploit where an attacker tricks a user's web browser into making an unintended and unauthorized request to a different website on which the user is authenticated. This can lead to actions being taken on the user's behalf without their consent or knowledge. To prevent CSRF attacks, websites use tokens that validate the origin of the request, ensuring it comes from a trusted source.
