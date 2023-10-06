@@ -315,6 +315,10 @@ After this, whenever you store any info in req.session, it will automatically be
 ## Authentication
 ![Authentication Photo](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-MongoDBwithMongoose-SessionsandCookies-Authentication/blob/main/Images/Screenshot%20from%202023-09-28%2015-18-35.png)
 
+- Check **/Controller/routes/authRoute.js** and **/Controller/controllers/authController.js** for more information on how to authenticate a user.
+
+- **bcrypt** and **expression-session** packages are used for proper authentication processes like signup and login pages.
+
 ## Authorization
 Authorization is all about which person can view which page and can perform which actions.
 
