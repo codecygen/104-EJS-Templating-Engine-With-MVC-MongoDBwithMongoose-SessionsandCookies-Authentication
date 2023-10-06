@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
+const { v4: uuidv4 } = require("uuid");
+
 const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 const dbAuthOperation = require("../../Model/operations/dbAuthOperation");
 
@@ -50,12 +52,15 @@ exports.postLoginPage = async (req, res, next) => {
       return res.redirect("/login");
     }
 
+    const createdToken = uuidv4();
+
     // set session if user successfully logs in
     if (result === true) {
       req.session.userId = foundUser._id;
       req.session.userName = foundUser.userName;
       req.session.userEmail = foundUser.userEmail;
       req.session.adminId = foundUser.adminId;
+      req.session.csrfToken = createdToken;
 
       return res.redirect("/");
     }

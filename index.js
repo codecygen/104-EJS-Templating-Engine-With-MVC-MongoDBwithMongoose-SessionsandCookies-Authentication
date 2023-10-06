@@ -15,9 +15,6 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 // Allows .env file to be used
 require("dotenv").config();
 
-// This is used to connect database
-const dbAdminOperation = require("./Model/operations/dbAdminOperation");
-
 const app = express();
 
 // Store sessions in MongoDB
@@ -44,7 +41,6 @@ const shopRoute = require("./Controller/routes/shopRoute");
 const authRoute = require("./Controller/routes/authRoute");
 const NoRoute = require("./Controller/routes/NoRoute");
 
-
 // Express-Session-Keep-Cookie-in-req.session
 // This is used to keep session for chosen admin
 // Store sessions in MongoDB
@@ -58,7 +54,7 @@ app.use(
 );
 
 // Express-Session-Keep-Cookie-in-req.session
-app.use(async (req, res, next) => {
+app.use((req, res, next) => {
 
   if (!req.session.userId) {
     req.session.userId = null;
