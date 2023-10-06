@@ -1,7 +1,7 @@
 <form action="/cart" method="POST">
     <input type="hidden" name="addedProductId" value="<%= productId %>" />
 
-    <!-- Prevents-CSRF-attacks -->
+    <!-- CSRF-Attacks-Prevention -->
     <input type="hidden" name="_csrf" value=<%= csrfToken %>>
     <button>Add to Cart</button>
 </form>

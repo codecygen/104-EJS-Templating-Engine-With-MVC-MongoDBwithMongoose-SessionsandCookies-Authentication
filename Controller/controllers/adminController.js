@@ -15,7 +15,7 @@ exports.getAddProduct = (req, res, next) => {
     // can reach to selectedUser that is in res.locals
     // selectedUser: res.locals.selectedUser,
 
-    // Prevents-CSRF-attacks
+    // CSRF-Attacks-Prevention
     csrfToken: req.session.csrfToken,
   });
 };
@@ -54,7 +54,7 @@ exports.getProducts = async (req, res, next) => {
     // can reach to selectedUser that is in res.locals
     // selectedUser: res.locals.selectedUser,
 
-    // Prevents-CSRF-attacks
+    // CSRF-Attacks-Prevention
     csrfToken: req.session.csrfToken,
   });
 };
@@ -89,7 +89,7 @@ exports.editProduct = async (req, res, next) => {
     // can reach to selectedUser that is in res.locals
     // selectedUser: res.locals.selectedUser,
 
-    // Prevents-CSRF-attacks
+    // CSRF-Attacks-Prevention
     csrfToken: req.session.csrfToken,
   });
 };
