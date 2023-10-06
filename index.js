@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 // This is used to keep session for chosen admin
 const session = require("express-session");
 
+// Store sessions in MongoDB
 const MongoDBStore = require("connect-mongodb-session")(session);
 
 // Mongoose-Connect-Database
@@ -19,6 +20,7 @@ const dbAdminOperation = require("./Model/operations/dbAdminOperation");
 
 const app = express();
 
+// Store sessions in MongoDB
 const store = new MongoDBStore({
   uri: process.env.URL,
   collection: "sessions"
@@ -45,6 +47,7 @@ const NoRoute = require("./Controller/routes/NoRoute");
 
 // Express-Session-Keep-Cookie-in-req.session
 // This is used to keep session for chosen admin
+// Store sessions in MongoDB
 app.use(
   session({
     secret: process.env.EXPRESS_SESSION_KEY,
