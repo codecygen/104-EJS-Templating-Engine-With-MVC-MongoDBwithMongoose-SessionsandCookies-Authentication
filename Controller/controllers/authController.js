@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
+// CSRF-Attacks-Prevention
 const { v4: uuidv4 } = require("uuid");
 
 const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
@@ -52,6 +53,7 @@ exports.postLoginPage = async (req, res, next) => {
       return res.redirect("/login");
     }
 
+    // CSRF-Attacks-Prevention
     const createdToken = uuidv4();
 
     // set session if user successfully logs in
@@ -60,7 +62,7 @@ exports.postLoginPage = async (req, res, next) => {
       req.session.userName = foundUser.userName;
       req.session.userEmail = foundUser.userEmail;
       req.session.adminId = foundUser.adminId;
-
+      
       // CSRF-Attacks-Prevention
       req.session.csrfToken = createdToken;
 

@@ -1,6 +1,8 @@
 const dbProductOperation = require("../../Model/operations/dbProductOperation");
 const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 
+const checkCsrfToken = require("./utils/checkCsrfToken");
+
 exports.getAddProduct = (req, res, next) => {
   if (res.locals.selectedUser.userId === null) {
     return res.redirect("/login");

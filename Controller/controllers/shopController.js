@@ -3,6 +3,8 @@ const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 const dbCartOperation = require("../../Model/operations/dbCartOperation");
 const dbOrderOperation = require("../../Model/operations/dbOrderOperation");
 
+const checkCsrfToken = require("./utils/checkCsrfToken");
+
 // while rendering, we send "products" data
 // as "productList"
 // This is just "/products" route. In the index.js
@@ -66,7 +68,22 @@ exports.getCart = async (req, res, next) => {
 };
 
 exports.postCart = async (req, res, next) => {
+  const clientCsrfToken = req.body._csrf;
+  const serverCsrfToken = req.session.csrfToken;
+
+  if (clientCsrfToken !== serverCsrfToken) {
+    return res.status(404).render("404", {
+      renderTitle: "No Page Found!",
+      pagePath: "NA",
+      // router.use(populateSelectedUser); // this middleware populates res.locals
+      // because it is stored in res.locals, res.render template
+      // can reach to selectedUser that is in res.locals
+      // selectedUser: res.locals.selectedUser,
+    });
+  }
+
   const addedProductId = req.body.addedProductId;
+
   const addedProduct = await dbProductOperation.getOneProduct(addedProductId);
 
   const currentUser = await dbAdminOperation.getOneUser(req.session.userId);
