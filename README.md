@@ -320,6 +320,10 @@ After this, whenever you store any info in req.session, it will automatically be
 
 - **bcrypt** and **expression-session** packages are used for proper authentication processes like signup and login pages.
 
+- **IMPORTANT NOTE**: In this project, I sent form errors with signup and login pages through queries like **await res.redirect(
+  `/signup?message=${encodeURIComponent(validityMessage)}`
+  );** but this can also be done by using an npm package called **connect-flash**. It basically adds a one time use session which will be removed from server's RAM once it is used. **connect-flash** may seem like a more straightforward approach to keep front end notice information to show to the client side user.
+
 ## Authorization
 
 Authorization is all about which person can view which page and can perform which actions.
@@ -542,4 +546,4 @@ module.exports = checkCsrfToken;
 
 If you accidentally click the link on the malicious website, since that form's csrf value is not going to match the csrf value that is coming from the server, server will not handle the request and add the item to the cart.
 
-- 5) Keep in mind that CSRF token is only important for post methods that are going to change something critical with the user like sending money, changing address etc. Login and Signup pages won't need a CSRF token.
+- 5. Keep in mind that CSRF token is only important for post methods that are going to change something critical with the user like sending money, changing address etc. Login and Signup pages won't need a CSRF token.
