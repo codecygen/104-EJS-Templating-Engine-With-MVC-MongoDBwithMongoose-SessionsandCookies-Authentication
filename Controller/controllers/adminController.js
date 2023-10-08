@@ -23,6 +23,15 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = async (req, res, next) => {
+  // Arguments are (clientCsrfToken, serverCsrfToken)
+  const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
+
+  // If client and server tokens don't match do nothing.
+  if (!csrfResult) {
+    res.redirect("/");
+    return;
+  }
+
   const newProduct = {
     productName: req.body.newProductName,
     productDesc: req.body.newProductDescription,
@@ -103,6 +112,15 @@ exports.editProduct = async (req, res, next) => {
 // always use res.redirect to avoid
 // unnecessary loading screen on the page.
 exports.postEditProduct = async (req, res, next) => {
+  // Arguments are (clientCsrfToken, serverCsrfToken)
+  const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
+
+  // If client and server tokens don't match do nothing.
+  if (!csrfResult) {
+    res.redirect("/");
+    return;
+  }
+
   const productId = req.body.editedProductId;
 
   const updatedProduct = {
@@ -123,6 +141,15 @@ exports.postEditProduct = async (req, res, next) => {
 };
 
 exports.postDeleteProduct = async (req, res, next) => {
+  // Arguments are (clientCsrfToken, serverCsrfToken)
+  const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
+
+  // If client and server tokens don't match do nothing.
+  if (!csrfResult) {
+    res.redirect("/");
+    return;
+  }
+  
   const deletedId = req.body.deletedProductId;
 
   await dbProductOperation.deleteOneProduct(deletedId);
