@@ -68,22 +68,24 @@ exports.getCart = async (req, res, next) => {
 };
 
 exports.postCart = async (req, res, next) => {
-  try {
-    // Arguments are (clientCsrfToken, serverCsrfToken)
-    checkCsrfToken(req.body._csrf, req.session.csrfToken);
+  // Arguments are (clientCsrfToken, serverCsrfToken)
+  const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
 
-    const addedProductId = req.body.addedProductId;
-
-    const addedProduct = await dbProductOperation.getOneProduct(addedProductId);
-
-    const currentUser = await dbAdminOperation.getOneUser(req.session.userId);
-
-    await dbCartOperation.addUserAndProductToCart(currentUser, addedProduct);
-  } catch (err) {
-    console.error(err);
+  // If client and server tokens don't match do nothing.
+  if (!csrfResult) {
+    res.redirect("/cart");
+    return;
   }
 
-  res.redirect("/");
+  const addedProductId = req.body.addedProductId;
+
+  const addedProduct = await dbProductOperation.getOneProduct(addedProductId);
+
+  const currentUser = await dbAdminOperation.getOneUser(req.session.userId);
+
+  await dbCartOperation.addUserAndProductToCart(currentUser, addedProduct);
+
+  res.redirect("/cart");
 };
 
 exports.getProduct = async (req, res, next) => {
@@ -106,6 +108,15 @@ exports.getProduct = async (req, res, next) => {
 };
 
 exports.postDeleteCartItem = async (req, res, next) => {
+  // Arguments are (clientCsrfToken, serverCsrfToken)
+  const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
+
+  // If client and server tokens don't match do nothing.
+  if (!csrfResult) {
+    res.redirect("/cart");
+    return;
+  }
+
   const loggedInUser = res.locals.selectedUser;
   const deletedCartItemId = req.body.deletedCartItemId;
 
@@ -127,6 +138,15 @@ exports.getOrders = async (req, res, next) => {
 };
 
 exports.orderCart = async (req, res, next) => {
+  // Arguments are (clientCsrfToken, serverCsrfToken)
+  const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
+
+  // If client and server tokens don't match do nothing.
+  if (!csrfResult) {
+    res.redirect("/cart");
+    return;
+  }
+
   const loggedInUser = res.locals.selectedUser;
   await dbOrderOperation.postCartToOrders(loggedInUser);
 
