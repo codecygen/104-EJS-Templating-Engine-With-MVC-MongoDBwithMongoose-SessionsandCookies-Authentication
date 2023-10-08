@@ -23,9 +23,11 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = async (req, res, next) => {
+  // CSRF-Attacks-Prevention
   // Arguments are (clientCsrfToken, serverCsrfToken)
   const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
 
+  // CSRF-Attacks-Prevention
   // If client and server tokens don't match do nothing.
   if (!csrfResult) {
     res.redirect("/");
@@ -112,9 +114,11 @@ exports.editProduct = async (req, res, next) => {
 // always use res.redirect to avoid
 // unnecessary loading screen on the page.
 exports.postEditProduct = async (req, res, next) => {
+  // CSRF-Attacks-Prevention
   // Arguments are (clientCsrfToken, serverCsrfToken)
   const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
 
+  // CSRF-Attacks-Prevention
   // If client and server tokens don't match do nothing.
   if (!csrfResult) {
     res.redirect("/");
@@ -141,9 +145,11 @@ exports.postEditProduct = async (req, res, next) => {
 };
 
 exports.postDeleteProduct = async (req, res, next) => {
+  // CSRF-Attacks-Prevention
   // Arguments are (clientCsrfToken, serverCsrfToken)
   const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
 
+  // CSRF-Attacks-Prevention
   // If client and server tokens don't match do nothing.
   if (!csrfResult) {
     res.redirect("/");

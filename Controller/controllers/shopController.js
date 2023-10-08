@@ -68,9 +68,11 @@ exports.getCart = async (req, res, next) => {
 };
 
 exports.postCart = async (req, res, next) => {
+  // CSRF-Attacks-Prevention
   // Arguments are (clientCsrfToken, serverCsrfToken)
   const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
 
+  // CSRF-Attacks-Prevention
   // If client and server tokens don't match do nothing.
   if (!csrfResult) {
     res.redirect("/cart");
@@ -108,9 +110,11 @@ exports.getProduct = async (req, res, next) => {
 };
 
 exports.postDeleteCartItem = async (req, res, next) => {
+  // CSRF-Attacks-Prevention
   // Arguments are (clientCsrfToken, serverCsrfToken)
   const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
 
+  // CSRF-Attacks-Prevention
   // If client and server tokens don't match do nothing.
   if (!csrfResult) {
     res.redirect("/cart");
@@ -138,9 +142,11 @@ exports.getOrders = async (req, res, next) => {
 };
 
 exports.orderCart = async (req, res, next) => {
+  // CSRF-Attacks-Prevention
   // Arguments are (clientCsrfToken, serverCsrfToken)
   const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
 
+  // CSRF-Attacks-Prevention
   // If client and server tokens don't match do nothing.
   if (!csrfResult) {
     res.redirect("/cart");

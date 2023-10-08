@@ -313,6 +313,7 @@ app.use(
 After this, whenever you store any info in req.session, it will automatically be saved into database to "sessions" collection.
 
 ## Authentication
+
 ![Authentication Photo](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-MongoDBwithMongoose-SessionsandCookies-Authentication/blob/main/Images/Screenshot%20from%202023-09-28%2015-18-35.png)
 
 - Check **/Controller/routes/authRoute.js** and **/Controller/controllers/authController.js** for more information on how to authenticate a user.
@@ -320,6 +321,7 @@ After this, whenever you store any info in req.session, it will automatically be
 - **bcrypt** and **expression-session** packages are used for proper authentication processes like signup and login pages.
 
 ## Authorization
+
 Authorization is all about which person can view which page and can perform which actions.
 
 For authorization, middleware functions are used.
@@ -348,6 +350,7 @@ module.exports = { isLoggedIn, isAdmin };
 ```
 
 Then in the routes file
+
 ```javascript
 const { isLoggedIn } = require("../../middleware/authMiddleware");
 
@@ -355,6 +358,188 @@ router.get("/products", isLoggedIn, shopController.getProducts);
 ```
 
 ## CSRF Attacks
+
 **CSRF-Attacks-Prevention** is the keyword to search for it.
 
 A Cross-Site Request Forgery (CSRF) attack is a type of security exploit where an attacker tricks a user's web browser into making an unintended and unauthorized request to a different website on which the user is authenticated. This can lead to actions being taken on the user's behalf without their consent or knowledge. To prevent CSRF attacks, websites use tokens that validate the origin of the request, ensuring it comes from a trusted source.
+
+- 1. Create the CSRF token when user successfully signs in and save it to MongoDB. The keyword is **CSRF-Attacks-Prevention**.
+
+```javascript
+exports.postLoginPage = async (req, res, next) => {
+  const {
+    "entered-username": enteredUsername,
+    "entered-password": enteredPassword,
+  } = req.body;
+
+  const foundUser = await dbAdminOperation.checkLogin(enteredUsername);
+
+  if (!foundUser) {
+    return await res.redirect(
+      `/login?message=${encodeURIComponent("no-user")}`
+    );
+  }
+
+  // Comparing hashed password
+  bcrypt.compare(enteredPassword, foundUser.password, async (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.redirect("/login");
+    }
+
+    // CSRF-Attacks-Prevention
+    const createdToken = uuidv4();
+
+    // set session if user successfully logs in
+    if (result === true) {
+      req.session.userId = foundUser._id;
+      req.session.userName = foundUser.userName;
+      req.session.userEmail = foundUser.userEmail;
+      req.session.adminId = foundUser.adminId;
+
+      // CSRF-Attacks-Prevention
+      req.session.csrfToken = createdToken;
+
+      return res.redirect("/");
+    }
+
+    await res.redirect(`/login?message=${encodeURIComponent("wrong-pass")}`);
+  });
+};
+```
+
+- 2. Send CSRF token to the front end with a controller function and also embed the CSRF token to a hidden input in forms. The keyword is **CSRF-Attacks-Prevention**.
+
+```javascript
+// Controller function
+
+exports.getCart = async (req, res, next) => {
+  const currentUser = await dbAdminOperation.getOneUser(req.session.userId);
+
+  const [cartProductList, cartTotalPrice, userCartDB] =
+    await dbCartOperation.getCartProducts(currentUser);
+
+  res.render("cart", {
+    pagePath: "/cart",
+    renderTitle: "Your Cart",
+    cartProducts: cartProductList,
+    cartPrice: cartTotalPrice,
+    // router.use(populateSelectedUser); // this middleware populates res.locals
+    // because it is stored in res.locals, res.render template
+    // can reach to selectedUser that is in res.locals
+    // selectedUser: res.locals.selectedUser,
+
+    // CSRF-Attacks-Prevention
+    csrfToken: req.session.csrfToken,
+  });
+};
+```
+
+Then the cart form should look like this
+
+```HTML
+<%- include('includes/head.ejs') %>
+    <link rel="stylesheet" href="/shop/productList.css" />
+</head>
+<body>
+    <%- include('includes/nav.ejs') %>
+    <main>
+        <% if(cartProducts.length > 0) { %>
+            <ol>
+                <% cartProducts.forEach(cartProduct => { %>
+                    <div class="same-line">
+                        <li><%= cartProduct.productName %> (<%= cartProduct.productQty %>)</li>
+                        <form action="/cart-delete-item" method="POST">
+                            <input type="hidden" name="deletedCartItemId" value="<%= cartProduct._id %>" />
+
+                            <!-- CSRF-Attacks-Prevention -->
+                            <input type="hidden" name="_csrf" value=<%= csrfToken %>>
+                            <button type="submit">Delete Item</button>
+                        </form>
+                    </div>
+                <% }); %>
+            </ol>
+            <h3>Total Price: <span>$<%= cartPrice %></span></h3>
+        <% } else { %>
+            <p>There are no products!</p>
+        <% } %>
+
+        <form action="/orders" method="POST">
+            <!-- CSRF-Attacks-Prevention -->
+            <input type="hidden" name="_csrf" value=<%= csrfToken %>>
+            <button>Order Now</button>
+        </form>
+    </main>
+</body>
+</html>
+```
+
+- 3. Finally ask for the CSRF token in form submission controller functions aka post methods. The keyword is **CSRF-Attacks-Prevention**.
+
+```javascript
+exports.postCart = async (req, res, next) => {
+  // Arguments are (clientCsrfToken, serverCsrfToken)
+  const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
+
+  // If client and server tokens don't match do nothing.
+  if (!csrfResult) {
+    res.redirect("/cart");
+    return;
+  }
+
+  const addedProductId = req.body.addedProductId;
+
+  const addedProduct = await dbProductOperation.getOneProduct(addedProductId);
+
+  const currentUser = await dbAdminOperation.getOneUser(req.session.userId);
+
+  await dbCartOperation.addUserAndProductToCart(currentUser, addedProduct);
+
+  res.redirect("/cart");
+};
+```
+
+The content of the **checkCsrfToken** function is;
+
+```javascript
+const checkCsrfToken = (clientCsrfToken, serverCsrfToken) => {
+  if (clientCsrfToken !== serverCsrfToken) {
+    console.error("Invalid CSRF Token!");
+    return false;
+  }
+
+  return true;
+};
+
+module.exports = checkCsrfToken;
+```
+
+- 4. Finally the CSRF attack website content could be like this;
+
+```HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Say hello to my little friend!</p>
+
+    <!-- Malicious Website (Attacker's Website) -->
+    <form action="http://localhost:3000/cart" method="POST" id="maliciousForm">
+        <!-- Product id -->
+        <input type="hidden" name="addedProductId" value="651f0df22a73acb70d0f836b" />
+
+        <!-- csrf token guessing for csrf website -->
+        <input type="hidden" name="_csrf" value="secretCSRF-guessed-value" />
+        <button type="submit">Add to Cart - Malicious</button>
+    </form>
+</body>
+</html>
+```
+
+If you accidentally click the link on the malicious website, since that form's csrf value is not going to match the csrf value that is coming from the server, server will not handle the request and add the item to the cart.
+
+- 5) Keep in mind that CSRF token is only important for post methods that are going to change something critical with the user like sending money, changing address etc. Login and Signup pages won't need a CSRF token.
