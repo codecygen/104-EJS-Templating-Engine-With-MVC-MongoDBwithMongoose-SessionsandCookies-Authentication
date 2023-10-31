@@ -84,7 +84,7 @@ userSchema.statics.getSingleUser = async function (userId) {
   }
 };
 
-userSchema.statics.checkUserLogin = async function (userName, encryptedPass) {
+userSchema.statics.checkUserLogin = async function (userName) {
   try {
     const foundUser = await this.findOne({
       userName: userName,
