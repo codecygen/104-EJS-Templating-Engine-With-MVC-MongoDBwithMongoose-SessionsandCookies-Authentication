@@ -53,7 +53,7 @@
                 <input type="text" name="newProductImage" id="productimage" value="<% if (editing) { %><%= product.productImg %><% } %>" />
 
                 <% if (editing) { %>
-                    <input type="hidden" name="editedProductId" value="<%= product._id %>" />
+                    <input type="hidden" name="productId" value="<%= product._id %>" />
                 <% } %>
 
                 <!-- CSRF-Attacks-Prevention -->

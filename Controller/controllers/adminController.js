@@ -125,7 +125,7 @@ exports.postEditProduct = async (req, res, next) => {
     return;
   }
 
-  const productId = req.body.editedProductId;
+  const productId = req.body.productId;
 
   const updatedProduct = {
     _id: productId,
@@ -156,7 +156,7 @@ exports.postDeleteProduct = async (req, res, next) => {
     return;
   }
   
-  const deletedId = req.body.deletedProductId;
+  const deletedId = req.body.productId;
 
   await dbProductOperation.deleteOneProduct(deletedId);
 

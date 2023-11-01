@@ -6,7 +6,7 @@ const router = express.Router();
 const populateSelectedUser = require("../../Middleware/populateSelectedUser");
 router.use(populateSelectedUser);
 
-const { isAdmin } = require("../../Middleware/authMiddleware");
+const { isAdmin, isAdminProduct } = require("../../Middleware/authMiddleware");
 
 // /admin/add-product
 // Because there is an extra layer in index.js of server
@@ -24,9 +24,24 @@ router.get("/products", isAdmin, adminController.getProducts);
 // Along with these two lines, "adminController.js"
 // "addEditProduct.ejs" and "adminProducts.ejs" are responsible of
 // handling all the logic and view.
-router.get("/edit-product/:productId", isAdmin, adminController.editProduct);
-router.post("/edit-product", isAdmin, adminController.postEditProduct);
+router.get(
+  "/edit-product/:productId",
+  isAdmin,
+  isAdminProduct,
+  adminController.editProduct
+);
+router.post(
+  "/edit-product",
+  isAdmin,
+  isAdminProduct,
+  adminController.postEditProduct
+);
 
-router.post("/delete-product", isAdmin, adminController.postDeleteProduct);
+router.post(
+  "/delete-product",
+  isAdmin,
+  isAdminProduct,
+  adminController.postDeleteProduct
+);
 
 module.exports = router;
