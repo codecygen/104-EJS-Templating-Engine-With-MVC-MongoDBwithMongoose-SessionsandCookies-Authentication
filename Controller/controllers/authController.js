@@ -204,3 +204,26 @@ exports.getResetPassPage = (req, res, next) => {
     // selectedUser: res.locals.selectedUser,
   });
 };
+
+exports.postResetPassPage = (req, res, next) => {
+  const enteredEmail = req.body["entered-email"];
+
+  const emailValidityHandler = (email) => {
+    const emailTest = email
+      .toString()
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+
+    return emailTest;
+  };
+
+  if (!emailValidityHandler(enteredEmail)) {
+    console.log("Wrong email!");
+    return;
+  }
+
+  console.log(enteredEmail);
+  res.redirect("/");
+};
