@@ -62,7 +62,7 @@ exports.postLoginPage = async (req, res, next) => {
       req.session.userName = foundUser.userName;
       req.session.userEmail = foundUser.userEmail;
       req.session.adminId = foundUser.adminId;
-      
+
       // CSRF-Attacks-Prevention
       req.session.csrfToken = createdToken;
 
@@ -191,5 +191,16 @@ exports.postSignUpPage = async (req, res, next) => {
     await res.redirect(
       `/signup?message=${encodeURIComponent(validityMessage)}`
     );
+  });
+};
+
+exports.getResetPassPage = (req, res, next) => {
+  let pageMessage;
+
+  res.render("password_reset", {
+    pagePath: "/password_reset",
+    renderTitle: "Reset Password",
+    pageMessage: pageMessage,
+    // selectedUser: res.locals.selectedUser,
   });
 };
