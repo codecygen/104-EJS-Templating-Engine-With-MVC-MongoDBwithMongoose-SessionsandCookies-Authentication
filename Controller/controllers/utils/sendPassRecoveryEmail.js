@@ -12,19 +12,20 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendPassRecoveryEmail = async (resetEmail, resetToken) => {
-  const passResetLink = `localhost:3000/password_reset/${resetToken}:${resetEmail}`;
+  const passResetLink = `http://localhost:3000/password_reset/${resetToken}:${resetEmail}`;
 
-  const mailConfig = {
+  const mailData = {
     from: process.env.EMAIL,
     to: resetEmail,
     subject: "Password Reset Request from localhost:3000",
     html: `
-        <p>This is our test email!</p>
+        <h2>Welcome to email reset request!</h2>
+        <h3><a href=${passResetLink}>Click</a> here to change the password.</h3>
     `,
   };
 
   try {
-    await transporter.sendMail(mailConfig);
+    await transporter.sendMail(mailData);
   } catch (err) {
     console.error(err);
   }
