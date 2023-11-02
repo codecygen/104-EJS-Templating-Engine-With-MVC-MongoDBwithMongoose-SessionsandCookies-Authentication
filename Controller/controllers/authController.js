@@ -291,7 +291,7 @@ exports.getNewPassPage = async (req, res, next) => {
     pagePath: "/password_reset/reset_params",
     renderTitle: "Enter New Password",
     pageMessage: pageMessage,
-    passResetEmail: linkParams.email,
+    passResetEmail: foundUser.userEmail,
     // selectedUser: res.locals.selectedUser,
   });
 };
