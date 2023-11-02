@@ -41,12 +41,10 @@ const userSchema = new mongoose.Schema(
     passResetData: {
       resetToken: {
         type: String,
-        required: true,
       },
 
       tokenExpiry: {
         type: Date,
-        required: true,
       }
     },
   },
@@ -71,6 +69,8 @@ userSchema.methods.createUser = async function () {
     if (err.code === 11000 && err.keyValue && err.keyValue.userEmail) {
       return "duplicate-email";
     }
+
+    console.error(err);
 
     return "failed";
   }
