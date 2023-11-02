@@ -7,6 +7,8 @@ const { v4: uuidv4 } = require("uuid");
 const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 const dbAuthOperation = require("../../Model/operations/dbAuthOperation");
 
+const sendPassRecoveryEmail = require("./utils/sendPassRecoveryEmail");
+
 exports.getLoginPage = async (req, res, next) => {
   const queryOutput = req.query.message;
   let pageMessage;
@@ -205,7 +207,7 @@ exports.getResetPassPage = (req, res, next) => {
   });
 };
 
-exports.postResetPassPage = (req, res, next) => {
+exports.postResetPassPage = async (req, res, next) => {
   const enteredEmail = req.body["entered-email"];
 
   const emailValidityHandler = (email) => {
@@ -225,5 +227,8 @@ exports.postResetPassPage = (req, res, next) => {
   }
 
   console.log(enteredEmail);
+  await sendPassRecoveryEmail(enteredEmail, "some-token");
+  console.log("Email sent!");
+
   res.redirect("/");
 };
