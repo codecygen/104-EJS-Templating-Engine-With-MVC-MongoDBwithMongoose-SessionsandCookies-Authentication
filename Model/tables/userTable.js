@@ -55,7 +55,7 @@ const userSchema = new mongoose.Schema(
 
 // methods keyword creates a function that can be used with
 // creating class instance
-userSchema.methods.createUser = async function () {
+userSchema.methods.saveUser = async function () {
   let result;
 
   // Create a new user
@@ -91,6 +91,15 @@ userSchema.statics.getSingleUser = async function (userId) {
     // this refers to UserTable
     const foundUser = await this.findById(userId);
     return foundUser;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+userSchema.statics.updateUser = async function (updatedUserData) {
+  try {
+    const result = await updatedUserData.save();
+    return result;
   } catch (err) {
     console.error(err);
   }

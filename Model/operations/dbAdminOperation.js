@@ -26,10 +26,16 @@ const getAdminProducts = async (adminId) => {
   return adminProducts;
 };
 
+const updateUserData = async (updatedUserModel) => {
+ const result = await Tables.UserTable.updateUser(updatedUserModel);
+ return result;
+}
+
 module.exports = {
   getAllUsers,
   getOneUser,
   getOneUserWithEmail,
   checkLogin,
   getAdminProducts,
+  updateUserData,
 };

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 // CSRF-Attacks-Prevention
 const { v4: uuidv4 } = require("uuid");
@@ -239,7 +240,15 @@ exports.postResetPassPage = async (req, res, next) => {
     return res.redirect("/password_reset");
   }
 
-  await sendPassRecoveryEmail(enteredEmail, "some-token");
+  const passResetToken = crypto.randomBytes(32).toString("hex");
+  console.log(foundUser);
+
+  foundUser.passResetData.resetToken = passResetToken;
+  foundUser.passResetData.tokenExpiry = new Date(Date.now() + 1000 * 60 * 10);
+
+  const result = await dbAdminOperation.updateUserData(foundUser);
+
+  await sendPassRecoveryEmail(enteredEmail, passResetToken);
   console.log("Email sent!");
 
   res.redirect("/");
