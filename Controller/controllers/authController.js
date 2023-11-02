@@ -256,7 +256,12 @@ exports.postResetPassPage = async (req, res, next) => {
 
 exports.getNewPassPage = async (req, res, next) => {
   let pageMessage;
-  
+  const resetParams = req.params.resetParams;
+
+  const linkParams = {
+    token: resetParams.split(":")[0],
+    email: resetParams.split(":")[1],
+  };
 
   res.render("password_reset/reset_params", {
     pagePath: "/password_reset/reset_params",
