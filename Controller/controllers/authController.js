@@ -105,6 +105,10 @@ exports.getSignUpPage = async (req, res, next) => {
       pageMessage = "Email is already registered!";
       break;
 
+    case "server-error":
+      pageMessage = "Something went wrong with database!";
+      break;
+
     case "successful":
       pageMessage = "Congratulations! You successfully registered!";
       break;

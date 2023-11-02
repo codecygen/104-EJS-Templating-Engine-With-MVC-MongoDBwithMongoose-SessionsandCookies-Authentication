@@ -37,6 +37,19 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
+
+    passResetTokenData: {
+      resetToken: {
+        type: String,
+        unique: true,
+        required: true,
+      },
+
+      tokenExpiry: {
+        type: Date,
+        required: true,
+      }
+    },
   },
   // This section enforces collection name to be "UserTable"
   // instead of the default "usertables"
