@@ -243,6 +243,8 @@ exports.postResetPassPage = async (req, res, next) => {
   const passResetToken = crypto.randomBytes(32).toString("hex");
 
   foundUser.passResetData.resetToken = passResetToken;
+
+  // Created token will only be valid for 10 mins!
   foundUser.passResetData.tokenExpiry = new Date(Date.now() + 1000 * 60 * 10);
 
   // Update passResetData in database for the user
@@ -262,6 +264,25 @@ exports.getNewPassPage = async (req, res, next) => {
     token: resetParams.split(":")[0],
     email: resetParams.split(":")[1],
   };
+
+  const foundUser = await dbAdminOperation.getOneUserWithEmail(
+    linkParams.email
+  );
+
+  if (
+    !foundUser ||
+    foundUser.passResetData.resetToken !== linkParams.token ||
+    foundUser.passResetData.tokenExpiry < new Date()
+  ) {
+    res.status(404).render("404", {
+      renderTitle: "No Page Found!",
+      pagePath: "NA",
+      // router.use(populateSelectedUser); // this middleware populates res.locals
+      // because it is stored in res.locals, res.render template
+      // can reach to selectedUser that is in res.locals
+      // selectedUser: res.locals.selectedUser,
+    });
+  }
 
   res.render("password_reset/reset_params", {
     pagePath: "/password_reset/reset_params",
