@@ -271,6 +271,9 @@ exports.getNewPassPage = async (req, res, next) => {
 
   if (
     !foundUser ||
+    !foundUser.passResetData ||
+    !foundUser.passResetData.resetToken ||
+    !foundUser.passResetData.tokenExpiry ||
     foundUser.passResetData.resetToken !== linkParams.token ||
     foundUser.passResetData.tokenExpiry < new Date()
   ) {
