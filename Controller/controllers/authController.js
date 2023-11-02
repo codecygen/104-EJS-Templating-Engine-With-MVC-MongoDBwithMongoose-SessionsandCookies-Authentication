@@ -227,7 +227,7 @@ exports.postResetPassPage = async (req, res, next) => {
     return emailTest;
   };
 
-  // Email is in the wrong format!
+  // Submitted email is in the wrong format!
   if (!emailValidityHandler(enteredEmail)) {
     console.log("Wrong email!");
     return;
@@ -241,15 +241,15 @@ exports.postResetPassPage = async (req, res, next) => {
   }
 
   const passResetToken = crypto.randomBytes(32).toString("hex");
-  console.log(foundUser);
 
   foundUser.passResetData.resetToken = passResetToken;
   foundUser.passResetData.tokenExpiry = new Date(Date.now() + 1000 * 60 * 10);
 
-  const result = await dbAdminOperation.updateUserData(foundUser);
+  // Update passResetData in database for the user
+  await dbAdminOperation.updateUserData(foundUser);
 
+  // Send email to the user
   await sendPassRecoveryEmail(enteredEmail, passResetToken);
-  console.log("Email sent!");
 
   res.redirect("/");
 };
