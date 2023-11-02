@@ -8,6 +8,7 @@
         <p class="centered warning"><%= pageMessage %></p>
     <% } %>
     <h2 class="centered flex">Enter New Password</h2>
+    <h3 class="centered flex"><%= passResetEmail %></h3>
     <form action="/password_reset" class="centered flex" method="POST">
         <label for="password1">Enter Password</label>
         <input type="password" id="password1" name="entered-pass">
