@@ -205,7 +205,7 @@ exports.postSignUpPage = async (req, res, next) => {
 exports.getResetPassPage = (req, res, next) => {
   let pageMessage;
 
-  res.render("password_reset", {
+  res.render("password_reset/index", {
     pagePath: "/password_reset",
     renderTitle: "Reset Password",
     pageMessage: pageMessage,
@@ -252,4 +252,16 @@ exports.postResetPassPage = async (req, res, next) => {
   await sendPassRecoveryEmail(enteredEmail, passResetToken);
 
   res.redirect("/");
+};
+
+exports.getNewPassPage = async (req, res, next) => {
+  let pageMessage;
+  
+
+  res.render("password_reset/reset_params", {
+    pagePath: "/password_reset/reset_params",
+    renderTitle: "Enter New Password",
+    pageMessage: pageMessage,
+    // selectedUser: res.locals.selectedUser,
+  });
 };
