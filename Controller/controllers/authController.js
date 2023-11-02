@@ -177,6 +177,7 @@ exports.postSignUpPage = async (req, res, next) => {
       password: hashedPass,
       adminId: isAdminBoxChecked ? new mongoose.Types.ObjectId() : null,
       userCart: [],
+      passResetData: { resetToken: "", tokenExpiry: new Date() },
     };
 
     const registerResult = await dbAuthOperation.registerUser(newUserData);
