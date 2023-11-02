@@ -1,5 +1,3 @@
-const mongoose = require("mongoose");
-
 const Tables = require("../dbAssociation");
 
 const getAllUsers = async () => {
@@ -12,10 +10,13 @@ const getOneUser = async (userId) => {
   return foundUser;
 };
 
+const getOneUserWithEmail = async (email) => {
+  const foundUser = await Tables.UserTable.getSingleUserWithEmail(email);
+  return foundUser;
+};
+
 const checkLogin = async (username) => {
-  const foundUser = await Tables.UserTable.checkUserLogin(
-    username
-  );
+  const foundUser = await Tables.UserTable.checkUserLogin(username);
 
   return foundUser;
 };
@@ -28,6 +29,7 @@ const getAdminProducts = async (adminId) => {
 module.exports = {
   getAllUsers,
   getOneUser,
+  getOneUserWithEmail,
   checkLogin,
   getAdminProducts,
 };

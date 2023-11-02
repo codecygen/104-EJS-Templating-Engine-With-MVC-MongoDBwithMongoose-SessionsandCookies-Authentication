@@ -221,12 +221,19 @@ exports.postResetPassPage = async (req, res, next) => {
     return emailTest;
   };
 
+  // Email is in the wrong format!
   if (!emailValidityHandler(enteredEmail)) {
     console.log("Wrong email!");
     return;
   }
 
-  console.log(enteredEmail);
+  const foundUser = await dbAdminOperation.getOneUserWithEmail(enteredEmail);
+
+  // User not found!
+  if (!foundUser) {
+    return res.redirect("/password_reset");
+  }
+
   await sendPassRecoveryEmail(enteredEmail, "some-token");
   console.log("Email sent!");
 

@@ -84,6 +84,15 @@ userSchema.statics.getSingleUser = async function (userId) {
   }
 };
 
+userSchema.statics.getSingleUserWithEmail = async function (email) {
+  try {
+    const foundUser = await this.findOne({ userEmail: email });
+    return foundUser;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 userSchema.statics.checkUserLogin = async function (userName) {
   try {
     const foundUser = await this.findOne({
