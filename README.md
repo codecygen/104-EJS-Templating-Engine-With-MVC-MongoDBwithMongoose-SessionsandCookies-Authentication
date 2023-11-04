@@ -322,7 +322,42 @@ After this, whenever you store any info in req.session, it will automatically be
 
 - **IMPORTANT NOTE**: In this project, I sent form errors with signup and login pages through queries like **await res.redirect(
   `/signup?message=${encodeURIComponent(validityMessage)}`
-  );** but this can also be done by using an npm package called **connect-flash**. It basically adds a one time use session which will be removed from server's RAM once it is used. **connect-flash** may seem like a more straightforward approach to keep front end notice information to show to the client side user.
+  );** 
+  
+  **Express-Flash-Keep-Session-in-req.flash**
+  But this can also be done by using an npm package called **connect-flash**. It basically adds a one time use session which will be removed from server's RAM once it is used. **connect-flash** may seem like a more straightforward approach to keep front end notice information to show to the client side user.
+
+```javascript
+const express = require('express'); 
+const session = require('express-session'); 
+const flash = require('connect-flash'); 
+  
+const app = express(); 
+  
+const port = process.env.PORT || 3000; 
+  
+app.use(session({ 
+    secret:'geeksforgeeks', 
+    saveUninitialized: true, 
+    resave: true
+})); 
+  
+app.use(flash()); 
+  
+app.get('/', (req, res) => { 
+  req.flash('message', 'Success!!'); 
+  res.redirect('/gfg'); 
+}); 
+  
+app.get('/gfg', (req, res) => { 
+    res.send(req.flash('message')); 
+}); 
+  
+app.listen(port, (err) => { 
+  if (err) console.log(err); 
+  console.log('Server is up and listening on', port); 
+}); 
+```
 
 ## Authorization
 

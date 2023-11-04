@@ -8,6 +8,11 @@ const mongoose = require("mongoose");
 // This is used to keep session for chosen admin
 const session = require("express-session");
 
+// This is used for instant messaging
+// keeps messages in sessions as req.flash
+// Express-Flash-Keep-Session-in-req.flash
+const flash = require("connect-flash");
+
 // Store sessions in MongoDB
 const MongoDBStore = require("connect-mongodb-session")(session);
 
@@ -20,7 +25,7 @@ const app = express();
 // Store sessions in MongoDB
 const store = new MongoDBStore({
   uri: process.env.URL,
-  collection: "sessions"
+  collection: "sessions",
 });
 
 // Express body parsing
@@ -53,9 +58,11 @@ app.use(
   })
 );
 
+// Express-Flash-Keep-Session-in-req.flash
+app.use(flash());
+
 // Express-Session-Keep-Cookie-in-req.session
 app.use((req, res, next) => {
-
   if (!req.session.userId) {
     req.session.userId = null;
     req.session.userName = "No One";

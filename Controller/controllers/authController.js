@@ -203,7 +203,7 @@ exports.postSignUpPage = async (req, res, next) => {
 };
 
 exports.getResetPassPage = (req, res, next) => {
-  let pageMessage;
+  let pageMessage = req.flash("pageMessage");
 
   res.render("password_reset/index", {
     pagePath: "/password_reset",
@@ -229,7 +229,11 @@ exports.postResetPassPage = async (req, res, next) => {
 
   // Submitted email is in the wrong format!
   if (!emailValidityHandler(enteredEmail)) {
-    console.log("Wrong email!");
+    req.flash(
+      "pageMessage",
+      "Email format is wrong, Please enter again!"
+    );
+
     return;
   }
 
@@ -237,6 +241,8 @@ exports.postResetPassPage = async (req, res, next) => {
 
   // User not found!
   if (!foundUser) {
+    req.flash("pageMessage", "This email is not registered!");
+
     return res.redirect("/password_reset");
   }
 
