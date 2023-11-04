@@ -277,7 +277,7 @@ exports.getNewPassPage = async (req, res, next) => {
     foundUser.passResetData.resetToken !== linkParams.token ||
     foundUser.passResetData.tokenExpiry < new Date()
   ) {
-    res.status(404).render("404", {
+    return res.status(404).render("404", {
       renderTitle: "No Page Found!",
       pagePath: "NA",
       // router.use(populateSelectedUser); // this middleware populates res.locals
