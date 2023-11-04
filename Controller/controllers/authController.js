@@ -203,12 +203,18 @@ exports.postSignUpPage = async (req, res, next) => {
 };
 
 exports.getResetPassPage = (req, res, next) => {
-  let pageMessage = req.flash("pageMessage");
+  let pageMessageResult;
+
+  const pageMessage = req.flash("pageMessage");
+
+  if (pageMessage.length === 1) {
+    pageMessageResult = pageMessage;
+  }
 
   res.render("password_reset/index", {
     pagePath: "/password_reset",
     renderTitle: "Reset Password",
-    pageMessage: pageMessage,
+    pageMessage: pageMessageResult,
     // selectedUser: res.locals.selectedUser,
   });
 };
@@ -229,10 +235,7 @@ exports.postResetPassPage = async (req, res, next) => {
 
   // Submitted email is in the wrong format!
   if (!emailValidityHandler(enteredEmail)) {
-    req.flash(
-      "pageMessage",
-      "Email format is wrong, Please enter again!"
-    );
+    req.flash("pageMessage", "Email format is wrong, Please enter again!");
 
     return;
   }
