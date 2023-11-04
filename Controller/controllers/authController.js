@@ -234,10 +234,11 @@ exports.postResetPassPage = async (req, res, next) => {
   };
 
   // Submitted email is in the wrong format!
-  if (!emailValidityHandler(enteredEmail)) {
+  if (enteredEmail === "") {
+    return res.redirect("/password_reset");
+  } else if (!emailValidityHandler(enteredEmail)) {
     req.flash("pageMessage", "Email format is wrong, Please enter again!");
-
-    return;
+    return res.redirect("/password_reset");
   }
 
   const foundUser = await dbAdminOperation.getOneUserWithEmail(enteredEmail);
@@ -260,9 +261,10 @@ exports.postResetPassPage = async (req, res, next) => {
   await dbAdminOperation.updateUserData(foundUser);
 
   // Send email to the user
-  await sendPassRecoveryEmail(enteredEmail, passResetToken);
+  const emailResult = await sendPassRecoveryEmail(enteredEmail, passResetToken);
 
-  res.redirect("/");
+  req.flash("pageMessage", "Check your email!");
+  return res.redirect("/password_reset");
 };
 
 exports.getNewPassPage = async (req, res, next) => {

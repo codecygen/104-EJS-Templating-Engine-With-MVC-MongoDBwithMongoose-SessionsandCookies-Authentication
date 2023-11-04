@@ -25,7 +25,8 @@ const sendPassRecoveryEmail = async (resetEmail, resetToken) => {
   };
 
   try {
-    await transporter.sendMail(mailData);
+    const result = await transporter.sendMail(mailData);
+    return result;
   } catch (err) {
     console.error(err);
   }
