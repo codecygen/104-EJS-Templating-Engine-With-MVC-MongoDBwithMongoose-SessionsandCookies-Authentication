@@ -311,14 +311,15 @@ exports.getNewPassPage = async (req, res, next) => {
     // selectedUser: res.locals.selectedUser,
 
     csrfToken: req.session.csrfToken,
+    resetEmail: linkParams.email,
+    resetToken: linkParams.token,
   });
 };
-
 
 exports.postNewPassPage = async (req, res, next) => {
   const firstPass = req.body["entered-pass"];
   const secondPass = req.body["entered-pass-confirm"];
+  const resetEmail = req.body._email;
+  const resetToken = req.body._token;
   const csrfToken = req.body._csrf;
-
-  console.log(firstPass, secondPass, csrfToken);
 };
