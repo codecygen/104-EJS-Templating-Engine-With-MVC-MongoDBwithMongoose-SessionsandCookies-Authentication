@@ -273,7 +273,14 @@ exports.postResetPassPage = async (req, res, next) => {
 };
 
 exports.getNewPassPage = async (req, res, next) => {
-  let pageMessage;
+  let pageMessageResult;
+
+  const pageMessage = req.flash("changePassMessage");
+
+  if (pageMessage.length === 1) {
+    pageMessageResult = pageMessage;
+  }
+
   const resetParams = req.params.resetParams;
 
   const linkParams = {
@@ -306,7 +313,7 @@ exports.getNewPassPage = async (req, res, next) => {
   res.render("password_reset/reset_params", {
     pagePath: "/password_reset/reset_params",
     renderTitle: "Enter New Password",
-    pageMessage: pageMessage,
+    pageMessage: pageMessageResult,
     // selectedUser: res.locals.selectedUser,
 
     csrfToken: req.session.csrfToken,
@@ -332,8 +339,10 @@ exports.postNewPassPage = async (req, res, next) => {
     foundUser.passResetData.resetToken !== resetToken ||
     foundUser.passResetData.tokenExpiry < new Date()
   ) {
-    return console.log("Cannot proceed");
+    req.flash("changePassMessage", "No user or reset token found!");
+    return res.redirect(`/password_reset/${resetToken}:${resetEmail}`);
   }
 
-  console.log("proceeds!");
+  req.flash("changePassMessage", "Proceeds!");
+  return res.redirect(`/password_reset/${resetToken}:${resetEmail}`);
 };
