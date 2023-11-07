@@ -307,12 +307,11 @@ exports.getNewPassPage = async (req, res, next) => {
     pagePath: "/password_reset/reset_params",
     renderTitle: "Enter New Password",
     pageMessage: pageMessage,
-    passResetEmail: foundUser.userEmail,
     // selectedUser: res.locals.selectedUser,
 
     csrfToken: req.session.csrfToken,
-    resetEmail: linkParams.email,
-    resetToken: linkParams.token,
+    resetEmail: foundUser.userEmail,
+    resetToken: foundUser.passResetData.resetToken,
   });
 };
 
@@ -322,4 +321,19 @@ exports.postNewPassPage = async (req, res, next) => {
   const resetEmail = req.body._email;
   const resetToken = req.body._token;
   const csrfToken = req.body._csrf;
+
+  const foundUser = await dbAdminOperation.getOneUserWithEmail(resetEmail);
+
+  if (
+    !foundUser ||
+    !foundUser.passResetData ||
+    !foundUser.passResetData.resetToken ||
+    !foundUser.passResetData.tokenExpiry ||
+    foundUser.passResetData.resetToken !== resetToken ||
+    foundUser.passResetData.tokenExpiry < new Date()
+  ) {
+    return console.log("Cannot proceed");
+  }
+
+  console.log("proceeds!");
 };
