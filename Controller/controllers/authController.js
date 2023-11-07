@@ -9,6 +9,7 @@ const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 const dbAuthOperation = require("../../Model/operations/dbAuthOperation");
 
 const sendPassRecoveryEmail = require("./utils/sendPassRecoveryEmail");
+const checkCsrfToken = require("./utils/checkCsrfToken");
 
 exports.getLoginPage = async (req, res, next) => {
   const queryOutput = req.query.message;
@@ -264,6 +265,10 @@ exports.postResetPassPage = async (req, res, next) => {
   const emailResult = await sendPassRecoveryEmail(enteredEmail, passResetToken);
 
   req.flash("pageMessage", "Check your email!");
+
+  // Token agains csrf attack!
+  req.session.csrfToken = uuidv4();
+
   return res.redirect("/password_reset");
 };
 
@@ -304,5 +309,16 @@ exports.getNewPassPage = async (req, res, next) => {
     pageMessage: pageMessage,
     passResetEmail: foundUser.userEmail,
     // selectedUser: res.locals.selectedUser,
+
+    csrfToken: req.session.csrfToken,
   });
+};
+
+
+exports.postNewPassPage = async (req, res, next) => {
+  const firstPass = req.body["entered-pass"];
+  const secondPass = req.body["entered-pass-confirm"];
+  const csrfToken = req.body._csrf;
+
+  console.log(firstPass, secondPass, csrfToken);
 };
