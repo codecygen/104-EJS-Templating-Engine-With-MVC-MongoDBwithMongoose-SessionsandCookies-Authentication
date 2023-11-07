@@ -343,6 +343,13 @@ exports.postNewPassPage = async (req, res, next) => {
     return res.redirect(`/password_reset/${resetToken}:${resetEmail}`);
   }
 
+  const csrfResult = checkCsrfToken(csrfToken, req.session.csrfToken);
+
+  // If client and server tokens don't match do nothing.
+  if (!csrfResult) {
+    req.flash("changePassMessage", "Password change attempt prevented!");
+    return res.redirect(`/password_reset/${resetToken}:${resetEmail}`);
+  }
+
   req.flash("changePassMessage", "Proceeds!");
-  return res.redirect(`/password_reset/${resetToken}:${resetEmail}`);
 };
