@@ -24,6 +24,10 @@ exports.getLoginPage = async (req, res, next) => {
       pageMessage = "Your password is incorrect!";
       break;
 
+    case "password-changed":
+      pageMessage = "You successfully changed your password!";
+      break;
+
     default:
       pageMessage = null;
   }
@@ -351,5 +355,35 @@ exports.postNewPassPage = async (req, res, next) => {
     return res.redirect(`/password_reset/${resetToken}:${resetEmail}`);
   }
 
-  req.flash("changePassMessage", "Proceeds!");
+  if (
+    !firstPass ||
+    !secondPass ||
+    typeof firstPass !== "string" ||
+    typeof secondPass !== "string" ||
+    firstPass !== secondPass
+  ) {
+    req.flash("changePassMessage", "Password mismatch!");
+    return res.redirect(`/password_reset/${resetToken}:${resetEmail}`);
+  }
+
+  const saltRounds = 12;
+
+  bcrypt.hash(firstPass, saltRounds, async (err, hashedPass) => {
+    if (err) {
+      req.flash("changePassMessage", "Database password hashing error!");
+      return res.redirect(`/password_reset/${resetToken}:${resetEmail}`);
+    }
+
+    try {
+      await dbAuthOperation.changePassword(foundUser, hashedPass);
+    } catch (err) {
+      console.error(err);
+      req.flash("changePassMessage", "Could not save database!");
+      return res.redirect(`/password_reset/${resetToken}:${resetEmail}`);
+    }
+
+    return await res.redirect(
+      `/login?message=${encodeURIComponent("password-changed")}`
+    );
+  });
 };
