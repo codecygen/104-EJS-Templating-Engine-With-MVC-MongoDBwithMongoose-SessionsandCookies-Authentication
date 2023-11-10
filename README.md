@@ -272,6 +272,12 @@ Once you receive the user entered data in post requests, you have both validate 
 
 I did not use in this project but, **express-validator** is a popular npm package that is used for data validation and sanitization.
 
+# Error Handling:
+
+There are ways to handle errors gracefully. These can be achieved with **if**, **try-catch** and **then().catch()** blocks.
+
+In express js, error handling middleware can be used to handle errors.
+
 # Saving Sessions to MongoDB:
 
 The package needed is **connect-mongodb-session**. Codes are given down below on how to make it work. You can also check this in from the npm package.
