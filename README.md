@@ -267,7 +267,12 @@ exports.getAllUsers = async (req, res, next) => {
 };
 ```
 
-## Saving Sessions to MongoDB:
+# Validation and Sanitization
+Once you receive the user entered data in post requests, you have both validate and sanitize the data. The  validation is making sure the data entered is the data you are expecting. Sanitization is to ensure that the entered data does not have any harmful elements that can potentially compromise your database.
+
+I did not use in this project but, **express-validator** is a popular npm package that is used for data validation and sanitization.
+
+# Saving Sessions to MongoDB:
 
 The package needed is **connect-mongodb-session**. Codes are given down below on how to make it work. You can also check this in from the npm package.
 
@@ -312,7 +317,7 @@ app.use(
 
 After this, whenever you store any info in req.session, it will automatically be saved into database to "sessions" collection.
 
-## Authentication
+# Authentication
 
 ![Authentication Photo](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-MongoDBwithMongoose-SessionsandCookies-Authentication/blob/main/Images/Screenshot%20from%202023-09-28%2015-18-35.png)
 
@@ -359,7 +364,7 @@ app.listen(port, (err) => {
 }); 
 ```
 
-## Authorization
+# Authorization
 
 Authorization is all about which person can view which page and can perform which actions.
 
@@ -396,7 +401,7 @@ const { isLoggedIn } = require("../../middleware/authMiddleware");
 router.get("/products", isLoggedIn, shopController.getProducts);
 ```
 
-## CSRF Attacks
+# CSRF Attacks
 
 **CSRF-Attacks-Prevention** is the keyword to search for it.
 
