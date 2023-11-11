@@ -281,6 +281,9 @@ Lets say, you want to display all registered users in a page but when your app i
 
 In express js, error handling middleware can be used to handle errors.
 
+## HTTP Status Codes:
+[HTTP Status Codes](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Images/HTTP%20Status%20Codes.png)
+
 ## 404 Page
 To show 404 page, if the page does not exist refer to keyword **404-Page**
 
