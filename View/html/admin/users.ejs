@@ -5,7 +5,16 @@
     <%- include('../includes/nav.ejs') %>
 
     <main>
-        <p>Users Page!</p>
+        <h2>Registered Users Page!</h2>
+        <ol>
+            <% allUsers.forEach(user => { %>
+                <li>
+                    <p><strong>username:</strong> <%= user.userName %></p>
+                    <p><strong>email:</strong> <%= user.userEmail %></p>
+                    <p><strong>is admin:</strong> <%= user.adminId ? "yes" : "no" %></p>
+                </li>
+            <% }) %>
+        </ol>
     </main>
 
 </body>
