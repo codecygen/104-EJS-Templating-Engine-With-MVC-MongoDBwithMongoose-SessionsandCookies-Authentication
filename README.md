@@ -277,7 +277,7 @@ I did not use in this project but, **express-validator** is a popular npm packag
 There are ways to handle errors gracefully. These can be achieved with **if**, **try-catch** and **then().catch()** blocks.
 
 ## Problem with Page Display
-In order to do this refer to keyword **Error-Page-Middleware**. 
+Lets say, you want to display all registered users in a page but when your app interacts with server, some problem occurs and your app cannot retrieve the registered users. You have to handle this kind of errors gracefully and display an error page. In order to do this refer to keyword **Error-Page-Middleware**. 
 
 In express js, error handling middleware can be used to handle errors.
 
