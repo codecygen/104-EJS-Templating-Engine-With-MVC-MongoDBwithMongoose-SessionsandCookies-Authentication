@@ -1,3 +1,4 @@
+// 404-Page
 // pagePath has to be defined otherwise,
 // it throws error!
 exports.get404Page = (req, res, next) => {

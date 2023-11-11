@@ -6,6 +6,7 @@ const router = express.Router();
 const populateSelectedUser = require("../../Middleware/populateSelectedUser");
 router.use(populateSelectedUser);
 
+// 404-Page
 router.get("*", errorController.get404Page);
 
 module.exports = router;

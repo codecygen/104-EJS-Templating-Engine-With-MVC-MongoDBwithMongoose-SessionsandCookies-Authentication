@@ -3,6 +3,8 @@ const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 
 const checkCsrfToken = require("./utils/checkCsrfToken");
 
+const Tables = require("../../Model/dbAssociation");
+
 exports.getAddProduct = (req, res, next) => {
   if (res.locals.selectedUser.userId === null) {
     return res.redirect("/login");
@@ -163,10 +165,46 @@ exports.postDeleteProduct = async (req, res, next) => {
   res.redirect("/admin/products");
 };
 
+// Error-Page-Middleware
+// This section is just to show error handling
 exports.getUsersPage = async (req, res, next) => {
+  try {
+    // Uncomment this to crash the /admin.users page.
+    // const allUsers = await Table.UserTable.find();
 
-  res.render("admin/users", {
-    renderTitle: "All Users",
-    pagePath: "/admin/users",
-  });
+    const allUsers = await Tables.UserTable.find();
+
+    res.render("admin/users", {
+      renderTitle: "All Users",
+      pagePath: "/admin/users",
+      allUsers: allUsers,
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+
+    console.error("Error in /admin/users page:", error);
+    next(error);
+  }
+
+  // then.catch blocks to handle errors
+
+  // Tables.UserTable.find()
+  //   .then((allUsers) => {
+  //     // Uncomment this to crash the /admin.users page.
+  //     // throw new Error("Some error occured!");
+
+  //     res.render("admin/users", {
+  //       renderTitle: "All Users",
+  //       pagePath: "/admin/users",
+  //       allUsers: allUsers,
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     const error = new Error(err);
+  //     error.httpStatusCode = 500;
+
+  //     console.error("Error in /admin/users page:", error);
+  //     next(error);
+  //   });
 };

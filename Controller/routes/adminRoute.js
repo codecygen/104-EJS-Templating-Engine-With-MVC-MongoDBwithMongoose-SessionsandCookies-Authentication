@@ -44,6 +44,7 @@ router.post(
   adminController.postDeleteProduct
 );
 
+// Error-Page-Middleware
 router.get("/users", isAdmin, adminController.getUsersPage);
 
 module.exports = router;

@@ -46,6 +46,8 @@ const shopRoute = require("./Controller/routes/shopRoute");
 const authRoute = require("./Controller/routes/authRoute");
 const NoRoute = require("./Controller/routes/NoRoute");
 
+const errorPageMiddleWare = require("./Middleware/errorPageMiddleware");
+
 // Express-Session-Keep-Cookie-in-req.session
 // This is used to keep session for chosen admin
 // Store sessions in MongoDB
@@ -81,9 +83,13 @@ app.use("/admin", adminRoute);
 app.use(shopRoute);
 app.use(authRoute);
 
+// 404-Page
 // Unspecified routes, 404 page
 // Instead of app.use and router file, we could have also used app.get
 app.use(NoRoute);
+
+// Error-Page-Middleware
+app.use(errorPageMiddleWare);
 
 // Mongoose-Connect-Database
 mongoose

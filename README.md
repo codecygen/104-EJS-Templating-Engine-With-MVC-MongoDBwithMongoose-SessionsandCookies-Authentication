@@ -276,7 +276,13 @@ I did not use in this project but, **express-validator** is a popular npm packag
 
 There are ways to handle errors gracefully. These can be achieved with **if**, **try-catch** and **then().catch()** blocks.
 
+## Problem with Page Display
+In order to do this refer to keyword **Error-Page-Middleware**. 
+
 In express js, error handling middleware can be used to handle errors.
+
+## 404 Page
+To show 404 page, if the page does not exist refer to keyword **404-Page**
 
 # Saving Sessions to MongoDB:
 
