@@ -285,6 +285,12 @@ In express js, error handling middleware can be used to handle errors.
 To show 404 page, if the page does not exist refer to keyword **404-Page**
 
 ## HTTP Status Codes:
+There are more codes than these. These codes are used in the rendering cases so it will be shown in the network section of the browser:
+
+```javascript
+res.status(500).render(...)
+```
+
 ![HTTP Status Codes](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Images/HTTP%20Status%20Codes.png?raw=true)
 
 # Saving Sessions to MongoDB:
