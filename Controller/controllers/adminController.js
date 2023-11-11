@@ -78,7 +78,7 @@ exports.editProduct = async (req, res, next) => {
   if (res.locals.selectedUser.userId === null) {
     return res.redirect("/login");
   }
-  
+
   const productId = req.params.productId;
 
   const editMode = req.query.edit;
@@ -155,10 +155,18 @@ exports.postDeleteProduct = async (req, res, next) => {
     res.redirect("/");
     return;
   }
-  
+
   const deletedId = req.body.productId;
 
   await dbProductOperation.deleteOneProduct(deletedId);
 
   res.redirect("/admin/products");
+};
+
+exports.getUsersPage = async (req, res, next) => {
+
+  res.render("admin/users", {
+    renderTitle: "All Users",
+    pagePath: "/admin/users",
+  });
 };

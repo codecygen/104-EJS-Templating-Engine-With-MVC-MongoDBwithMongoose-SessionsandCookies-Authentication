@@ -44,4 +44,6 @@ router.post(
   adminController.postDeleteProduct
 );
 
+router.get("/users", isAdmin, adminController.getUsersPage);
+
 module.exports = router;
