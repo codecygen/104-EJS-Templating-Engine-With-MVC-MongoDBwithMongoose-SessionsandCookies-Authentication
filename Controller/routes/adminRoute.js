@@ -4,9 +4,21 @@ const router = express.Router();
 
 // Multer-File-Upload-Download
 const multer = require("multer");
+
+// Multer-File-Upload-Download
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads");
+  },
+  filename: (req, file, cb) => {
+    const uniquePrefix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniquePrefix + "-" + file.originalname);
+  },
+});
+
 // Multer-File-Upload-Download
 // file upload location is "/uploads"
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ storage: fileStorage });
 
 // Express-Session-Keep-Cookie-in-req.session
 const populateSelectedUser = require("../../Middleware/populateSelectedUser");
