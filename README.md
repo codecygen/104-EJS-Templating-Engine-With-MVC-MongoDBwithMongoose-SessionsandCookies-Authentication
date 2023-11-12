@@ -608,3 +608,16 @@ module.exports = checkCsrfToken;
 If you accidentally click the link on the malicious website, since that form's csrf value is not going to match the csrf value that is coming from the server, server will not handle the request and add the item to the cart.
 
 - 5. Keep in mind that CSRF token is only important for post methods that are going to change something critical with the user like sending money, changing address etc. Login and Signup pages won't need a CSRF token.
+
+# File Upload and Download
+**Multer-File-Upload-Download** is the keyword for this section.
+
+- 1. Install the npm package **multer**.
+- 2. Configure **multer** package in index.js file as a middleware.
+- 3. Add **enctype="multipart/form-data"** to the form where you also want to submit a file.
+
+```javascript
+<form action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" class="centered" enctype="multipart/form-data" >
+  ...
+</form>
+```

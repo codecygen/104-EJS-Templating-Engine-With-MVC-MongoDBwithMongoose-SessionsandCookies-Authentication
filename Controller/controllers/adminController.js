@@ -40,11 +40,13 @@ exports.postAddProduct = async (req, res, next) => {
     productName: req.body.newProductName,
     productDesc: req.body.newProductDescription,
     productPrice: req.body.newProductPrice,
-    productImg: req.body.newProductImage,
+    productImg: req.file,
     adminId: res.locals.selectedUser.adminId,
   };
 
-  await dbProductOperation.addNewProduct(newProduct);
+  console.log(newProduct.productImg);
+
+  // await dbProductOperation.addNewProduct(newProduct);
 
   res.redirect("/");
 };

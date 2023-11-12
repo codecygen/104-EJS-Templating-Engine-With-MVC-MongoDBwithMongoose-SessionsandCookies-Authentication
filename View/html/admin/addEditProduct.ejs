@@ -29,7 +29,8 @@
 
         <!-- POST request will be done to different links depending on if -->
         <!-- editing=true or false -->
-        <form action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" class="centered">
+        <!-- Multer-File-Upload-Download -->
+        <form action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" class="centered" enctype="multipart/form-data" >
             <div class="form-control">
              
                 <label for="productname">Product Name</label>
@@ -53,10 +54,10 @@
                 <!-- Here, value will be given if the form is in editing=true mode -->
                 <!-- <input type="text" name="newProductImage" id="productimage" value="<% if (editing) { %><%= product.productImg %><% } %>" /> -->
 
+                <!-- Multer-File-Upload-Download -->
                 <label for="productimage">Product Image</label>
                 <input type="file" name="newProductImage" id="productimage" />
                
-                
                 <% if (editing) { %>
                     <input type="hidden" name="productId" value="<%= product._id %>" />
                 <% } %>
