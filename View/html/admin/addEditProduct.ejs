@@ -29,29 +29,40 @@
 
         <!-- POST request will be done to different links depending on if -->
         <!-- editing=true or false -->
-        <form action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST">
+        <form action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" class="centered">
             <div class="form-control">
-                <label for="productname">Product Name</label>
-                <!-- in the label section for, should match with id in input -->
-                <!-- This way, when you click on label, it will automatically -->
-                <!-- focus on input element. -->
-                <!-- name section is the key of the value pair of the input data -->
+                <div>
+                    <label for="productname">Product Name</label>
+                    <!-- in the label section for, should match with id in input -->
+                    <!-- This way, when you click on label, it will automatically -->
+                    <!-- focus on input element. -->
+                    <!-- name section is the key of the value pair of the input data -->
 
+                    <!-- Here, value will be given if the form is in editing=true mode -->
+                    <input type="text" name="newProductName" id="productname" value="<% if (editing) { %><%= product.productName %><% } %>" />
+                </div>
+
+                <div>
+                    <label for="productprice">Product Price</label>
+                    <!-- Here, value will be given if the form is in editing=true mode -->
+                    <input type="number" name="newProductPrice" id="productprice" step="0.01" value="<% if (editing) { %><%= product.productPrice %><% } %>" />
+                </div>
+
+                <div>
+                    <label for="productdescription">Product Description</label>
+                    <!-- Here, value will be given if the form is in editing=true mode -->
+                    <input type="text" name="newProductDescription" id="productdescription" value="<% if (editing) { %><%= product.productDesc %><% } %>" />
+                </div>
+
+                <!-- <label for="productimage">Product Image</label> -->
                 <!-- Here, value will be given if the form is in editing=true mode -->
-                <input type="text" name="newProductName" id="productname" value="<% if (editing) { %><%= product.productName %><% } %>" />
+                <!-- <input type="text" name="newProductImage" id="productimage" value="<% if (editing) { %><%= product.productImg %><% } %>" /> -->
 
-                <label for="productprice">Product Price</label>
-                <!-- Here, value will be given if the form is in editing=true mode -->
-                <input type="number" name="newProductPrice" id="productprice" step="0.01" value="<% if (editing) { %><%= product.productPrice %><% } %>" />
-
-                <label for="productdescription">Product Description</label>
-                <!-- Here, value will be given if the form is in editing=true mode -->
-                <input type="text" name="newProductDescription" id="productdescription" value="<% if (editing) { %><%= product.productDesc %><% } %>" />
-
-                <label for="productimage">Product Image</label>
-                <!-- Here, value will be given if the form is in editing=true mode -->
-                <input type="text" name="newProductImage" id="productimage" value="<% if (editing) { %><%= product.productImg %><% } %>" />
-
+                <div>
+                    <label for="productimage">Product Image</label>
+                    <input type="file" name="newProductImage" id="productimage" />
+                </div>
+                
                 <% if (editing) { %>
                     <input type="hidden" name="productId" value="<%= product._id %>" />
                 <% } %>
