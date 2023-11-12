@@ -613,11 +613,49 @@ If you accidentally click the link on the malicious website, since that form's c
 **Multer-File-Upload-Download** is the keyword for this section.
 
 - 1. Install the npm package **multer**.
-- 2. Configure **multer** package in index.js file as a middleware.
-- 3. Add **enctype="multipart/form-data"** to the form where you also want to submit a file.
+
+- 2. Add **enctype="multipart/form-data"** to the form where you also want to submit a file.
 
 ```javascript
 <form action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" class="centered" enctype="multipart/form-data" >
   ...
 </form>
+```
+
+- 3. Configure **multer** package in routing file as a middleware.
+```javascript
+// Multer-File-Upload-Download
+const multer = require("multer");
+// Multer-File-Upload-Download
+// file upload location is "/uploads"
+const upload = multer({ dest: "uploads/" });
+
+.....
+
+router.post(
+  "/add-product",
+  isAdmin,
+  // Multer-File-Upload-Download
+  upload.single("newProductImage"),
+  adminController.postAddProduct
+);
+```
+
+- 4. Then, in the controller file, the submitted file will be available in **req.file**.
+
+```javascript
+exports.postAddProduct = async (req, res, next) => {
+ ...
+
+  const newProduct = {
+    productName: req.body.newProductName,
+    productDesc: req.body.newProductDescription,
+    productPrice: req.body.newProductPrice,
+    // Multer-File-Upload-Download
+    productImg: req.file,
+    adminId: res.locals.selectedUser.adminId,
+  };
+
+  ...
+}
 ```

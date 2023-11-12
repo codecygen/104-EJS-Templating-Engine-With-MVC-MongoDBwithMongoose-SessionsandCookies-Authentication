@@ -2,6 +2,12 @@ const express = require("express");
 const adminController = require("../controllers/adminController");
 const router = express.Router();
 
+// Multer-File-Upload-Download
+const multer = require("multer");
+// Multer-File-Upload-Download
+// file upload location is "/uploads"
+const upload = multer({ dest: "uploads/" });
+
 // Express-Session-Keep-Cookie-in-req.session
 const populateSelectedUser = require("../../Middleware/populateSelectedUser");
 
@@ -13,7 +19,14 @@ router.use(populateSelectedUser);
 // /admin/add-product
 // Because there is an extra layer in index.js of server
 router.get("/add-product", isAdmin, adminController.getAddProduct);
-router.post("/add-product", isAdmin, adminController.postAddProduct);
+
+router.post(
+  "/add-product",
+  isAdmin,
+  // Multer-File-Upload-Download
+  upload.single("newProductImage"),
+  adminController.postAddProduct
+);
 
 // /admin/products
 // Because there is an extra layer in index.js of server

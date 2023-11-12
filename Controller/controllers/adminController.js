@@ -40,6 +40,7 @@ exports.postAddProduct = async (req, res, next) => {
     productName: req.body.newProductName,
     productDesc: req.body.newProductDescription,
     productPrice: req.body.newProductPrice,
+    // Multer-File-Upload-Download
     productImg: req.file,
     adminId: res.locals.selectedUser.adminId,
   };

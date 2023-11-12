@@ -16,9 +16,6 @@ const flash = require("connect-flash");
 // Store sessions in MongoDB
 const MongoDBStore = require("connect-mongodb-session")(session);
 
-// Multer-File-Upload-Download
-const multer = require("multer");
-
 // Mongoose-Connect-Database
 // Allows .env file to be used
 require("dotenv").config();
@@ -34,9 +31,6 @@ const store = new MongoDBStore({
 // Express body parsing
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.json({ limit: "50mb" }));
-
-// Multer-File-Upload-Download
-app.use(multer().single("newProductImage"));
 
 // Specify CSS file location
 app.use(express.static(path.join(__dirname, "View/styles")));
