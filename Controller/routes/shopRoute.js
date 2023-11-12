@@ -4,9 +4,11 @@ const router = express.Router();
 
 // Express-Session-Keep-Cookie-in-req.session
 const populateSelectedUser = require("../../Middleware/populateSelectedUser");
-router.use(populateSelectedUser);
 
 const { isLoggedIn } = require("../../Middleware/authMiddleware");
+
+// Express-Session-Keep-Cookie-in-req.session
+router.use(populateSelectedUser);
 
 router.get("/", shopController.getIndex);
 

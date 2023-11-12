@@ -4,9 +4,11 @@ const router = express.Router();
 
 // Express-Session-Keep-Cookie-in-req.session
 const populateSelectedUser = require("../../Middleware/populateSelectedUser");
-router.use(populateSelectedUser);
 
 const { isAdmin, isAdminProduct } = require("../../Middleware/authMiddleware");
+
+// Express-Session-Keep-Cookie-in-req.session
+router.use(populateSelectedUser);
 
 // /admin/add-product
 // Because there is an extra layer in index.js of server
