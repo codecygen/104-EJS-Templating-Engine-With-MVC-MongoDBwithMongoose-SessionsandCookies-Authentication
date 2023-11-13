@@ -24,3 +24,9 @@ nav {
     flex-direction: row;
     gap: 20px;
 }
+
+.warning {
+    color: red;
+    background-color: antiquewhite;
+    font-size: 20px;
+}

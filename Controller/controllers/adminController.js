@@ -21,6 +21,7 @@ exports.getAddProduct = (req, res, next) => {
 
     // CSRF-Attacks-Prevention
     csrfToken: req.session.csrfToken,
+    pageMessage: req.flash("add-product-message"),
   });
 };
 
@@ -46,10 +47,15 @@ exports.postAddProduct = async (req, res, next) => {
   };
 
   console.log(newProduct.productImg);
+  if (!newProduct.productImg) {
+    req.flash("add-product-message", "Only jpg, png and jpeg files are supported!");
+    return res.redirect("/admin/add-product");
+  }
 
   // await dbProductOperation.addNewProduct(newProduct);
 
-  res.redirect("/");
+  req.flash("add-product-message", "New product is created!");
+  res.redirect("/admin/add-product");
 };
 
 exports.getProducts = async (req, res, next) => {
