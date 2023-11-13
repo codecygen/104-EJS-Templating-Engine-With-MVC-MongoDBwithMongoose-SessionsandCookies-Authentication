@@ -42,17 +42,22 @@ exports.postAddProduct = async (req, res, next) => {
     productDesc: req.body.newProductDescription,
     productPrice: req.body.newProductPrice,
     // Multer-File-Upload-Download
-    productImg: req.file,
+    // Only store the path of the folder in your database
+    // Storing the actual file in database would be too big.
+    productImg: req.file.path,
     adminId: res.locals.selectedUser.adminId,
   };
 
-  console.log(newProduct.productImg);
+  // If req.file is undefined, meaning that
+  // if pdf is uploaded instead of jpg, jpeg or png
+  // since req.file is undefined, productImg: req.file.path
+  // will also be undefined. If it is undefined, give the following warning.
   if (!newProduct.productImg) {
     req.flash("add-product-message", "Only jpg, png and jpeg files are supported!");
     return res.redirect("/admin/add-product");
   }
 
-  // await dbProductOperation.addNewProduct(newProduct);
+  await dbProductOperation.addNewProduct(newProduct);
 
   req.flash("add-product-message", "New product is created!");
   res.redirect("/admin/add-product");
@@ -100,21 +105,23 @@ exports.editProduct = async (req, res, next) => {
   // Normally if product cannot be found, an error message
   // should be shown.
   if (!foundProduct) {
-    return res.redirect("/");
+    return res.redirect("/login");
   }
 
   res.render("admin/addEditProduct", {
-    renderTitle: "Edit Product",
-    pagePath: "/admin/edit-product",
+    renderTitle: "Add Product",
+    pagePath: "/admin/add-product",
     editing: isEditMode,
-    product: foundProduct,
-    // router.use(); // this middleware populates res.locals
+    // router.use(populateSelectedUser); // this middleware populates res.locals
     // because it is stored in res.locals, res.render template
     // can reach to selectedUser that is in res.locals
     // selectedUser: res.locals.selectedUser,
 
+    product: foundProduct,
+
     // CSRF-Attacks-Prevention
     csrfToken: req.session.csrfToken,
+    pageMessage: req.flash("add-product-message"),
   });
 };
 
