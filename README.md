@@ -624,11 +624,25 @@ If you accidentally click the link on the malicious website, since that form's c
 
 - 3. Configure **multer** package in routing file as a middleware.
 ```javascript
+.....
+
 // Multer-File-Upload-Download
 const multer = require("multer");
+
+// Multer-File-Upload-Download
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads");
+  },
+  filename: (req, file, cb) => {
+    const uniquePrefix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniquePrefix + "-" + file.originalname);
+  },
+});
+
 // Multer-File-Upload-Download
 // file upload location is "/uploads"
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ storage: fileStorage });
 
 .....
 
@@ -641,7 +655,7 @@ router.post(
 );
 ```
 
-- 4. Then, in the controller file, the submitted file will be available in **req.file**.
+- 4. Then, in the controller file which is **adminController.postAddProduct** for this case, the submitted file will be available in **req.file**.
 
 ```javascript
 exports.postAddProduct = async (req, res, next) => {
