@@ -17,8 +17,25 @@ const fileStorage = multer.diskStorage({
 });
 
 // Multer-File-Upload-Download
+const fileFilter = (req, file, cb) => {
+  const fileType = file.mimetype;
+
+  if (
+    fileType === "image/png" ||
+    fileType === "image/jpg" ||
+    fileType === "image/jpeg"
+  ) {
+    // To accept file, pass true
+    cb(null, true);
+  } else {
+    // To reject file, pass false
+    cb(null, false);
+  }
+};
+
+// Multer-File-Upload-Download
 // file upload location is "/uploads"
-const upload = multer({ storage: fileStorage });
+const upload = multer({ storage: fileStorage, fileFilter: fileFilter });
 
 // Express-Session-Keep-Cookie-in-req.session
 const populateSelectedUser = require("../../Middleware/populateSelectedUser");

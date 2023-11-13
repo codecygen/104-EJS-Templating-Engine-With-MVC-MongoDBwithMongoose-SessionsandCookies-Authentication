@@ -622,7 +622,7 @@ If you accidentally click the link on the malicious website, since that form's c
 </form>
 ```
 
-- 3. Configure **multer** package in routing file as a middleware.
+- 3. Configure **multer** package in routing file **adminRoute.js** as a middleware.
 ```javascript
 .....
 
@@ -641,8 +641,25 @@ const fileStorage = multer.diskStorage({
 });
 
 // Multer-File-Upload-Download
+const fileFilter = (req, file, cb) => {
+  const fileType = file.mimetype;
+
+  if (
+    fileType === "image/png" ||
+    fileType === "image/jpg" ||
+    fileType === "image/jpeg"
+  ) {
+    // To accept file, pass true
+    cb(null, true);
+  } else {
+    // To reject file, pass false
+    cb(null, false);
+  }
+};
+
+// Multer-File-Upload-Download
 // file upload location is "/uploads"
-const upload = multer({ storage: fileStorage });
+const upload = multer({ storage: fileStorage, fileFilter: fileFilter });
 
 .....
 
@@ -671,5 +688,20 @@ exports.postAddProduct = async (req, res, next) => {
   };
 
   ...
+}
+```
+
+the console.log for newProduct.productImg will give something like this
+
+```javascript
+{
+  fieldname: 'newProductImage',
+  originalname: '07_Dragon.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads',
+  filename: '1699898124801-448980481-07_Dragon.jpg',
+  path: 'uploads/1699898124801-448980481-07_Dragon.jpg',
+  size: 857444
 }
 ```
