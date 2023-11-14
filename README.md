@@ -15,6 +15,9 @@ URL =
 # URL="mongodb://username:password@0.0.0.0:27017/shoppingDB"
 
 EXPRESS_SESSION_KEY = "your-secret-key";
+
+EMAIL=passwordresetemail@email.com
+PASSWORD=password
 ```
 
 - Start server with "npm start" command which will trigger "nodemon start".
