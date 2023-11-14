@@ -33,7 +33,7 @@
         <!-- POST request will be done to different links depending on if -->
         <!-- editing=true or false -->
         <!-- Multer-File-Upload-Download -->
-        <form action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" class="centered" enctype="multipart/form-data" >
+        <form action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" enctype="multipart/form-data" class="centered" >
             <div class="form-control">
              
                 <label for="productname">Product Name</label>

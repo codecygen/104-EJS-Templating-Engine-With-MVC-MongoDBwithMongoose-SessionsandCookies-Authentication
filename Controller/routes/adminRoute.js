@@ -74,8 +74,10 @@ router.get(
   isAdminProduct,
   adminController.editProduct
 );
+
 router.post(
   "/edit-product",
+  upload.single("newProductImage"),
   isAdmin,
   isAdminProduct,
   adminController.postEditProduct

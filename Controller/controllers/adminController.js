@@ -150,7 +150,7 @@ exports.postEditProduct = async (req, res, next) => {
     productName: req.body.newProductName,
     productDesc: req.body.newProductDescription,
     productPrice: req.body.newProductPrice,
-    productImg: req.body.newProductImage,
+    productImg: req.file.path,
     // router.use(); // this middleware populates res.locals
     // because it is stored in res.locals, res.render template
     // can reach to adminId that is in res.locals
