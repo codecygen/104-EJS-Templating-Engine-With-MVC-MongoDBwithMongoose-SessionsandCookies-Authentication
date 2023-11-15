@@ -35,7 +35,12 @@ const fileFilter = (req, file, cb) => {
 
 // Multer-File-Upload-Download
 // file upload location is "/uploads"
-const upload = multer({ storage: fileStorage, fileFilter: fileFilter });
+const upload = multer({
+  storage: fileStorage,
+  // 1MB file size limit
+  limits: { fileSize: 1000000 },
+  fileFilter: fileFilter,
+});
 
 // Express-Session-Keep-Cookie-in-req.session
 const populateSelectedUser = require("../../Middleware/populateSelectedUser");

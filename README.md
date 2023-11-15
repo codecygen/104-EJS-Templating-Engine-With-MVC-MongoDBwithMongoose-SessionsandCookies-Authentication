@@ -271,7 +271,8 @@ exports.getAllUsers = async (req, res, next) => {
 ```
 
 # Validation and Sanitization
-Once you receive the user entered data in post requests, you have both validate and sanitize the data. The  validation is making sure the data entered is the data you are expecting. Sanitization is to ensure that the entered data does not have any harmful elements that can potentially compromise your database.
+
+Once you receive the user entered data in post requests, you have both validate and sanitize the data. The validation is making sure the data entered is the data you are expecting. Sanitization is to ensure that the entered data does not have any harmful elements that can potentially compromise your database.
 
 I did not use in this project but, **express-validator** is a popular npm package that is used for data validation and sanitization.
 
@@ -280,14 +281,68 @@ I did not use in this project but, **express-validator** is a popular npm packag
 There are ways to handle errors gracefully. These can be achieved with **if**, **try-catch** and **then().catch()** blocks.
 
 ## Problem with Page Display
-Lets say, you want to display all registered users in a page but when your app interacts with server, some problem occurs and your app cannot retrieve the registered users. You have to handle this kind of errors gracefully and display an error page. In order to do this refer to keyword **Error-Page-Middleware**. 
 
-In express js, error handling middleware can be used to handle errors.
+Lets say, you want to display all registered users in a page but when your app interacts with server, some problem occurs and your app cannot retrieve the registered users. You have to handle this kind of errors gracefully and display an error page. In order to do this refer to keyword **Error-Page-Middleware**.
+
+```javascript
+exports.getUsersPage = async (req, res, next) => {
+  try {
+    // Uncomment this to crash the /admin.users page.
+    // const allUsers = await Table.UserTable.find();
+
+    const allUsers = await Tables.UserTable.find();
+
+    res.render("admin/users", {
+      renderTitle: "All Users",
+      pagePath: "/admin/users",
+      allUsers: allUsers,
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+
+    console.error("Error in /admin/users page:", error);
+    // Error-Page-Middleware
+    // passes error to middleware
+    next(error);
+  }
+};
+```
+
+Here, **next(error)** passes error to error handling middleware. In express js, error handling middleware can be used to handle errors. Here is the middleware.
+
+```javascript
+// index.js
+
+// Error-Page-Middleware
+app.use(errorPageMiddleWare);
+```
+
+```javascript
+// errorPageMiddleWare.js
+
+// Error-Page-Middleware
+const errorPageMiddleware = (err, req, res, next) => {
+  if (err.code === "LIMIT_FILE_SIZE") {
+    return res.status(400).json({ error: "File size is exceeded!" });
+  } else if (err.httpStatusCode) {
+    return res.status(err.httpStatusCode).render("[errorPage]", {
+      renderTitle: `HTTP Error: ${err.httpStatusCode}`,
+      pagePath: null,
+      err: err,
+    });
+  }
+};
+
+module.exports = errorPageMiddleware;
+```
 
 ## 404 Page
+
 To show 404 page, if the page does not exist refer to keyword **404-Page**
 
 ## HTTP Status Codes:
+
 There are more codes than these. These codes are used in the rendering cases so it will be shown in the network section of the browser:
 
 ```javascript
@@ -351,41 +406,43 @@ After this, whenever you store any info in req.session, it will automatically be
 
 - **IMPORTANT NOTE**: In this project, I sent form errors with signup and login pages through queries like **await res.redirect(
   `/signup?message=${encodeURIComponent(validityMessage)}`
-  );** 
-  
+  );**
+
   **Express-Flash-Keep-Session-in-req.flash**
   But this can also be done by using an npm package called **connect-flash**. It basically adds a one time use session which will be removed from server's RAM once it is used. **connect-flash** may seem like a more straightforward approach to keep front end notice information to show to the client side user.
 
 ```javascript
-const express = require('express'); 
-const session = require('express-session'); 
-const flash = require('connect-flash'); 
-  
-const app = express(); 
-  
-const port = process.env.PORT || 3000; 
-  
-app.use(session({ 
-    secret:'geeksforgeeks', 
-    saveUninitialized: true, 
-    resave: true
-})); 
-  
-app.use(flash()); 
-  
-app.get('/', (req, res) => { 
-  req.flash('message', 'Success!!'); 
-  res.redirect('/gfg'); 
-}); 
-  
-app.get('/gfg', (req, res) => { 
-    res.send(req.flash('message')); 
-}); 
-  
-app.listen(port, (err) => { 
-  if (err) console.log(err); 
-  console.log('Server is up and listening on', port); 
-}); 
+const express = require("express");
+const session = require("express-session");
+const flash = require("connect-flash");
+
+const app = express();
+
+const port = process.env.PORT || 3000;
+
+app.use(
+  session({
+    secret: "geeksforgeeks",
+    saveUninitialized: true,
+    resave: true,
+  })
+);
+
+app.use(flash());
+
+app.get("/", (req, res) => {
+  req.flash("message", "Success!!");
+  res.redirect("/gfg");
+});
+
+app.get("/gfg", (req, res) => {
+  res.send(req.flash("message"));
+});
+
+app.listen(port, (err) => {
+  if (err) console.log(err);
+  console.log("Server is up and listening on", port);
+});
 ```
 
 # Authorization
@@ -613,6 +670,7 @@ If you accidentally click the link on the malicious website, since that form's c
 - 5. Keep in mind that CSRF token is only important for post methods that are going to change something critical with the user like sending money, changing address etc. Login and Signup pages won't need a CSRF token.
 
 # File Upload and Download
+
 **Multer-File-Upload-Download** is the keyword for this section.
 
 - 1. Install the npm package **multer**.
@@ -620,12 +678,18 @@ If you accidentally click the link on the malicious website, since that form's c
 - 2. Add **enctype="multipart/form-data"** to the form where you also want to submit a file.
 
 ```javascript
-<form action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" class="centered" enctype="multipart/form-data" >
+<form
+  action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>"
+  method="POST"
+  class="centered"
+  enctype="multipart/form-data"
+>
   ...
 </form>
 ```
 
 - 3. Configure **multer** package in routing file **adminRoute.js** as a middleware.
+
 ```javascript
 .....
 
@@ -662,7 +726,12 @@ const fileFilter = (req, file, cb) => {
 
 // Multer-File-Upload-Download
 // file upload location is "/uploads"
-const upload = multer({ storage: fileStorage, fileFilter: fileFilter });
+const upload = multer({
+  storage: fileStorage,
+  // 1MB file size limit
+  limits: { fileSize: 1000000 },
+  fileFilter: fileFilter,
+});
 
 .....
 

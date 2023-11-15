@@ -44,16 +44,44 @@ exports.postAddProduct = async (req, res, next) => {
     // Multer-File-Upload-Download
     // Only store the path of the folder in your database
     // Storing the actual file in database would be too big.
-    productImg: req.file.path,
+    productImg: req.file ? req.file.path : null,
     adminId: res.locals.selectedUser.adminId,
   };
 
-  // If req.file is undefined, meaning that
-  // if pdf is uploaded instead of jpg, jpeg or png
-  // since req.file is undefined, productImg: req.file.path
-  // will also be undefined. If it is undefined, give the following warning.
-  if (!newProduct.productImg) {
-    req.flash("add-product-message", "Only jpg, png and jpeg files are supported!");
+  if (!newProduct) {
+    req.flash("add-product-message", "Necessary info is not provided!");
+    return res.redirect("/admin/add-product");
+  } else if (
+    !newProduct.productName ||
+    typeof newProduct.productName !== "string"
+  ) {
+    req.flash("add-product-message", "Invalid product name!");
+    return res.redirect("/admin/add-product");
+  } else if (
+    !newProduct.productDesc ||
+    typeof newProduct.productDesc !== "string"
+  ) {
+    req.flash("add-product-message", "Invalid product description!");
+    return res.redirect("/admin/add-product");
+  } else if (
+    !newProduct.productPrice ||
+    isNaN(parseFloat(newProduct.productPrice)) ||
+    !isFinite(newProduct.productPrice)
+  ) {
+    req.flash("add-product-message", "Invalid product price!");
+    return res.redirect("/admin/add-product");
+  } else if (!newProduct.productImg) {
+    // If req.file is undefined, meaning that
+    // if pdf is uploaded instead of jpg, jpeg or png
+    // since req.file is undefined, productImg: req.file.path
+    // will also be undefined. If it is undefined, give the following warning.
+    req.flash(
+      "add-product-message",
+      "Only jpg, png and jpeg files are supported!"
+    );
+    return res.redirect("/admin/add-product");
+  } else if (!newProduct.adminId || newProduct.adminId !== "object") {
+    req.flash("add-product-message", "Not authorized to create the product!");
     return res.redirect("/admin/add-product");
   }
 
@@ -200,6 +228,8 @@ exports.getUsersPage = async (req, res, next) => {
     error.httpStatusCode = 500;
 
     console.error("Error in /admin/users page:", error);
+    // Error-Page-Middleware
+    // passes error to middleware
     next(error);
   }
 
