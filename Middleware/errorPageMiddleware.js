@@ -4,7 +4,7 @@ const multer = require("multer");
 // Error-Page-Middleware
 const errorPageMiddleware = (err, req, res, next) => {
   // Multer-File-Upload-Download
-  // multer related file upload errors!
+  // multer if file sie is more than 1MB
   if (err instanceof multer.MulterError) {
     console.error(err);
     if (err.code === "LIMIT_FILE_SIZE") {

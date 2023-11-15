@@ -25,11 +25,11 @@ const fileFilter = (req, file, cb) => {
     fileType === "image/jpg" ||
     fileType === "image/jpeg"
   ) {
-    // To accept file, pass true
+    // To accept file, pass true, or false if you don't want!
     cb(null, true);
   } else {
-    // To reject file, pass false
-    cb(null, false);
+    req.notAllowedFileExtension = fileType;
+    return cb(null, false, req.notAllowedFileExtension);
   }
 };
 
