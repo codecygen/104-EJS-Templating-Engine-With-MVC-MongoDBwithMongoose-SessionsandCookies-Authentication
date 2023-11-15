@@ -58,40 +58,33 @@ exports.postAddProduct = async (req, res, next) => {
     req.flash("add-product-message", "Invalid product name!");
     return res.redirect("/admin/add-product");
   } else if (
-    !newProduct.productDesc ||
-    typeof newProduct.productDesc !== "string"
-  ) {
-    req.flash("add-product-message", "Invalid product description!");
-    return res.redirect("/admin/add-product");
-  } else if (
     !newProduct.productPrice ||
     isNaN(parseFloat(newProduct.productPrice)) ||
     !isFinite(newProduct.productPrice)
   ) {
     req.flash("add-product-message", "Invalid product price!");
     return res.redirect("/admin/add-product");
+  } else if (
+    !newProduct.productDesc ||
+    typeof newProduct.productDesc !== "string"
+  ) {
+    req.flash("add-product-message", "Invalid product description!");
+    return res.redirect("/admin/add-product");
   } else if (req.notAllowedFileExtension) {
-    req.flash("add-product-message", `${req.notAllowedFileExtension} is not allowed. Only jpeg, jpg and png are allowed.`);
+    // Multer-File-Upload-Download
+    req.flash(
+      "add-product-message",
+      `${req.notAllowedFileExtension} is not allowed. Only jpeg, jpg and png are allowed.`
+    );
     return res.redirect("/admin/add-product");
   } else if (!newProduct.productImg) {
+    // Multer-File-Upload-Download
     req.flash("add-product-message", "Please upload an image file!");
     return res.redirect("/admin/add-product");
   } else if (!newProduct.adminId || typeof newProduct.adminId !== "object") {
     req.flash("add-product-message", "Not authorized to create the product!");
     return res.redirect("/admin/add-product");
   }
-
-  // else if (!newProduct.productImg) {
-  //   // If req.file is undefined, meaning that
-  //   // if pdf is uploaded instead of jpg, jpeg or png
-  //   // since req.file is undefined, productImg: req.file.path
-  //   // will also be undefined. If it is undefined, give the following warning.
-  //   req.flash(
-  //     "add-product-message",
-  //     "Only jpg, png and jpeg files are supported!"
-  //   );
-  //   return res.redirect("/admin/add-product");
-  // }
 
   await dbProductOperation.addNewProduct(newProduct);
 
