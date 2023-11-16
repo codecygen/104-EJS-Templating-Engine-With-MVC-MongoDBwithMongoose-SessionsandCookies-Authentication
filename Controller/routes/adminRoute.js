@@ -1,4 +1,7 @@
 const express = require("express");
+
+const path = require("path");
+
 const adminController = require("../controllers/adminController");
 const router = express.Router();
 
@@ -20,6 +23,8 @@ const fileStorage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
   const fileType = file.mimetype;
 
+  const fileExtension = path.extname(file.originalname).split(".").pop();
+
   if (
     fileType === "image/png" ||
     fileType === "image/jpg" ||
@@ -28,7 +33,7 @@ const fileFilter = (req, file, cb) => {
     // To accept file, pass true, or false if you don't want!
     cb(null, true);
   } else {
-    req.notAllowedFileExtension = fileType;
+    req.notAllowedFileExtension = fileExtension;
     return cb(null, false, req.notAllowedFileExtension);
   }
 };
