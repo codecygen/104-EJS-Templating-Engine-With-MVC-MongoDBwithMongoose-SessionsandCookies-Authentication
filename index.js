@@ -35,7 +35,26 @@ app.use(express.json({ limit: "50mb" }));
 // Specify CSS file location
 app.use(express.static(path.join(__dirname, "View/styles")));
 
+// Multer-File-Upload-Download
 // This is for serving uploaded images folder to show products.
+// imagine this file:
+// uploads/1700158739221-40615879-01_World.jpg
+// if it was
+// app.use(express.static(path.join(__dirname, "uploads")));
+// app will think the file will be ready in
+// localhost:3000/1700158739221-40615879-01_World.jpg
+// But when you say 
+//  <img 
+  // src="/<%= product.productImg %>" 
+  // alt=<%= product.productName %>  
+  // height="300"
+//  >
+// src will look into localhost:3000/uploads/1700158739221-40615879-01_World.jpg
+// and this path does not exist
+// by doing it as the way down on the bottom, we tell express to
+// go to localhost/uploads, then treat the uploads directory as the
+// base/root directory, then apply uploads directory as the static root directory
+// so localhost:3000/uploads/1700158739221-40615879-01_World.jpg will be the actual path
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Specify EJS templating engine

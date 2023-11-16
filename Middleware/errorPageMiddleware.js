@@ -8,7 +8,8 @@ const errorPageMiddleware = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     console.error(err);
     if (err.code === "LIMIT_FILE_SIZE") {
-      return res.status(400).json({ error: "File size is exceeded!" });
+      req.flash("add-product-message", "File size is exceeded!");
+      return res.redirect("/admin/add-product");
     }
   } else if (err.httpStatusCode) {
     return res.status(err.httpStatusCode).render("[errorPage]", {
