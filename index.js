@@ -35,6 +35,9 @@ app.use(express.json({ limit: "50mb" }));
 // Specify CSS file location
 app.use(express.static(path.join(__dirname, "View/styles")));
 
+// This is for serving uploaded images folder to show products.
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 // Specify EJS templating engine
 app.set("view engine", "ejs");
 // First one is name second one is value
