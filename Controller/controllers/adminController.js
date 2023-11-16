@@ -179,12 +179,50 @@ exports.postEditProduct = async (req, res, next) => {
     productName: req.body.newProductName,
     productDesc: req.body.newProductDescription,
     productPrice: req.body.newProductPrice,
-    productImg: req.file.path,
+    productImg: req.file && req.file.path ? req.file.path : null,
     // router.use(); // this middleware populates res.locals
     // because it is stored in res.locals, res.render template
     // can reach to adminId that is in res.locals
     adminId: res.locals.selectedUser.adminId,
   };
+
+  if (!updatedProduct) {
+    req.flash("add-product-message", "Necessary info is not provided!");
+    return res.redirect("/admin/add-product");
+  } else if (
+    !updatedProduct.productName ||
+    typeof updatedProduct.productName !== "string"
+  ) {
+    req.flash("add-product-message", "Invalid product name!");
+    return res.redirect("/admin/add-product");
+  } else if (
+    !updatedProduct.productPrice ||
+    isNaN(parseFloat(updatedProduct.productPrice)) ||
+    !isFinite(updatedProduct.productPrice)
+  ) {
+    req.flash("add-product-message", "Invalid product price!");
+    return res.redirect("/admin/add-product");
+  } else if (
+    !updatedProduct.productDesc ||
+    typeof updatedProduct.productDesc !== "string"
+  ) {
+    req.flash("add-product-message", "Invalid product description!");
+    return res.redirect("/admin/add-product");
+  } else if (req.notAllowedFileExtension) {
+    // Multer-File-Upload-Download
+    req.flash(
+      "add-product-message",
+      `${req.notAllowedFileExtension} is not allowed. Only jpeg, jpg and png are allowed.`
+    );
+    return res.redirect("/admin/add-product");
+  } else if (!updatedProduct.productImg) {
+    // Multer-File-Upload-Download
+    req.flash("add-product-message", "Please upload an image file!");
+    return res.redirect("/admin/add-product");
+  } else if (!updatedProduct.adminId || typeof updatedProduct.adminId !== "object") {
+    req.flash("add-product-message", "Not authorized to create the product!");
+    return res.redirect("/admin/add-product");
+  }
 
   await dbProductOperation.updateOneProduct(updatedProduct);
 
