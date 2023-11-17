@@ -161,6 +161,8 @@ exports.orderCart = async (req, res, next) => {
 };
 
 exports.getInvoice = async (req, res, next) => {
+  console.log(req.session);
+
   res.render("orders/[orderId]", {
     renderTitle: "Order Invoice",
     pagePath: "orders",
