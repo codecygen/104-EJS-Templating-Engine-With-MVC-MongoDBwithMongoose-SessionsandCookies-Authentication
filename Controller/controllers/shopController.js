@@ -134,7 +134,7 @@ exports.getOrders = async (req, res, next) => {
 
   const orderList = await dbOrderOperation.getOrders(loggedInUser);
 
-  res.render("orders", {
+  return res.render("orders/index", {
     pagePath: "/orders",
     renderTitle: "Orders",
     orderList,
@@ -158,4 +158,12 @@ exports.orderCart = async (req, res, next) => {
   await dbOrderOperation.postCartToOrders(loggedInUser);
 
   res.redirect("/orders");
+};
+
+exports.getInvoice = async (req, res, next) => {
+  res.render("orders/[orderId]", {
+    renderTitle: "Order Invoice",
+    pagePath: "orders",
+    selectedUser: res.locals.selectedUser,
+  });
 };
