@@ -9,12 +9,14 @@
             <% let orderNumber = 1 %>
             <% orderList.forEach((order) => { %>
                 <p>Order <%= orderNumber %></p>
+                <a href="/orders/<%= userId %>-<%= orderNumber %>">LOL</a>
                 <% order.forEach((product) => { %>
                     <ul>
-                        <li><%= product.productName %> (<%= product.qty %>)</li>
+                        <li>
+                            <%= product.productName %> (<%= product.qty %>)
+                        </li>
                     </ul>
                 <% }); %>
-
                 <% orderNumber++ %>
             <% }); %>
         <% } else { %>

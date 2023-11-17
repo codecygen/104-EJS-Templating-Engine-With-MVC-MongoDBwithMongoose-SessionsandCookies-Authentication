@@ -138,6 +138,7 @@ exports.getOrders = async (req, res, next) => {
     pagePath: "/orders",
     renderTitle: "Orders",
     orderList,
+    userId: loggedInUser.userId.toString(),
   });
 };
 
