@@ -321,10 +321,18 @@ app.use(errorPageMiddleWare);
 ```javascript
 // errorPageMiddleWare.js
 
+// Multer-File-Upload-Download
+const multer = require("multer");
+
 // Error-Page-Middleware
 const errorPageMiddleware = (err, req, res, next) => {
-  if (err.code === "LIMIT_FILE_SIZE") {
-    return res.status(400).json({ error: "File size is exceeded!" });
+  // Multer-File-Upload-Download
+  // multer if file sie is more than 1MB
+  if (err instanceof multer.MulterError) {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      req.flash("add-product-message", "File size is exceeded!");
+      return res.redirect("/admin/add-product");
+    }
   } else if (err.httpStatusCode) {
     return res.status(err.httpStatusCode).render("[errorPage]", {
       renderTitle: `HTTP Error: ${err.httpStatusCode}`,
@@ -711,16 +719,18 @@ const fileStorage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
   const fileType = file.mimetype;
 
+  const fileExtension = path.extname(file.originalname).split(".").pop();
+
   if (
     fileType === "image/png" ||
     fileType === "image/jpg" ||
     fileType === "image/jpeg"
   ) {
-    // To accept file, pass true
+    // To accept file, pass true, or false if you don't want!
     cb(null, true);
   } else {
-    // To reject file, pass false
-    cb(null, false);
+    req.notAllowedFileExtension = fileExtension;
+    return cb(null, false, req.notAllowedFileExtension);
   }
 };
 
@@ -737,9 +747,9 @@ const upload = multer({
 
 router.post(
   "/add-product",
-  isAdmin,
   // Multer-File-Upload-Download
   upload.single("newProductImage"),
+  isAdmin,
   adminController.postAddProduct
 );
 ```
@@ -755,11 +765,25 @@ exports.postAddProduct = async (req, res, next) => {
     productDesc: req.body.newProductDescription,
     productPrice: req.body.newProductPrice,
     // Multer-File-Upload-Download
-    productImg: req.file,
+    productImg: req.file && req.file.path ? req.file.path : null,
     adminId: res.locals.selectedUser.adminId,
   };
 
   ...
+  if
+  ...
+  else if (req.notAllowedFileExtension) {
+    // Multer-File-Upload-Download
+    req.flash(
+      "add-product-message",
+      `${req.notAllowedFileExtension} is not allowed. Only jpeg, jpg and png are allowed.`
+    );
+    return res.redirect("/admin/add-product");
+  } else if (!newProduct.productImg) {
+    // Multer-File-Upload-Download
+    req.flash("add-product-message", "Please upload an image file!");
+    return res.redirect("/admin/add-product");
+  } 
 }
 ```
 
@@ -776,4 +800,84 @@ the console.log for newProduct.productImg will give something like this
   path: 'uploads/1699898124801-448980481-07_Dragon.jpg',
   size: 857444
 }
+```
+
+- 5. We should also have an error page to handle errors related to the case where file size gets exceeded.
+
+```javascript
+// Multer-File-Upload-Download
+const multer = require("multer");
+
+// Error-Page-Middleware
+const errorPageMiddleware = (err, req, res, next) => {
+  // Multer-File-Upload-Download
+  // multer if file sie is more than 1MB
+  if (err instanceof multer.MulterError) {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      req.flash("add-product-message", "File size is exceeded!");
+      return res.redirect("/admin/add-product");
+    }
+  } else if (err.httpStatusCode) {
+    return res.status(err.httpStatusCode).render("[errorPage]", {
+      renderTitle: `HTTP Error: ${err.httpStatusCode}`,
+      pagePath: null,
+      err: err,
+    });
+  }
+};
+
+module.exports = errorPageMiddleware;
+```
+
+- 6. Finally, when the file gets uploaded, it has to be shown properly. Since the console.log for newProduct.productImg will give something like this
+
+```javascript
+{
+  fieldname: 'newProductImage',
+  originalname: '07_Dragon.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads',
+  filename: '1699898124801-448980481-07_Dragon.jpg',
+  path: 'uploads/1699898124801-448980481-07_Dragon.jpg',
+  size: 857444
+}
+```
+
+path of the uploaded image will reside in database and in system as shown **path: 'uploads/1699898124801-448980481-07_Dragon.jpg'**. So in index file,
+
+```javascript
+// Multer-File-Upload-Download
+// This is for serving uploaded images folder to show products.
+// imagine this file:
+// uploads/1700158739221-40615879-01_World.jpg
+// if it was
+// app.use(express.static(path.join(__dirname, "uploads")));
+// app will think the file will be ready in
+// localhost:3000/1700158739221-40615879-01_World.jpg
+// But when you say 
+//  <img 
+  // src="/<%= product.productImg %>" 
+  // alt=<%= product.productName %>  
+  // height="300"
+//  >
+// src will look into localhost:3000/uploads/1700158739221-40615879-01_World.jpg
+// and this path does not exist
+// by doing it as the way down on the bottom, we tell express to
+// go to localhost/uploads, then treat the uploads directory as the
+// base/root directory, then apply uploads directory as the static root directory
+// so localhost:3000/uploads/1700158739221-40615879-01_World.jpg will be the actual path
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+```
+
+a static path is needed where application has to find uploads and then treats uploads file as the root directory. Then in ejs file, it should show this location.
+
+```html
+<!-- Multer-File-Upload-Download -->
+<img 
+  src="/<%= product.productImg %>" 
+  alt=<%= product.productName %> 
+  height="300"
+>
+
 ```

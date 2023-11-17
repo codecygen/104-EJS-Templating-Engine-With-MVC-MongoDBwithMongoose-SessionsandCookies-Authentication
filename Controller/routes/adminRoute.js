@@ -61,9 +61,9 @@ router.get("/add-product", isAdmin, adminController.getAddProduct);
 
 router.post(
   "/add-product",
-  isAdmin,
   // Multer-File-Upload-Download
   upload.single("newProductImage"),
+  isAdmin,
   adminController.postAddProduct
 );
 
