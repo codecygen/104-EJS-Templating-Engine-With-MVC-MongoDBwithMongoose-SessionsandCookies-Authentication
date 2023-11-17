@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 const dbProductOperation = require("../../Model/operations/dbProductOperation");
 const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 const dbCartOperation = require("../../Model/operations/dbCartOperation");
@@ -162,6 +165,8 @@ exports.orderCart = async (req, res, next) => {
 
 exports.getInvoice = async (req, res, next) => {
   console.log(req.session);
+  console.log(req.params.orderId);
+
 
   res.render("orders/[orderId]", {
     renderTitle: "Order Invoice",
