@@ -829,7 +829,7 @@ const errorPageMiddleware = (err, req, res, next) => {
 module.exports = errorPageMiddleware;
 ```
 
-- 6. Finally, when the file gets uploaded, it has to be shown properly. Since the console.log for newProduct.productImg will give something like this
+- 6. Finally, when the image file gets uploaded, it has to be shown properly in img tags. Since the console.log for newProduct.productImg will give something like this
 
 ```javascript
 {
