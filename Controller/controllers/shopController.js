@@ -164,8 +164,6 @@ exports.orderCart = async (req, res, next) => {
 };
 
 exports.getInvoice = async (req, res, next) => {
-  console.log(req.session);
-
   const invoiceFile = `${req.params.orderId}.pdf`;
 
   const invoiceFilePath = path.join(

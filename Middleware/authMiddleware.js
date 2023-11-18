@@ -39,4 +39,35 @@ const isAdminProduct = async (req, res, next) => {
   }
 };
 
-module.exports = { isLoggedIn, isAdmin, isAdminProduct };
+const isLoggedInTheInvoiceOwner = (req, res, next) => {
+  const requestedFileOwnerId = req.params.orderId.split("-")[1];
+  const loggedInUserId = req.session.userId.toString();
+
+  if (!loggedInUserId || !requestedFileOwnerId) {
+    const err = new Error(
+      "Invalid Request: Missing file owner id or not logged in"
+    );
+
+    err.httpStatusCode = 401;
+    next(err);
+  }
+
+  if (loggedInUserId === requestedFileOwnerId) {
+    next();
+  } else {
+
+    const err = new Error(
+      "Invalid Request: Unauthorized file access!"
+    );
+
+    err.httpStatusCode = 401;
+    next(err);
+  }
+};
+
+module.exports = {
+  isLoggedIn,
+  isAdmin,
+  isAdminProduct,
+  isLoggedInTheInvoiceOwner,
+};
