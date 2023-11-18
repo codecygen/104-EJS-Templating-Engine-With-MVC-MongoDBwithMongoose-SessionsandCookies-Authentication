@@ -165,12 +165,20 @@ exports.orderCart = async (req, res, next) => {
 
 exports.getInvoice = async (req, res, next) => {
   console.log(req.session);
-  console.log(req.params.orderId);
 
+  const invoiceFile = `${req.params.orderId}.pdf`;
 
-  res.render("orders/[orderId]", {
-    renderTitle: "Order Invoice",
-    pagePath: "orders",
-    selectedUser: res.locals.selectedUser,
-  });
+  const invoiceFilePath = path.join(
+    path.dirname(require.main.filename),
+    "data",
+    "invoices",
+    invoiceFile
+  );
+
+  try {
+    const data = fs.readFileSync(invoiceFilePath);
+    res.send(data);
+  } catch (err) {
+    console.error(err);
+  }
 };
