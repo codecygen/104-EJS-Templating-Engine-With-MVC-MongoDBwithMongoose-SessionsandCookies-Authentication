@@ -49,11 +49,11 @@ const isLoggedInTheInvoiceOwner = (req, res, next) => {
     );
 
     err.httpStatusCode = 401;
-    next(err);
+    return next(err);
   }
 
   if (loggedInUserId === requestedFileOwnerId) {
-    next();
+    return next();
   } else {
 
     const err = new Error(
@@ -61,7 +61,7 @@ const isLoggedInTheInvoiceOwner = (req, res, next) => {
     );
 
     err.httpStatusCode = 401;
-    next(err);
+    return next(err);
   }
 };
 
