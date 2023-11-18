@@ -177,8 +177,56 @@ exports.getInvoice = async (req, res, next) => {
 
   try {
     const data = fs.readFileSync(invoiceFilePath);
+
+    // This allows pdf to open on browser
+    res.setHeader("Content-Type", "application/pdf");
+
+    // This alone does not change pdf to open on browser behavior
+    res.setHeader("Content-Disposition", "inline");
+
+    // This is supposed to open up a prompt to ask us to download file.
+    // Only does that in Chrome and not Firefox in case download options changed.
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + invoiceFile
+    );
+
     res.send(data);
+
+    // ================
+    // INSTEAD
+    // DO THIS ONLY
+    // ================
+
+    // res.download(invoiceFilePath);
   } catch (err) {
     console.error(err);
+    next(err);
   }
+
+  // // Alternatively
+  // fs.readFile(invoiceFilePath, (err, data) => {
+  //   if (err) {
+  //     next(err);
+  //   }
+
+  //   // This alone does not change pdf to open on browser behavior
+  //   res.setHeader("Content-Disposition", "inline");
+
+  //   // This is supposed to open up a prompt to ask us to download file.
+  //   // Only does that in Chrome and not Firefox in case download options changed.
+  //   res.setHeader(
+  //     "Content-Disposition",
+  //     "attachment; filename=" + invoiceFile
+  //   );
+
+  //   res.send(data);
+
+  //   // ================
+  //   // INSTEAD
+  //   // DO THIS ONLY
+  //   // ================
+
+  //   // res.download(invoiceFilePath);
+  // });
 };
