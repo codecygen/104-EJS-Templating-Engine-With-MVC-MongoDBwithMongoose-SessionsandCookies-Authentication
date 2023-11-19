@@ -178,6 +178,7 @@ exports.getInvoice = async (req, res, next) => {
   // =================================================================
 
   // METHOD 1
+  // multer-pdf-file-download
   // readFileSync() method
   // This internally use streaming data as well like METHOD 3. Use this
   // or use METHOD 2 instead.
@@ -218,6 +219,7 @@ exports.getInvoice = async (req, res, next) => {
   // =================================================================
 
   // // METHOD 2
+  // // multer-pdf-file-download
   // // readFile() method
   // // This internally use streaming data as well like METHOD 3. Use this
   // // or use METHOD 1 instead.
@@ -254,6 +256,7 @@ exports.getInvoice = async (req, res, next) => {
   // =================================================================
 
   // // METHOD 3
+  // // multer-pdf-file-download
   // // createReadStream method
   // // There is also createWriteStream method!
   // // This method is useful not to overflow the server if the pdf file is too big
