@@ -1,6 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 
+// multer-dynamic-content-pdf-file-download
+const PDFDocument = require("pdfkit");
+
 const dbProductOperation = require("../../Model/operations/dbProductOperation");
 const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 const dbCartOperation = require("../../Model/operations/dbCartOperation");
@@ -163,7 +166,127 @@ exports.orderCart = async (req, res, next) => {
   res.redirect("/orders");
 };
 
-// multer-pdf-file-download
+// // multer-static-content-pdf-file-download
+// exports.getInvoice = async (req, res, next) => {
+//   const invoiceFile = `${req.params.orderId}.pdf`;
+
+//   const invoiceFilePath = path.join(
+//     path.dirname(require.main.filename),
+//     "data",
+//     "invoices",
+//     invoiceFile
+//   );
+
+//   // =================================================================
+//   // =================================================================
+
+//   // METHOD 1
+//   // multer-static-content-pdf-file-download
+//   // readFileSync() method
+//   // This internally use streaming data as well like METHOD 3. Use this
+//   // or use METHOD 2 instead.
+
+//   try {
+//     const data = fs.readFileSync(invoiceFilePath);
+
+//     // This allows pdf to open on browser
+//     res.setHeader("Content-Type", "application/pdf");
+
+//     // This will open up the link as a pdf file
+//     // http://localhost:3000/orders/invoice-6555245e4ca34d19e71dc13a-1
+//     res.setHeader("Content-Disposition", "inline");
+
+//     // // This is supposed to open up a prompt to ask us to download file.
+//     // // Only does that in Chrome and not Firefox in case download options changed.
+//     // // This will try to save the pdf to local drive no matter what the
+//     // // browser option is
+//     // res.setHeader(
+//     //   "Content-Disposition",
+//     //   "attachment; filename=" + invoiceFile
+//     // );
+
+//     res.send(data);
+
+//     // ================
+//     // INSTEAD
+//     // DO THIS ONLY
+//     // ================
+
+//     // res.download(invoiceFilePath);
+//   } catch (err) {
+//     console.error(err);
+//     next(err);
+//   }
+
+//   // =================================================================
+//   // =================================================================
+
+//   // // METHOD 2
+//   // // multer-static-content-pdf-file-download
+//   // // readFile() method
+//   // // This internally use streaming data as well like METHOD 3. Use this
+//   // // or use METHOD 1 instead.
+
+//   // fs.readFile(invoiceFilePath, (err, data) => {
+//   //   if (err) {
+//   //     next(err);
+//   //   }
+
+//   //   // This will open up the link as a pdf file
+//   //   // http://localhost:3000/orders/invoice-6555245e4ca34d19e71dc13a-1
+//   //   res.setHeader("Content-Disposition", "inline");
+
+//   //   // // This is supposed to open up a prompt to ask us to download file.
+//   //   // // Only does that in Chrome and not Firefox in case download options changed.
+//   //   // // This will try to save the pdf to local drive no matter what the
+//   //   // // browser option is
+//   //   // res.setHeader(
+//   //   //   "Content-Disposition",
+//   //   //   "attachment; filename=" + invoiceFile
+//   //   // );
+
+//   //   res.send(data);
+
+//   //   // ================
+//   //   // INSTEAD
+//   //   // DO THIS ONLY
+//   //   // ================
+
+//   //   // res.download(invoiceFilePath);
+//   // });
+
+//   // =================================================================
+//   // =================================================================
+
+//   // // METHOD 3
+//   // // multer-static-content-pdf-file-download
+//   // // createReadStream method
+//   // // There is also createWriteStream method!
+//   // // This method is useful not to overflow the server if the pdf file is too big
+//   // // This method will download the file step by step, it will load in chunks
+
+//   // try {
+//   //   const file = fs.createReadStream(invoiceFilePath);
+
+//   //   res.setHeader("Content-Type", "application/pdf");
+
+//   //   // This is supposed to open up a prompt to ask us to download file.
+//   //   // Only does that in Chrome and not Firefox in case download options changed.
+//   //   // This will try to save the pdf to local drive no matter what the
+//   //   // browser option is
+//   //   res.setHeader(
+//   //     "Content-Disposition",
+//   //     "attachment; filename=" + invoiceFile
+//   //   );
+
+//   //   file.pipe(res);
+//   // } catch (err) {
+//   //   console.error(err);
+//   //   next(err);
+//   // }
+// };
+
+// multer-dynamic-content-pdf-file-download
 exports.getInvoice = async (req, res, next) => {
   const invoiceFile = `${req.params.orderId}.pdf`;
 
@@ -174,111 +297,5 @@ exports.getInvoice = async (req, res, next) => {
     invoiceFile
   );
 
-  // =================================================================
-  // =================================================================
-
-  // METHOD 1
-  // multer-pdf-file-download
-  // readFileSync() method
-  // This internally use streaming data as well like METHOD 3. Use this
-  // or use METHOD 2 instead.
-
-  try {
-    const data = fs.readFileSync(invoiceFilePath);
-
-    // This allows pdf to open on browser
-    res.setHeader("Content-Type", "application/pdf");
-
-    // This will open up the link as a pdf file
-    // http://localhost:3000/orders/invoice-6555245e4ca34d19e71dc13a-1
-    res.setHeader("Content-Disposition", "inline");
-
-    // // This is supposed to open up a prompt to ask us to download file.
-    // // Only does that in Chrome and not Firefox in case download options changed.
-    // // This will try to save the pdf to local drive no matter what the
-    // // browser option is
-    // res.setHeader(
-    //   "Content-Disposition",
-    //   "attachment; filename=" + invoiceFile
-    // );
-
-    res.send(data);
-
-    // ================
-    // INSTEAD
-    // DO THIS ONLY
-    // ================
-
-    // res.download(invoiceFilePath);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-
-  // =================================================================
-  // =================================================================
-
-  // // METHOD 2
-  // // multer-pdf-file-download
-  // // readFile() method
-  // // This internally use streaming data as well like METHOD 3. Use this
-  // // or use METHOD 1 instead.
-
-  // fs.readFile(invoiceFilePath, (err, data) => {
-  //   if (err) {
-  //     next(err);
-  //   }
-
-  //   // This will open up the link as a pdf file
-  //   // http://localhost:3000/orders/invoice-6555245e4ca34d19e71dc13a-1
-  //   res.setHeader("Content-Disposition", "inline");
-
-  //   // // This is supposed to open up a prompt to ask us to download file.
-  //   // // Only does that in Chrome and not Firefox in case download options changed.
-  //   // // This will try to save the pdf to local drive no matter what the
-  //   // // browser option is
-  //   // res.setHeader(
-  //   //   "Content-Disposition",
-  //   //   "attachment; filename=" + invoiceFile
-  //   // );
-
-  //   res.send(data);
-
-  //   // ================
-  //   // INSTEAD
-  //   // DO THIS ONLY
-  //   // ================
-
-  //   // res.download(invoiceFilePath);
-  // });
-
-  // =================================================================
-  // =================================================================
-
-  // // METHOD 3
-  // // multer-pdf-file-download
-  // // createReadStream method
-  // // There is also createWriteStream method!
-  // // This method is useful not to overflow the server if the pdf file is too big
-  // // This method will download the file step by step, it will load in chunks
-
-  // try {
-  //   const file = fs.createReadStream(invoiceFilePath);
-
-  //   res.setHeader("Content-Type", "application/pdf");
-
-  //   // This is supposed to open up a prompt to ask us to download file.
-  //   // Only does that in Chrome and not Firefox in case download options changed.
-  //   // This will try to save the pdf to local drive no matter what the
-  //   // browser option is
-  //   res.setHeader(
-  //     "Content-Disposition",
-  //     "attachment; filename=" + invoiceFile
-  //   );
-
-  //   file.pipe(res);
-  // } catch (err) {
-  //   console.error(err);
-  //   next(err);
-  // }
+  
 };

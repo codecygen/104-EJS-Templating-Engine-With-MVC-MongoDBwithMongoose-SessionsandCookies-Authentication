@@ -882,12 +882,12 @@ a static path is needed where application has to find uploads and then treats up
 
 ```
 
-7. If you want your clients to download a PDF invoice file whenever they need, refer to the keyword **multer-pdf-file-download**.
+7. If you want your clients to download a static PDF file whenever they need, refer to the keyword **multer-static-content-pdf-file-download**. Remember, the content of the PDF is static in this case. If you want pdf to be changed dynamically refer to the next step.
 
 ```javascript
 // route
 
-// multer-pdf-file-download
+// multer-static-content-pdf-file-download
 router.get(
   "/orders/:orderId",
   isLoggedIn,
@@ -932,7 +932,7 @@ Finally,
 ```javascript
 // shopController.getInvoice
 
-// multer-pdf-file-download
+// multer-static-content-pdf-file-download
 exports.getInvoice = async (req, res, next) => {
   const invoiceFile = `${req.params.orderId}.pdf`;
 
@@ -947,7 +947,7 @@ exports.getInvoice = async (req, res, next) => {
   // =================================================================
 
   // METHOD 1
-  // multer-pdf-file-download
+  // multer-static-content-pdf-file-download
   // readFileSync() method
   // This internally use streaming data as well like METHOD 3. Use this
   // or use METHOD 2 instead.
@@ -988,7 +988,7 @@ exports.getInvoice = async (req, res, next) => {
   // =================================================================
 
   // // METHOD 2
-  // // multer-pdf-file-download
+  // // multer-static-content-pdf-file-download
   // // readFile() method
   // // This internally use streaming data as well like METHOD 3. Use this
   // // or use METHOD 1 instead.
@@ -1025,7 +1025,7 @@ exports.getInvoice = async (req, res, next) => {
   // =================================================================
 
   // // METHOD 3
-  // // multer-pdf-file-download
+  // // multer-static-content-pdf-file-download
   // // createReadStream method
   // // There is also createWriteStream method!
   // // This method is useful not to overflow the server if the pdf file is too big
@@ -1050,5 +1050,28 @@ exports.getInvoice = async (req, res, next) => {
   //   console.error(err);
   //   next(err);
   // }
+};
+```
+
+8. If you want to create a PDF file dynamically, such as an invoice, you need that pdf to be created dynamically as per content of the order. To do it, you need to install an npm package called **pdfkit**. Refer to the keyword **multer-dynamic-content-pdf-file-download**. Remember, the content of the PDF is dynamic in this case. If you want pdf to stay static refer to the previous step. Here, everything will be same as keyword **multer-static-content-pdf-file-download** except for the **getInvoice** function content.
+
+```javascript
+// multer-dynamic-content-pdf-file-download
+const PDFDocument = require("pdfkit");
+
+........
+
+// multer-dynamic-content-pdf-file-download
+exports.getInvoice = async (req, res, next) => {
+  const invoiceFile = `${req.params.orderId}.pdf`;
+
+  const invoiceFilePath = path.join(
+    path.dirname(require.main.filename),
+    "data",
+    "invoices",
+    invoiceFile
+  );
+
+  
 };
 ```

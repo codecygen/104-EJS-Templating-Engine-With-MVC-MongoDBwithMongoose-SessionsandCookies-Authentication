@@ -30,7 +30,7 @@ router.post("/cart-delete-item", isLoggedIn, shopController.postDeleteCartItem);
 router.get("/orders", isLoggedIn, shopController.getOrders);
 router.post("/orders", isLoggedIn, shopController.orderCart);
 
-// multer-pdf-file-download
+// multer-static-content-pdf-file-download
 router.get(
   "/orders/:orderId",
   isLoggedIn,
