@@ -297,9 +297,28 @@ exports.getInvoice = async (req, res, next) => {
     invoiceFile
   );
 
-  const pdfDoc = new PDFDocument()
+  const pdfDoc = new PDFDocument();
+
+  // This allows pdf to open on browser
+  res.setHeader("Content-Type", "application/pdf");
+
+  // This will open up the link as a pdf file
+  // http://localhost:3000/orders/invoice-6555245e4ca34d19e71dc13a-1
+  res.setHeader("Content-Disposition", "inline");
+
+  // // This is supposed to open up a prompt to ask us to download file.
+  // // Only does that in Chrome and not Firefox in case download options changed.
+  // // This will try to save the pdf to local drive no matter what the
+  // // browser option is
+  // res.setHeader(
+  //   "Content-Disposition",
+  //   "attachment; filename=" + invoiceFile
+  // );
+
   pdfDoc.pipe(fs.createWriteStream(invoiceFilePath));
   pdfDoc.pipe(res);
 
-  pdfDoc.text("Hello World!")
+  pdfDoc.text("Hello World!");
+
+  pdfDoc.end();
 };
