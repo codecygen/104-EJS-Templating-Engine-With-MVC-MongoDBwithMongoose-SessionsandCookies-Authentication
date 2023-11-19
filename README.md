@@ -883,3 +883,125 @@ a static path is needed where application has to find uploads and then treats up
 ```
 
 - 7. If you want your clients to download a pdf invoice file whenever they need, refer to the keyword **multer-pdf-file-download**.
+
+```javascript
+// route
+
+// multer-pdf-file-download
+router.get(
+  "/orders/:orderId",
+  isLoggedIn,
+  isLoggedInTheInvoiceOwner,
+  shopController.getInvoice
+);
+```
+
+```javascript
+// isLoggedInTheInvoiceOwner
+
+// multer-pdf-file-download
+const isLoggedInTheInvoiceOwner = (req, res, next) => {
+  const requestedFileOwnerId = req.params.orderId.split("-")[1];
+  const loggedInUserId = req.session.userId.toString();
+
+  if (!loggedInUserId || !requestedFileOwnerId) {
+    const err = new Error(
+      "Invalid Request: Missing file owner id or not logged in"
+    );
+
+    err.httpStatusCode = 401;
+    return next(err);
+  }
+
+  if (loggedInUserId === requestedFileOwnerId) {
+    return next();
+  } else {
+
+    const err = new Error(
+      "Invalid Request: Unauthorized file access!"
+    );
+
+    err.httpStatusCode = 401;
+    return next(err);
+  }
+};
+```
+
+Finally,
+
+```javascript
+// shopController.getInvoice
+
+// multer-pdf-file-download
+exports.getInvoice = async (req, res, next) => {
+  const invoiceFile = `${req.params.orderId}.pdf`;
+
+  const invoiceFilePath = path.join(
+    path.dirname(require.main.filename),
+    "data",
+    "invoices",
+    invoiceFile
+  );
+
+  try {
+    const data = fs.readFileSync(invoiceFilePath);
+
+    // This allows pdf to open on browser
+    res.setHeader("Content-Type", "application/pdf");
+
+    // This will open up the link as a pdf file
+    // http://localhost:3000/orders/invoice-6555245e4ca34d19e71dc13a-1
+    res.setHeader("Content-Disposition", "inline");
+
+    // // This is supposed to open up a prompt to ask us to download file.
+    // // Only does that in Chrome and not Firefox in case download options changed.
+    // // This will try to save the pdf to local drive no matter what the
+    // // browser option is
+    // res.setHeader(
+    //   "Content-Disposition",
+    //   "attachment; filename=" + invoiceFile
+    // );
+
+    res.send(data);
+
+    // ================
+    // INSTEAD
+    // DO THIS ONLY
+    // ================
+
+    // res.download(invoiceFilePath);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+
+  // // Alternatively
+  // fs.readFile(invoiceFilePath, (err, data) => {
+  //   if (err) {
+  //     next(err);
+  //   }
+
+  //   // This will open up the link as a pdf file
+  //   // http://localhost:3000/orders/invoice-6555245e4ca34d19e71dc13a-1
+  //   res.setHeader("Content-Disposition", "inline");
+
+  //   // // This is supposed to open up a prompt to ask us to download file.
+  //   // // Only does that in Chrome and not Firefox in case download options changed.
+  //   // // This will try to save the pdf to local drive no matter what the
+  //   // // browser option is
+  //   // res.setHeader(
+  //   //   "Content-Disposition",
+  //   //   "attachment; filename=" + invoiceFile
+  //   // );
+
+  //   res.send(data);
+
+  //   // ================
+  //   // INSTEAD
+  //   // DO THIS ONLY
+  //   // ================
+
+  //   // res.download(invoiceFilePath);
+  // });
+};
+```
