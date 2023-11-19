@@ -681,9 +681,9 @@ If you accidentally click the link on the malicious website, since that form's c
 
 **Multer-File-Upload-Download** is the keyword for this section.
 
-1. Install the npm package **multer**.
+1. **INSTALLING multer PACKAGE**: Install the npm package **multer**.
 
-2. Add **enctype="multipart/form-data"** to the form where you also want to submit a file.
+2. **multer CONFIGURATION FOR IMAGE AND PDF FILES - 1**: Add **enctype="multipart/form-data"** to the form where you also want to submit a file.
 
 ```javascript
 <form
@@ -696,7 +696,7 @@ If you accidentally click the link on the malicious website, since that form's c
 </form>
 ```
 
-3. Configure **multer** package in routing file **adminRoute.js** as a middleware.
+3. **multer CONFIGURATION FOR IMAGE AND PDF FILES - 2**: Configure **multer** package in routing file **adminRoute.js** as a middleware.
 
 ```javascript
 .....
@@ -754,7 +754,7 @@ router.post(
 );
 ```
 
-4. Then, in the controller file which is **adminController.postAddProduct** for this case, the submitted file will be available in **req.file**.
+4. **req.file.path TO GET IMAGE LOCATION**: Then, in the controller file which is **adminController.postAddProduct** for this case, the submitted file will be available in **req.file**.
 
 ```javascript
 exports.postAddProduct = async (req, res, next) => {
@@ -802,7 +802,7 @@ the console.log for newProduct.productImg will give something like this
 }
 ```
 
-5. We should also have an error page to handle errors related to the case where file size gets exceeded.
+5. **EXCESSIVE IMAGE SIZE - ERROR SHOWING**: We should also have an error page to handle errors related to the case where file size gets exceeded.
 
 ```javascript
 // Multer-File-Upload-Download
@@ -829,7 +829,7 @@ const errorPageMiddleware = (err, req, res, next) => {
 module.exports = errorPageMiddleware;
 ```
 
-6. Finally, when the image file gets uploaded, it has to be shown properly in img tags. Since the console.log for newProduct.productImg will give something like this
+6. **<img> TAG SETTING src PROPERTY**: Finally, when the image file gets uploaded, it has to be shown properly in img tags. Since the console.log for newProduct.productImg will give something like this
 
 ```javascript
 {
@@ -882,7 +882,7 @@ a static path is needed where application has to find uploads and then treats up
 
 ```
 
-7. If you want your clients to download a static PDF file whenever they need, refer to the keyword **multer-static-content-pdf-file-download**. Remember, the content of the PDF is static in this case. If you want pdf to be changed dynamically refer to the next step.
+7. **STATIC PDF FILE DOWNLOAD**: If you want your clients to download a static PDF file whenever they need, refer to the keyword **multer-static-content-pdf-file-download**. Remember, the content of the PDF is static in this case. If you want pdf to be changed dynamically refer to the next step.
 
 ```javascript
 // route
@@ -1053,7 +1053,7 @@ exports.getInvoice = async (req, res, next) => {
 };
 ```
 
-8. If you want to create a PDF file dynamically, such as an invoice, you need that pdf to be created dynamically as per content of the order. To do it, you need to install an npm package called **pdfkit**. Refer to the keyword **multer-dynamic-content-pdf-file-download**. Remember, the content of the PDF is dynamic in this case. If you want pdf to stay static refer to the previous step. Here, everything will be same as keyword **multer-static-content-pdf-file-download** except for the **getInvoice** function content.
+8. **DYNAMIC PDF FILE DOWNLOAD**: If you want to create a PDF file dynamically, such as an invoice, you need that pdf to be created dynamically as per content of the order. To do it, you need to install an npm package called **pdfkit**. Refer to the keyword **multer-dynamic-content-pdf-file-download**. Remember, the content of the PDF is dynamic in this case. If you want pdf to stay static refer to the previous step. Here, everything will be same as keyword **multer-static-content-pdf-file-download** except for the **getInvoice** function content.
 
 ```javascript
 // multer-dynamic-content-pdf-file-download
@@ -1072,6 +1072,5 @@ exports.getInvoice = async (req, res, next) => {
     invoiceFile
   );
 
-  
 };
 ```

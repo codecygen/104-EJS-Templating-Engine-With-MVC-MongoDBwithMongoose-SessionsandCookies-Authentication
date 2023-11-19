@@ -297,5 +297,9 @@ exports.getInvoice = async (req, res, next) => {
     invoiceFile
   );
 
-  
+  const pdfDoc = new PDFDocument()
+  pdfDoc.pipe(fs.createWriteStream(invoiceFilePath));
+  pdfDoc.pipe(res);
+
+  pdfDoc.text("Hello World!")
 };
