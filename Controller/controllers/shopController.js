@@ -174,6 +174,14 @@ exports.getInvoice = async (req, res, next) => {
     invoiceFile
   );
 
+  // =================================================================
+  // =================================================================
+
+  // METHOD 1
+  // readFileSync() method
+  // This internally use streaming data as well like METHOD 3. Use this
+  // or use METHOD 2 instead.
+
   try {
     const data = fs.readFileSync(invoiceFilePath);
 
@@ -206,7 +214,14 @@ exports.getInvoice = async (req, res, next) => {
     next(err);
   }
 
-  // // Alternatively
+  // =================================================================
+  // =================================================================
+
+  // // METHOD 2
+  // // readFile() method
+  // // This internally use streaming data as well like METHOD 3. Use this
+  // // or use METHOD 1 instead.
+
   // fs.readFile(invoiceFilePath, (err, data) => {
   //   if (err) {
   //     next(err);
@@ -234,4 +249,33 @@ exports.getInvoice = async (req, res, next) => {
 
   //   // res.download(invoiceFilePath);
   // });
+
+  // =================================================================
+  // =================================================================
+
+  // // METHOD 3
+  // // createReadStream method
+  // // There is also createWriteStream method!
+  // // This method is useful not to overflow the server if the pdf file is too big
+  // // This method will download the file step by step, it will load in chunks
+
+  // try {
+  //   const file = fs.createReadStream(invoiceFilePath);
+
+  //   res.setHeader("Content-Type", "application/pdf");
+
+  //   // This is supposed to open up a prompt to ask us to download file.
+  //   // Only does that in Chrome and not Firefox in case download options changed.
+  //   // This will try to save the pdf to local drive no matter what the
+  //   // browser option is
+  //   res.setHeader(
+  //     "Content-Disposition",
+  //     "attachment; filename=" + invoiceFile
+  //   );
+
+  //   file.pipe(res);
+  // } catch (err) {
+  //   console.error(err);
+  //   next(err);
+  // }
 };
