@@ -166,9 +166,13 @@ exports.orderCart = async (req, res, next) => {
   res.redirect("/orders");
 };
 
+// ========================================================
+// ================= STATIC PDF CREATION =================
+// ========================================================
+
 // // multer-static-content-pdf-file-download
 // exports.getInvoice = async (req, res, next) => {
-//   const invoiceFile = `${req.params.orderId}.pdf`;
+//   const invoiceFile = `static-${req.params.orderId}.pdf`;
 
 //   const invoiceFilePath = path.join(
 //     path.dirname(require.main.filename),
@@ -286,9 +290,13 @@ exports.orderCart = async (req, res, next) => {
 //   // }
 // };
 
+// ========================================================
+// ================= DYNAMIC PDF CREATION =================
+// ========================================================
+
 // multer-dynamic-content-pdf-file-download
 exports.getInvoice = async (req, res, next) => {
-  const invoiceFile = `${req.params.orderId}.pdf`;
+  const invoiceFile = `dynamic-${req.params.orderId}.pdf`;
 
   const invoiceFilePath = path.join(
     path.dirname(require.main.filename),
@@ -318,7 +326,7 @@ exports.getInvoice = async (req, res, next) => {
   pdfDoc.pipe(fs.createWriteStream(invoiceFilePath));
   pdfDoc.pipe(res);
 
-  pdfDoc.text("Hello World!");
+  pdfDoc.text("Lmao!");
 
   pdfDoc.end();
 };
