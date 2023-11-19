@@ -496,7 +496,7 @@ router.get("/products", isLoggedIn, shopController.getProducts);
 
 A Cross-Site Request Forgery (CSRF) attack is a type of security exploit where an attacker tricks a user's web browser into making an unintended and unauthorized request to a different website on which the user is authenticated. This can lead to actions being taken on the user's behalf without their consent or knowledge. To prevent CSRF attacks, websites use tokens that validate the origin of the request, ensuring it comes from a trusted source.
 
-- 1. Create the CSRF token when user successfully signs in and save it to MongoDB. The keyword is **CSRF-Attacks-Prevention**.
+1. Create the CSRF token when user successfully signs in and save it to MongoDB. The keyword is **CSRF-Attacks-Prevention**.
 
 ```javascript
 exports.postLoginPage = async (req, res, next) => {
@@ -541,7 +541,7 @@ exports.postLoginPage = async (req, res, next) => {
 };
 ```
 
-- 2. Send CSRF token to the front end with a controller function and also embed the CSRF token to a hidden input in forms. The keyword is **CSRF-Attacks-Prevention**.
+2. Send CSRF token to the front end with a controller function and also embed the CSRF token to a hidden input in forms. The keyword is **CSRF-Attacks-Prevention**.
 
 ```javascript
 // Controller function
@@ -607,7 +607,7 @@ Then the cart form should look like this
 </html>
 ```
 
-- 3. Finally ask for the CSRF token in form submission controller functions aka post methods. The keyword is **CSRF-Attacks-Prevention**.
+3. Finally ask for the CSRF token in form submission controller functions aka post methods. The keyword is **CSRF-Attacks-Prevention**.
 
 ```javascript
 exports.postCart = async (req, res, next) => {
@@ -647,7 +647,7 @@ const checkCsrfToken = (clientCsrfToken, serverCsrfToken) => {
 module.exports = checkCsrfToken;
 ```
 
-- 4. Finally the CSRF attack website content could be like this;
+4. Finally the CSRF attack website content could be like this;
 
 ```HTML
 <!DOCTYPE html>
@@ -675,15 +675,15 @@ module.exports = checkCsrfToken;
 
 If you accidentally click the link on the malicious website, since that form's csrf value is not going to match the csrf value that is coming from the server, server will not handle the request and add the item to the cart.
 
-- 5. Keep in mind that CSRF token is only important for post methods that are going to change something critical with the user like sending money, changing address etc. Login and Signup pages won't need a CSRF token.
+5. Keep in mind that CSRF token is only important for post methods that are going to change something critical with the user like sending money, changing address etc. Login and Signup pages won't need a CSRF token.
 
 # File Upload and Download
 
 **Multer-File-Upload-Download** is the keyword for this section.
 
-- 1. Install the npm package **multer**.
+1. Install the npm package **multer**.
 
-- 2. Add **enctype="multipart/form-data"** to the form where you also want to submit a file.
+2. Add **enctype="multipart/form-data"** to the form where you also want to submit a file.
 
 ```javascript
 <form
@@ -696,7 +696,7 @@ If you accidentally click the link on the malicious website, since that form's c
 </form>
 ```
 
-- 3. Configure **multer** package in routing file **adminRoute.js** as a middleware.
+3. Configure **multer** package in routing file **adminRoute.js** as a middleware.
 
 ```javascript
 .....
@@ -754,7 +754,7 @@ router.post(
 );
 ```
 
-- 4. Then, in the controller file which is **adminController.postAddProduct** for this case, the submitted file will be available in **req.file**.
+4. Then, in the controller file which is **adminController.postAddProduct** for this case, the submitted file will be available in **req.file**.
 
 ```javascript
 exports.postAddProduct = async (req, res, next) => {
@@ -802,7 +802,7 @@ the console.log for newProduct.productImg will give something like this
 }
 ```
 
-- 5. We should also have an error page to handle errors related to the case where file size gets exceeded.
+5. We should also have an error page to handle errors related to the case where file size gets exceeded.
 
 ```javascript
 // Multer-File-Upload-Download
@@ -829,7 +829,7 @@ const errorPageMiddleware = (err, req, res, next) => {
 module.exports = errorPageMiddleware;
 ```
 
-- 6. Finally, when the image file gets uploaded, it has to be shown properly in img tags. Since the console.log for newProduct.productImg will give something like this
+6. Finally, when the image file gets uploaded, it has to be shown properly in img tags. Since the console.log for newProduct.productImg will give something like this
 
 ```javascript
 {
@@ -882,7 +882,7 @@ a static path is needed where application has to find uploads and then treats up
 
 ```
 
-- 7. If you want your clients to download a PDF invoice file whenever they need, refer to the keyword **multer-pdf-file-download**.
+7. If you want your clients to download a PDF invoice file whenever they need, refer to the keyword **multer-pdf-file-download**.
 
 ```javascript
 // route
