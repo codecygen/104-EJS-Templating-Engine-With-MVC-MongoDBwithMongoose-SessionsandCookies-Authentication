@@ -882,7 +882,7 @@ a static path is needed where application has to find uploads and then treats up
 
 ```
 
-- 7. If you want your clients to download a pdf invoice file whenever they need, refer to the keyword **multer-pdf-file-download**.
+- 7. If you want your clients to download a PDF invoice file whenever they need, refer to the keyword **multer-pdf-file-download**.
 
 ```javascript
 // route
