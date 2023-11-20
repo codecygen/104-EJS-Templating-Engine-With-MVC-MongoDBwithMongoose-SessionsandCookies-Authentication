@@ -326,6 +326,12 @@ exports.getInvoice = async (req, res, next) => {
   pdfDoc.pipe(fs.createWriteStream(invoiceFilePath));
   pdfDoc.pipe(res);
 
+  const loggedInUser = res.locals.selectedUser;
+  const orderList = await dbOrderOperation.getOrders(loggedInUser);
+  const orderIndex = req.params.orderId.split("-")[2] - 1;
+
+  console.log(orderList[orderIndex]);
+
   pdfDoc.text("Lmao!");
 
   pdfDoc.end();
