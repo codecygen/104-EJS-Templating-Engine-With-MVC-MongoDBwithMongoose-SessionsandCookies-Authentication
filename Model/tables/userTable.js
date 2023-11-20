@@ -31,6 +31,31 @@ const userSchema = new mongoose.Schema(
           required: true,
         },
 
+        productName: {
+          type: String,
+          required: true,
+        },
+
+        productDesc: {
+          type: String,
+          required: true,
+        },
+
+        productPrice: {
+          type: Number,
+          required: true,
+        },
+
+        productImg: {
+          type: String,
+          required: true,
+        },
+
+        adminId: {
+          type: mongoose.Types.ObjectId,
+          required: true,
+        },
+
         qty: {
           type: Number,
           required: true,
@@ -131,7 +156,10 @@ userSchema.statics.updateCart = async function (currentUser, addedProduct) {
 
   // If not cart, add new line
   if (!isInCart) {
-    currentUser.userCart.push({ _id: addedProduct._id, qty: 1 });
+    currentUser.userCart.push({
+      ...addedProduct._doc,
+      qty: 1,
+    });
 
     try {
       const updateCart = await currentUser.save();
