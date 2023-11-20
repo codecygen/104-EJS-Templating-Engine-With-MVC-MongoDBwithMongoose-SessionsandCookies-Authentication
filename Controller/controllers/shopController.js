@@ -305,6 +305,11 @@ exports.getInvoice = async (req, res, next) => {
     invoiceFile
   );
 
+  // Send file if it already exists!
+  if(fs.existsSync(invoiceFilePath)) {
+    return res.sendFile(invoiceFilePath);
+  }
+
   const pdfDoc = new PDFDocument();
 
   // This allows pdf to open on browser
