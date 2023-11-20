@@ -329,10 +329,22 @@ exports.getInvoice = async (req, res, next) => {
   const loggedInUser = res.locals.selectedUser;
   const orderList = await dbOrderOperation.getOrders(loggedInUser);
   const orderIndex = req.params.orderId.split("-")[2] - 1;
+  const orderSpecificProducts = orderList[orderIndex];
+  let totalPrice = 0;
 
-  console.log(orderList[orderIndex]);
+  pdfDoc.fontSize(26).text("Invoice", { underline: true });
+  pdfDoc.fontSize(16).text("______________________");
 
-  pdfDoc.text("Lmao!");
+  orderSpecificProducts.forEach((product) => {
+    pdfDoc.text(
+      `${product.productName} - ${product.qty} x $${product.productPrice}`
+    );
+    totalPrice += product.qty * product.productPrice;
+  });
+
+  pdfDoc.text("______________________");
+
+  pdfDoc.fontSize(20).text(`Total Price: $${totalPrice}`);
 
   pdfDoc.end();
 };
