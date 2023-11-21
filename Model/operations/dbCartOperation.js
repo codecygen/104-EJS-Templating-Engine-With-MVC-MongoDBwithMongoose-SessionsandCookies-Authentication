@@ -9,35 +9,23 @@ const addUserAndProductToCart = async (currentUser, addedProduct) => {
 const getCartProducts = async (currentUser) => {
   const foundUser = await dbAdminOperation.getOneUser(currentUser._id);
 
-  const userCartDB = foundUser.userCart;
+  const allCartItems = foundUser.userCart;
   let totalPrice = 0;
 
-  if (!userCartDB) {
+  if (!allCartItems) {
     // return [allCartItems, totalPrice, userTable.userCart];
     return [[], 0, []];
   }
 
-  const allCartItems = await Promise.all(
-    userCartDB.map(async (cartItem) => {
-      const productDetails = await dbProductOperation.getOneProduct(
-        cartItem._id
-      );
-      return { ...productDetails._doc, productQty: cartItem.qty };
-    })
-  );
-
   allCartItems.forEach((item) => {
-    totalPrice += item.productPrice * item.productQty;
+    totalPrice += item.productPrice * item.qty;
   });
 
-  return [allCartItems, totalPrice, userCartDB];
+  return [allCartItems, totalPrice];
 };
 
 const deleteCartProduct = async (currentUser, deletedProductId) => {
-  await Tables.UserTable.removeCartItem(
-    currentUser.userId,
-    deletedProductId
-  );
+  await Tables.UserTable.removeCartItem(currentUser.userId, deletedProductId);
 };
 
 module.exports = {

@@ -55,7 +55,7 @@ exports.getIndex = async (req, res, next) => {
 exports.getCart = async (req, res, next) => {
   const currentUser = await dbAdminOperation.getOneUser(req.session.userId);
 
-  const [cartProductList, cartTotalPrice, userCartDB] =
+  const [cartProductList, cartTotalPrice] =
     await dbCartOperation.getCartProducts(currentUser);
 
   res.render("cart", {
