@@ -46,11 +46,6 @@ const userSchema = new mongoose.Schema(
           required: true,
         },
 
-        productImg: {
-          type: String,
-          required: true,
-        },
-
         adminId: {
           type: mongoose.Types.ObjectId,
           required: true,
@@ -184,8 +179,11 @@ userSchema.statics.updateCart = async function (currentUser, addedProduct) {
   // If in cart, increase the quantity
   try {
     const addToCart = await this.updateOne(
+      // here we don't need userCart.$._id at this stage
       { _id: currentUser._id, "userCart._id": addedProduct._id },
+      // with inc option userCart[1, 2, 3 whatever].qty will be increased by 1
       { $inc: { "userCart.$.qty": 1 } },
+      // with this option, updated document will be returned
       { new: true }
     );
   } catch (err) {
