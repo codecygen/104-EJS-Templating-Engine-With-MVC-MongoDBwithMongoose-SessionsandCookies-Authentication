@@ -9,19 +9,25 @@ const addUserAndProductToCart = async (currentUser, addedProduct) => {
 const getCartProducts = async (currentUser) => {
   const foundUser = await dbAdminOperation.getOneUser(currentUser._id);
 
-  const allCartItems = foundUser.userCart;
+  const allUserCartItems = foundUser.userCart;
   let totalPrice = 0;
 
-  if (!allCartItems) {
+  if (!allUserCartItems) {
     // return [allCartItems, totalPrice, userTable.userCart];
     return [[], 0, []];
   }
 
-  allCartItems.forEach((item) => {
+  allUserCartItems.forEach((item) => {
     totalPrice += item.productPrice * item.qty;
   });
 
-  return [allCartItems, totalPrice];
+  const allValidProducts = await dbProductOperation.getAllProducts();
+
+  console.log(allUserCartItems);
+  console.log("HEY!");
+  console.log(allValidProducts);
+
+  return [allUserCartItems, totalPrice];
 };
 
 const deleteCartProduct = async (currentUser, deletedProductId) => {
