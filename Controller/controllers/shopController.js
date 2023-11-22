@@ -163,7 +163,7 @@ exports.orderCart = async (req, res, next) => {
   const loggedInUser = res.locals.selectedUser;
   await dbOrderOperation.postCartToOrders(loggedInUser);
 
-  res.redirect("/cart");
+  res.redirect("/orders");
 };
 
 // ========================================================

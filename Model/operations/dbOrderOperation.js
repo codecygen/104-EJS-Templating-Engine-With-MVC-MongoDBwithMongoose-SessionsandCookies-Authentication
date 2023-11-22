@@ -9,18 +9,27 @@ const getOrders = async (currentUser) => {
   let detailedOrderList = [];
 
   for (order of productIdsAndQty) {
-    const modifiedOrder = await Promise.all(order.map(async (product) => {
-      const productDetails = await dbProductOperation.getOneProduct(
-        product.productId
-      );
+    const modifiedOrder = await Promise.all(
+      order.map(async (product) => {
+        const productDetails = await dbProductOperation.getOneProduct(
+          product.productId
+        );
 
+        return {
+          ...productDetails,
+          qty: product.qty,
+        };
+      })
+    );
+
+    const orderDetails = modifiedOrder.map((order) => {
       return {
-        ...productDetails._doc,
-        qty: product.qty,
+        ...order._doc,
+        qty: order.qty
       };
-    }));
+    });
 
-    detailedOrderList.push(modifiedOrder);
+    detailedOrderList.push(orderDetails);
   }
 
   return detailedOrderList;
@@ -38,7 +47,7 @@ const postCartToOrders = async (currentUser) => {
   const adjustedCartItems = foundCartItems.map((item) => {
     return { productId: item._id, qty: item.qty };
   });
-  
+
   await Tables.OrderTable.saveOrder(adjustedCartItems, foundUser._id);
 };
 
