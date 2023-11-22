@@ -17,15 +17,32 @@ const getCartProducts = async (currentUser) => {
     return [[], 0, []];
   }
 
+  for (const [index, cartItem] of allUserCartItems.entries()) {
+    // Try to find the specific cart item in products db
+    const dbItem = await dbProductOperation.getOneProduct(cartItem._id);
+
+    // Remove the specific user cart item if it is deleted from database
+    if (!dbItem) {
+      allUserCartItems.splice(index, 1);
+      continue;
+    }
+
+    if (cartItem.productName !== dbItem.productName) {
+      cartItem.productName = dbItem.productName;
+    }
+
+    if (cartItem.productDesc !== dbItem.productDesc) {
+      cartItem.productDesc = dbItem.productDesc;
+    }
+
+    if (cartItem.productPrice !== dbItem.productPrice) {
+      cartItem.productPrice = dbItem.productPrice;
+    }
+  }
+
   allUserCartItems.forEach((item) => {
     totalPrice += item.productPrice * item.qty;
   });
-
-  const allValidProducts = await dbProductOperation.getAllProducts();
-
-  console.log(allUserCartItems);
-  console.log("HEY!");
-  console.log(allValidProducts);
 
   return [allUserCartItems, totalPrice];
 };
