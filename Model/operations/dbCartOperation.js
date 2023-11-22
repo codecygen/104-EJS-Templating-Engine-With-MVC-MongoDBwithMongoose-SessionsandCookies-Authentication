@@ -44,6 +44,9 @@ const getCartProducts = async (currentUser) => {
     totalPrice += item.productPrice * item.qty;
   });
 
+  foundUser.userCart = allUserCartItems;
+  await foundUser.save();
+
   return [allUserCartItems, totalPrice];
 };
 
