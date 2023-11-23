@@ -179,13 +179,6 @@ exports.postEditProduct = async (req, res, next) => {
   const dbProductData = await dbProductOperation.getOneProduct(productId);
   oldImgFilePath = dbProductData.productImg;
 
-  // delete old image file
-  fs.unlink(oldImgFilePath, (err) => {
-    if (err) {
-      console.error(err);
-    }
-  });
-
   const updatedProduct = {
     _id: productId,
     productName: req.body.newProductName,
@@ -238,6 +231,13 @@ exports.postEditProduct = async (req, res, next) => {
 
   await dbProductOperation.updateOneProduct(updatedProduct);
 
+  // delete old image file
+  fs.unlink(oldImgFilePath, (err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
   res.redirect("/");
 };
 
@@ -255,7 +255,17 @@ exports.postDeleteProduct = async (req, res, next) => {
 
   const deletedId = req.body.productId;
 
+  const dbProductData = await dbProductOperation.getOneProduct(deletedId);
+  oldImgFilePath = dbProductData.productImg;
+
   await dbProductOperation.deleteOneProduct(deletedId);
+
+  // delete old image file
+  fs.unlink(oldImgFilePath, (err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
 
   res.redirect("/admin/products");
 };
