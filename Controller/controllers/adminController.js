@@ -232,6 +232,7 @@ exports.postEditProduct = async (req, res, next) => {
   await dbProductOperation.updateOneProduct(updatedProduct);
 
   // delete old image file
+  // File-Deleting-fs.unlink
   fs.unlink(oldImgFilePath, (err) => {
     if (err) {
       console.error(err);
@@ -261,6 +262,7 @@ exports.postDeleteProduct = async (req, res, next) => {
   await dbProductOperation.deleteOneProduct(deletedId);
 
   // delete old image file
+  // File-Deleting-fs.unlink
   fs.unlink(oldImgFilePath, (err) => {
     if (err) {
       console.error(err);
