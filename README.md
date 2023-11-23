@@ -1121,3 +1121,5 @@ exports.getInvoice = async (req, res, next) => {
   pdfDoc.end();
 };
 ```
+
+9. **PAGINATION**: In this section I will cover pagination and I will use "/blog" page for this purpose

@@ -165,7 +165,7 @@ exports.orderCart = async (req, res, next) => {
   // Updates user cart if there is any update in the actual product
   const currentUser = await dbAdminOperation.getOneUser(req.session.userId);
   const [cartProductList, cartTotalPrice] =
-  await dbCartOperation.getCartProducts(currentUser);
+    await dbCartOperation.getCartProducts(currentUser);
 
   // Posts cart to the /orders page
   await dbOrderOperation.postCartToOrders(loggedInUser);
@@ -313,7 +313,7 @@ exports.getInvoice = async (req, res, next) => {
   );
 
   // Send file if it already exists!
-  if(fs.existsSync(invoiceFilePath)) {
+  if (fs.existsSync(invoiceFilePath)) {
     return res.sendFile(invoiceFilePath);
   }
 
@@ -359,4 +359,12 @@ exports.getInvoice = async (req, res, next) => {
   pdfDoc.fontSize(20).text(`Total Price: $${totalPrice}`);
 
   pdfDoc.end();
+};
+
+exports.getBlogPage = async (req, res, next) => {
+
+  return res.render("blog", {
+    pagePath: "/blog",
+    renderTitle: "Blog Posts",
+  });
 };
