@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const dbProductOperation = require("../../Model/operations/dbProductOperation");
 const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 
@@ -173,6 +175,16 @@ exports.postEditProduct = async (req, res, next) => {
   }
 
   const productId = req.body.productId;
+
+  const dbProductData = await dbProductOperation.getOneProduct(productId);
+  oldImgFilePath = dbProductData.productImg;
+
+  // delete old image file
+  fs.unlink(oldImgFilePath, (err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
 
   const updatedProduct = {
     _id: productId,
