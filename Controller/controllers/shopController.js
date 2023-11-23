@@ -161,6 +161,13 @@ exports.orderCart = async (req, res, next) => {
   }
 
   const loggedInUser = res.locals.selectedUser;
+
+  // Updates user cart if there is any update in the actual product
+  const currentUser = await dbAdminOperation.getOneUser(req.session.userId);
+  const [cartProductList, cartTotalPrice] =
+  await dbCartOperation.getCartProducts(currentUser);
+
+  // Posts cart to the /orders page
   await dbOrderOperation.postCartToOrders(loggedInUser);
 
   res.redirect("/orders");
