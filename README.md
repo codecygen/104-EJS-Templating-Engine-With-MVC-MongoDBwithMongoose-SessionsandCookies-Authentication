@@ -1063,7 +1063,7 @@ const PDFDocument = require("pdfkit");
 
 // multer-dynamic-content-pdf-file-download
 exports.getInvoice = async (req, res, next) => {
-  const invoiceFile = `${req.params.orderId}.pdf`;
+  const invoiceFile = `dynamic-${req.params.orderId}.pdf`;
 
   const invoiceFilePath = path.join(
     path.dirname(require.main.filename),
@@ -1072,5 +1072,52 @@ exports.getInvoice = async (req, res, next) => {
     invoiceFile
   );
 
+  // Send file if it already exists!
+  if(fs.existsSync(invoiceFilePath)) {
+    return res.sendFile(invoiceFilePath);
+  }
+
+  const pdfDoc = new PDFDocument();
+
+  // This allows pdf to open on browser
+  res.setHeader("Content-Type", "application/pdf");
+
+  // This will open up the link as a pdf file
+  // http://localhost:3000/orders/invoice-6555245e4ca34d19e71dc13a-1
+  res.setHeader("Content-Disposition", "inline");
+
+  // // This is supposed to open up a prompt to ask us to download file.
+  // // Only does that in Chrome and not Firefox in case download options changed.
+  // // This will try to save the pdf to local drive no matter what the
+  // // browser option is
+  // res.setHeader(
+  //   "Content-Disposition",
+  //   "attachment; filename=" + invoiceFile
+  // );
+
+  pdfDoc.pipe(fs.createWriteStream(invoiceFilePath));
+  pdfDoc.pipe(res);
+
+  const loggedInUser = res.locals.selectedUser;
+  const orderList = await dbOrderOperation.getOrders(loggedInUser);
+  const orderIndex = req.params.orderId.split("-")[2] - 1;
+  const orderSpecificProducts = orderList[orderIndex];
+  let totalPrice = 0;
+
+  pdfDoc.fontSize(26).text("Invoice", { underline: true });
+  pdfDoc.fontSize(16).text("______________________");
+
+  orderSpecificProducts.forEach((product) => {
+    pdfDoc.text(
+      `${product.productName} - ${product.qty} x $${product.productPrice}`
+    );
+    totalPrice += product.qty * product.productPrice;
+  });
+
+  pdfDoc.text("______________________");
+
+  pdfDoc.fontSize(20).text(`Total Price: $${totalPrice}`);
+
+  pdfDoc.end();
 };
 ```
