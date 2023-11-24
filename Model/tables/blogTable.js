@@ -54,7 +54,17 @@ blogSchema.statics.autoAddBlogs = async function () {
   ];
 
   try {
-    await this.insertMany(blogData);
+    const result = await this.insertMany(blogData);
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+blogSchema.statics.getAllBlogs = async function () {
+  try {
+    const allBlogs = this.find();
+    return allBlogs;
   } catch (err) {
     console.error(err);
   }

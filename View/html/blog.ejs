@@ -9,8 +9,10 @@
         <a href="?page=2">2</a>
         <a href="?page=3">3</a>
         
-        <h1><%= blogTitle %></h1>
-        <p class="justified"><%= blogContent %></p>
+        <% blogData.forEach(blogPost => { %> 
+            <h1><%= blogPost.blogTitle %></h1>
+            <p class="justified"><%= blogPost.blogContent %></p>
+        <% }); %>
     </main>
 
 </body>
