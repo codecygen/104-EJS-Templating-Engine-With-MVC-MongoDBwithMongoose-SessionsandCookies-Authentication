@@ -8,6 +8,7 @@ const dbProductOperation = require("../../Model/operations/dbProductOperation");
 const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 const dbCartOperation = require("../../Model/operations/dbCartOperation");
 const dbOrderOperation = require("../../Model/operations/dbOrderOperation");
+const dbBlogOperation = require("../../Model/operations/dbBlogOperation")
 
 const checkCsrfToken = require("./utils/checkCsrfToken");
 
@@ -362,6 +363,9 @@ exports.getInvoice = async (req, res, next) => {
 };
 
 exports.getBlogPage = async (req, res, next) => {
+
+  await dbBlogOperation.bulkCreateBlogs();
+
   const blogtitle = "Lorem Ipsum Title";
 
   const blogContent =
