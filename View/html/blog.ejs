@@ -1,11 +1,16 @@
 <%- include('includes/head.ejs') %>
-<link rel="stylesheet" href="/shop/productList.css" />
+<link rel="stylesheet" href="/main.css" >
 </head>
 <body>
     <%- include('includes/nav.ejs') %>
 
-    <main>
-        <p>Blog Page!</p>
+    <main class="centered">
+        <h1><%= blogTitle %></h1>
+        <p class="justified"><%= blogContent %></p>
+
+        <a href="?page=1">1</a>
+        <a href="?page=2">2</a>
+        <a href="?page=3">3</a>
     </main>
 
 </body>
