@@ -5,9 +5,9 @@
     <%- include('includes/nav.ejs') %>
 
     <main class="centered">
-        <a href="?page=1">1</a>
-        <a href="?page=2">2</a>
-        <a href="?page=3">3</a>
+        <% blogData.forEach((blogPost, index) => { %> 
+            <a href="?page=<%= index + 1 %>"><%= index + 1 %></a>
+        <% }); %>
         
         <% blogData.forEach(blogPost => { %> 
             <h1><%= blogPost.blogTitle %></h1>

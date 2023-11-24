@@ -363,6 +363,8 @@ exports.getInvoice = async (req, res, next) => {
 };
 
 exports.getBlogPage = async (req, res, next) => {
+  const pageNumber = req.query.page;
+
   let blogData;
 
   blogData = await dbBlogOperation.getBlogPosts();
@@ -379,5 +381,6 @@ exports.getBlogPage = async (req, res, next) => {
     pagePath: "/blog",
     renderTitle: "Blog Posts",
     blogData: blogData,
+    pageNumber: pageNumber,
   });
 };
