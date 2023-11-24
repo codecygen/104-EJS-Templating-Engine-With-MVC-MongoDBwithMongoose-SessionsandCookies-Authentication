@@ -12,7 +12,14 @@ const getBlogPosts = async () => {
   return blogPosts;
 };
 
+const countBlogPosts = async () => {
+  const dataCount = await Tables.BlogTable.countBlogData();
+
+  return dataCount;
+};
+
 module.exports = {
   bulkCreateBlogs,
   getBlogPosts,
+  countBlogPosts,
 };

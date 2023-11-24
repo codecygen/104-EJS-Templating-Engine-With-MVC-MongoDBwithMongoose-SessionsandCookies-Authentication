@@ -34,3 +34,7 @@ nav {
     background-color: antiquewhite;
     font-size: 20px;
 }
+
+.active-page {
+    background-color: green;
+}

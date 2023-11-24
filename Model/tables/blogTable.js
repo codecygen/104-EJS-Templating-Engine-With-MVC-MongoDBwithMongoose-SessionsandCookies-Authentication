@@ -70,4 +70,13 @@ blogSchema.statics.getAllBlogs = async function () {
   }
 };
 
+blogSchema.statics.countBlogData = async function () {
+  try {
+    const dataCount = await this.countDocuments();
+    return dataCount;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 module.exports = mongoose.model("BlogTable", blogSchema);

@@ -5,9 +5,14 @@
     <%- include('includes/nav.ejs') %>
 
     <main class="centered">
-        <% blogData.forEach((blogPost, index) => { %> 
-            <a href="?page=<%= index + 1 %>"><%= index + 1 %></a>
-        <% }); %>
+        <% for (let i = 1; i <= totalPages; i++ ) { %> 
+            <a 
+                href="?page=<%= i %>" 
+                class="<%= currentPage === i ? 'active-page' : '' %>"
+            >
+                <%= i %>
+            </a>
+        <% } %>
         
         <% blogData.forEach(blogPost => { %> 
             <h1><%= blogPost.blogTitle %></h1>
