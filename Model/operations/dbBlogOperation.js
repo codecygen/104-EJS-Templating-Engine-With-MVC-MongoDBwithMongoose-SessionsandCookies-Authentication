@@ -18,7 +18,7 @@ const countBlogPosts = async () => {
   return dataCount;
 };
 
-// NodeJS-Pagination
+// NodeJS-Mongoose-Pagination
 const getBlogsAsPaginated = async (currentPage, itemsPerPage) => {
   const result = await Tables.BlogTable.getBlogsPaginated(
     currentPage,

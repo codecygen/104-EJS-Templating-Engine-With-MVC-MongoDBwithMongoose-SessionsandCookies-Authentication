@@ -79,13 +79,13 @@ blogSchema.statics.countBlogData = async function () {
   }
 };
 
-// NodeJS-Pagination
+// NodeJS-Mongoose-Pagination
 blogSchema.statics.getBlogsPaginated = async function (
   currentPage,
   itemsPerPage
 ) {
   try {
-    // NodeJS-Pagination
+    // NodeJS-Mongoose-Pagination
     // skip basically skips that many items in database.
     // lets say if you are on page 2 and if you want 5 items per page
     // (2-1)*5, it will skip the first 5 items and then start grabbing

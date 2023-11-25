@@ -380,7 +380,7 @@ exports.getBlogPage = async (req, res, next) => {
     blogData = await dbBlogOperation.bulkCreateBlogs();
   }
 
-  // NodeJS-Pagination
+  // NodeJS-Mongoose-Pagination
   const currentPageBlog = await dbBlogOperation.getBlogsAsPaginated(
     currentPage,
     itemsPerPage

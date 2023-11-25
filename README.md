@@ -1124,16 +1124,16 @@ exports.getInvoice = async (req, res, next) => {
 
 9. **PAGINATION**: In this section I will cover pagination and I will use "/blog" page for this purpose. Blog page will have a querying parameter like "/blog?page=2" which will get that page. In total it will have 5 pages for this example.
 
-The keyword is **NodeJS-Pagination**.
+The keyword is **NodeJS-Mongoose-Pagination**. Other than the snippet down below, there are also files like **shopController.js**, **dbBlogoperation.js**, **blogTable.js**, and **blog.ejs**.
 
 ```javascript
-// NodeJS-Pagination
+// NodeJS-Mongoose-Pagination
 blogSchema.statics.getBlogsPaginated = async function (
   currentPage,
   itemsPerPage
 ) {
   try {
-    // NodeJS-Pagination
+    // NodeJS-Mongoose-Pagination
     // skip basically skips that many items in database.
     // lets say if you are on page 2 and if you want 5 items per page
     // (2-1)*5, it will skip the first 5 items and then start grabbing
