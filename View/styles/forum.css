@@ -1,0 +1,18 @@
+.flex-forum {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    margin: auto;
+}
+
+.flex-forum > * {
+    padding: 10px;
+}
+
+.flex-forum > label {
+    padding: 0;
+}
+
+.flex-forum > input {
+    margin: 10px 0 10px 0;
+}

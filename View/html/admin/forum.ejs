@@ -1,11 +1,27 @@
 <%- include('../includes/head.ejs') %>
-    <link rel="stylesheet" href="/shop/productList.css" />
+    <link rel="stylesheet" href="/forum.css" />
 </head>
 <body>
     <%- include('../includes/nav.ejs') %>
 
     <main>
         <h2 class="centered">Forum Page!</h2>
+        <section class="centered flexbox">
+           
+         <form action="/login" class="flex-forum" method="POST">
+             <label for="username">Username</label>
+                <input type="text" id="username" name="entered-username">
+    
+            <label for="password">Password</label>
+              <input type="password" id="password" name="entered-password">
+    
+             <button class="btn" type="submit">Login</button>
+    
+            <a href="/password_reset">Reset Password</a>
+        </form>
+
+            <div>asdasd</div>
+        </section>
     </main>
 
 </body>

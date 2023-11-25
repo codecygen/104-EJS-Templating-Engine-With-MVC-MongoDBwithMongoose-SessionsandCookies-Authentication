@@ -38,3 +38,13 @@ nav {
 .active-page {
     background-color: green;
 }
+
+.flexbox {
+    display: flex;
+    flex-direction: row;
+}
+
+.flexbox > * {
+    width: 50%;
+    text-align: center;
+}
