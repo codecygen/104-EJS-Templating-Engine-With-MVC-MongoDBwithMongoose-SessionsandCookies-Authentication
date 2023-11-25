@@ -225,7 +225,10 @@ exports.postEditProduct = async (req, res, next) => {
     // Multer-File-Upload-Download
     req.flash("add-product-message", "Please upload an image file!");
     return res.redirect("/admin/add-product");
-  } else if (!updatedProduct.adminId || typeof updatedProduct.adminId !== "object") {
+  } else if (
+    !updatedProduct.adminId ||
+    typeof updatedProduct.adminId !== "object"
+  ) {
     req.flash("add-product-message", "Not authorized to create the product!");
     return res.redirect("/admin/add-product");
   }
@@ -317,4 +320,11 @@ exports.getUsersPage = async (req, res, next) => {
   //     console.error("Error in /admin/users page:", error);
   //     next(error);
   //   });
+};
+
+exports.getForumPage = async (req, res, next) => {
+  res.render("admin/forum", {
+    renderTitle: "Admin Forum",
+    pagePath: "/admin/forum",
+  });
 };
