@@ -363,7 +363,7 @@ exports.getInvoice = async (req, res, next) => {
 };
 
 exports.getBlogPage = async (req, res, next) => {
-  // NodeJS-Pagination
+  // NodeJS-Mongoose-Pagination
   const currentPage = parseInt(req.query.page);
   const itemsPerPage = 1;
 
@@ -377,7 +377,7 @@ exports.getBlogPage = async (req, res, next) => {
   }
 
   if (!blogData.length) {
-    blogData = await dbBlogOperation.bulkCreateBlogs();
+    await dbBlogOperation.bulkCreateBlogs();
   }
 
   // NodeJS-Mongoose-Pagination
