@@ -18,8 +18,19 @@ const countBlogPosts = async () => {
   return dataCount;
 };
 
+// NodeJS-Pagination
+const getBlogsAsPaginated = async (currentPage, itemsPerPage) => {
+  const result = await Tables.BlogTable.getBlogsPaginated(
+    currentPage,
+    itemsPerPage
+  );
+
+  return result;
+};
+
 module.exports = {
   bulkCreateBlogs,
   getBlogPosts,
   countBlogPosts,
+  getBlogsAsPaginated,
 };

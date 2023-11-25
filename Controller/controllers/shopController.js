@@ -363,7 +363,9 @@ exports.getInvoice = async (req, res, next) => {
 };
 
 exports.getBlogPage = async (req, res, next) => {
+  // NodeJS-Pagination
   const currentPage = parseInt(req.query.page);
+  const itemsPerPage = 1;
 
   let blogData;
 
@@ -378,10 +380,16 @@ exports.getBlogPage = async (req, res, next) => {
     blogData = await dbBlogOperation.bulkCreateBlogs();
   }
 
+  // NodeJS-Pagination
+  const currentPageBlog = await dbBlogOperation.getBlogsAsPaginated(
+    currentPage,
+    itemsPerPage
+  );
+
   return res.render("blog", {
     pagePath: "/blog",
     renderTitle: "Blog Posts",
-    blogData: blogData,
+    blogData: currentPageBlog[0],
     currentPage: currentPage,
     totalPages: totalPages,
   });

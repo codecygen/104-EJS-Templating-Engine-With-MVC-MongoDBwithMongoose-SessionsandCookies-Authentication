@@ -79,4 +79,25 @@ blogSchema.statics.countBlogData = async function () {
   }
 };
 
+// NodeJS-Pagination
+blogSchema.statics.getBlogsPaginated = async function (
+  currentPage,
+  itemsPerPage
+) {
+  try {
+    // NodeJS-Pagination
+    // skip basically skips that many items in database.
+    // lets say if you are on page 2 and if you want 5 items per page
+    // (2-1)*5, it will skip the first 5 items and then start grabbing
+    // but grabbing will be limited to 5 so it will grab the items from 6 to 10.
+    const result = await this.find()
+      .skip((currentPage - 1) * itemsPerPage)
+      .limit(itemsPerPage);
+
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 module.exports = mongoose.model("BlogTable", blogSchema);
