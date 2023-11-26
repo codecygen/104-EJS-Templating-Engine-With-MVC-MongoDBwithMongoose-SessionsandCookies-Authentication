@@ -10,6 +10,8 @@ button.addEventListener("click", () => {
     console.log(enteredTitle);
     console.log(enteredMessage);
 
+    // enteredTitle = "" will not work! It only makes the enteredTitle an empty
+    // string. Basically it passes the data by value instead of the reference
     titleInput.value = "";
     messageInput.value = "";
 });
