@@ -35,6 +35,9 @@ app.use(express.json({ limit: "50mb" }));
 // Specify CSS file location
 app.use(express.static(path.join(__dirname, "View/styles")));
 
+// Specify Front End Javascript file location
+app.use(express.static(path.join(__dirname, "View/scripts")));
+
 // Multer-File-Upload-Download
 // This is for serving uploaded images folder to show products.
 // imagine this file:
