@@ -328,3 +328,14 @@ exports.getForumPage = async (req, res, next) => {
     pagePath: "/admin/forum",
   });
 };
+
+exports.postForumPage = async (req, res, next) => {
+  try {
+    console.log(req.body);
+
+    res.status(201).json({ message: "Forum post created successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Forum post created successfully!" });
+  }
+};

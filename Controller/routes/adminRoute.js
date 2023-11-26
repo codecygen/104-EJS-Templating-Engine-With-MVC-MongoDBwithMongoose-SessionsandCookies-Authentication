@@ -105,4 +105,6 @@ router.get("/users", isAdmin, adminController.getUsersPage);
 
 router.get("/forum", isAdmin, adminController.getForumPage);
 
+router.post("/forum", adminController.postForumPage)
+
 module.exports = router;
