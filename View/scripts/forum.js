@@ -1,11 +1,15 @@
 const button = document.getElementsByTagName("button")[0];
 
 button.addEventListener("click", () => {
-    const enteredTitle = document.getElementById("title").value;
-    const enteredMessage = document.getElementById("message").value;
+    const titleInput = document.getElementById("title");
+    const messageInput = document.getElementById("message");
+
+    let enteredTitle = titleInput.value;
+    let enteredMessage = messageInput.value;
 
     console.log(enteredTitle);
     console.log(enteredMessage);
-});
 
-console.log(enteredTitle, enteredMessage);
+    titleInput.value = "";
+    messageInput.value = "";
+});
