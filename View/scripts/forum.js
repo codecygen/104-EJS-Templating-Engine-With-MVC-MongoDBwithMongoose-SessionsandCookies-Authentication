@@ -16,6 +16,9 @@ button.addEventListener("click", async () => {
       },
     });
 
+    let warningMessage = document.getElementById("warning-message");
+    warningMessage.textContent = "DONE!";
+
     if (res.status === 201) {
         console.log("Passed!");
     }
@@ -31,3 +34,14 @@ button.addEventListener("click", async () => {
     console.error(err);
   }
 });
+
+
+
+// // Some DOM manipulation that worths noting
+// let warningElement = document.createElement("p");
+// warningElement.textContent = "Done!";
+
+// let container = document.getElementById("forum-form");
+// let firstChildOfContainer = container.firstChild;
+
+// container.insertBefore(warningElement, firstChildOfContainer);
