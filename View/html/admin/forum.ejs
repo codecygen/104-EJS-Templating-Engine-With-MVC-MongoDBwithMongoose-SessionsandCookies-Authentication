@@ -11,6 +11,12 @@
             <div class="flex-forum" >
                 <p id="warning-message">Please Enter Your Message</p>
 
+                <label for="email">Email</label>
+                <input type="text" id="email" name="entered-email" placeholder="Enter your email">
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="entered-password" placeholder="Enter your password">
+
                 <label for="title">Title</label>
                 <input type="text" id="title" name="entered-title" placeholder="Enter your title">
         
@@ -22,6 +28,9 @@
                     cols="50" 
                     placeholder="Enter your message"
                 ></textarea>
+
+                <!-- CSRF-Attacks-Prevention -->
+                <input type="hidden" id="csrf" name="_csrf" value=<%= csrfToken %>>
         
                 <button class="btn" type="button">Send Post</button>
             </div>

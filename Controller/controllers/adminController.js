@@ -326,6 +326,7 @@ exports.getForumPage = async (req, res, next) => {
   res.render("admin/forum", {
     renderTitle: "Admin Forum",
     pagePath: "/admin/forum",
+    csrfToken: req.session.csrfToken,
   });
 };
 
