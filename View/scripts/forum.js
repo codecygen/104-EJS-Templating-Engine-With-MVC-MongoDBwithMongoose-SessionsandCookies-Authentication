@@ -1,3 +1,5 @@
+import * as sanitizeInput from "./sanitizeValidateForum.js";
+
 const button = document.getElementsByTagName("button")[0];
 
 button.addEventListener("click", async () => {
@@ -13,15 +15,25 @@ button.addEventListener("click", async () => {
   let enteredMessage = messageInput.value;
   let csrfToken = csrfTokenInput.value;
 
+  const validatedEmail = sanitizeInput.email(enteredEmail);
+  const validatedPassword =sanitizeInput.password(enteredPassword);
+  const validatedTitle = sanitizeInput.title(enteredTitle);
+  const validatedMessage = sanitizeInput.message(enteredMessage);
+
+  console.log(validatedEmail);
+  console.log(validatedPassword);
+  console.log(validatedTitle);
+  console.log(validatedMessage);
+
   try {
     const res = await fetch("/admin/forum", {
       method: "POST",
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         email: enteredEmail,
         password: enteredPassword,
-        title: enteredTitle, 
-        message: enteredMessage, 
-        csrfToken: csrfToken 
+        title: enteredTitle,
+        message: enteredMessage,
+        csrfToken: csrfToken,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -32,11 +44,10 @@ button.addEventListener("click", async () => {
     warningMessage.textContent = "DONE!";
 
     if (res.status === 201) {
-        console.log("Passed!");
+      console.log("Passed!");
     }
 
-    const  data = await res.json();
-    console.log(data);
+    await res.json();
 
     // enteredTitle = "" will not work! It only makes the enteredTitle an empty
     // string. Basically it passes the data by value instead of the reference
@@ -48,8 +59,6 @@ button.addEventListener("click", async () => {
     console.error(err);
   }
 });
-
-
 
 // // Some DOM manipulation that worths noting
 // let warningElement = document.createElement("p");
