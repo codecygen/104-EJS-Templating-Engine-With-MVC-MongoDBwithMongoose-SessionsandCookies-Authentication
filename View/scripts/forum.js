@@ -20,10 +20,23 @@ button.addEventListener("click", async () => {
   const validatedTitle = sanitizeInput.title(enteredTitle);
   const validatedMessage = sanitizeInput.message(enteredMessage);
 
-  console.log(validatedEmail);
-  console.log(validatedPassword);
-  console.log(validatedTitle);
-  console.log(validatedMessage);
+  let warningMessage = document.getElementById("warning-message");
+
+  if (!validatedEmail) {
+    return warningMessage.textContent = "Wrong Email Format!";
+  }
+
+  if (!validatedPassword) {
+    return warningMessage.textContent = "No Password Provided!";
+  }
+
+  if (!validatedTitle) {
+    return warningMessage.textContent = "Please Write a Title!";
+  }
+
+  if (!validatedMessage) {
+    return warningMessage.textContent = "Please Provide a Forum Message!";
+  }
 
   try {
     const res = await fetch("/admin/forum", {
@@ -40,7 +53,6 @@ button.addEventListener("click", async () => {
       },
     });
 
-    let warningMessage = document.getElementById("warning-message");
     warningMessage.textContent = "DONE!";
 
     if (res.status === 201) {
