@@ -341,7 +341,7 @@ exports.postForumPage = async (req, res, next) => {
   const foundUser = await dbAdminOperation.getOneUserWithEmail(email);
 
   if (!foundUser) {
-    return res.status(500).json({ message: "Failed to find user!" });
+    return res.status(401).json({ message: "Failed to find user!" });
   }
 
   try {
