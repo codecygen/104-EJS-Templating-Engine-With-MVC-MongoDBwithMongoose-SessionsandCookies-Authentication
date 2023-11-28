@@ -357,8 +357,7 @@ exports.postForumPage = async (req, res, next) => {
   }
 
   try {
-    console.log("LOL!");
-    // res.status(201).json({ message: "Forum post created successfully!" });
+    res.status(201).json({ message: "Forum post created successfully!" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: `There is an error! ${err}` });
