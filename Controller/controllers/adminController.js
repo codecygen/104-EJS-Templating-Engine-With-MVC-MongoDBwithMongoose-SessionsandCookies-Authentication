@@ -1,6 +1,8 @@
 // File-Deleting-fs.unlink
 const fs = require("fs");
 
+const bcrypt = require("bcrypt");
+
 const dbProductOperation = require("../../Model/operations/dbProductOperation");
 const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
 
@@ -331,12 +333,34 @@ exports.getForumPage = async (req, res, next) => {
 };
 
 exports.postForumPage = async (req, res, next) => {
-  try {
-    console.log(req.body);
+  const { email, password, title, message, csrfToken } = req.body;
 
-    res.status(201).json({ message: "Forum post created successfully!" });
+  const foundUser = await dbAdminOperation.getOneUserWithEmail(email);
+
+  if (!foundUser) {
+    return res.status(500).json({ message: "Failed to find user!" });
+  }
+
+  // Comparing hashed password
+  bcrypt.compare(password, foundUser.password, async (err, result) => {
+    if (err) {
+      console.error(err);
+
+      return res.status(500).json({ message: `Server error, ${err}!` });
+    }
+
+    if (!result) {
+      console.log("Wrong Password!");
+
+      return res.status(401).json({ message: "Wrong Password!" });
+    }
+  });
+
+  try {
+    console.log("LOL!");
+    // res.status(201).json({ message: "Forum post created successfully!" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Forum post created successfully!" });
+    res.status(500).json({ message: `There is an error! ${err}` });
   }
 };

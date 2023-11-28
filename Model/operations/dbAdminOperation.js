@@ -27,9 +27,9 @@ const getAdminProducts = async (adminId) => {
 };
 
 const updateUserData = async (updatedUserModel) => {
- const result = await Tables.UserTable.updateUser(updatedUserModel);
- return result;
-}
+  const result = await Tables.UserTable.updateUser(updatedUserModel);
+  return result;
+};
 
 module.exports = {
   getAllUsers,
