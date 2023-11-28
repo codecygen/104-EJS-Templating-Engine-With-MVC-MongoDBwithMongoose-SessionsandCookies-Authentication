@@ -1148,3 +1148,5 @@ blogSchema.statics.getBlogsPaginated = async function (
   }
 };
 ```
+
+10. I am covering topics like sending request with fetch API to the backend, validate and sanitize inputs in front and backend, making client side JS code to handle single page request without having to reload the page. also learned about promisify utility function to convert functions that return Promises. It allows async/await syntax with functions that traditionally use callbacks.
