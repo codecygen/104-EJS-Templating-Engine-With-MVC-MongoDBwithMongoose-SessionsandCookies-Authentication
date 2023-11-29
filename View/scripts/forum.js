@@ -66,6 +66,8 @@ button.addEventListener("click", async () => {
 
     const data = await res.json();
 
+    warningMessage.textContent = await data.errors[0].msg;
+
     console.log(res.status);
     console.log(data);
     console.log(data.errors);

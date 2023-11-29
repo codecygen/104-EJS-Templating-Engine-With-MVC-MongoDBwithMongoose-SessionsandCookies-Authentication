@@ -424,7 +424,7 @@ exports.postForumPage = async (req, res, next) => {
             msg: "Password for the user does not match!",
             path: "password",
             type: "field",
-            value: "Entered password",
+            value: "not provided here",
           },
         ],
       });
@@ -432,7 +432,16 @@ exports.postForumPage = async (req, res, next) => {
   } catch (err) {
     console.error(err);
 
-    return res.status(500).json({ message: `Server error, ${err}!` });
+    // Changed format to do like this
+    // Because I want to use it in front end and
+    // this is the express-validator format for the input fields.
+    return res.status(500).json({
+      errors: [
+        {
+          msg: `Password checking error. Contact admin! ${err}`,
+        },
+      ],
+    });
   }
 
   const csrfResult = checkCsrfToken(csrfToken, req.session.csrfToken);
@@ -440,13 +449,35 @@ exports.postForumPage = async (req, res, next) => {
   // CSRF-Attacks-Prevention
   // If client and server tokens don't match do nothing.
   if (!csrfResult) {
-    return res.status(500).json({ message: "No Such CSRF Token!" });
+    // Changed format to do like this
+    // Because I want to use it in front end and
+    // this is the express-validator format for the input fields.
+    return res.status(500).json({
+      errors: [
+        {
+          location: "body",
+          msg: "Potential csrf attack prevented!",
+          path: "csrfToken",
+          type: "field",
+          value: "not provided here",
+        },
+      ],
+    });
   }
 
   try {
     res.status(201).json({ message: "Forum post created successfully!" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: `There is an error! ${err}` });
+    // Changed format to do like this
+    // Because I want to use it in front end and
+    // this is the express-validator format for the input fields.
+    return res.status(500).json({
+      errors: [
+        {
+          msg: `Database storing error. Contact admin! ${err}`
+        },
+      ],
+    });
   }
 };
