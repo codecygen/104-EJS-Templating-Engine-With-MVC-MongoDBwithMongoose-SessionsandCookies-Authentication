@@ -274,7 +274,53 @@ exports.getAllUsers = async (req, res, next) => {
 
 Once you receive the user entered data in post requests, you have both validate and sanitize the data. The validation is making sure the data entered is the data you are expecting. Sanitization is to ensure that the entered data does not have any harmful elements that can potentially compromise your database.
 
-I did not use in this project but, **express-validator** is a popular npm package that is used for data validation and sanitization.
+I did not use in this project but, **express-validator** is a popular npm package that is used for data validation and sanitization. Check out **adminController.js** for info. A snippet of the actual file is given down below.
+
+```javascript
+........
+........
+
+// EXPRESS-VALIDATOR-DATA-VALIDATION-SANITIZATION
+const { validationResult } = require('express-validator');
+const { check } = require("express-validator");
+
+........
+........
+
+exports.postForumPage = async (req, res, next) => {
+  // ====================================================
+  // EXPRESS-VALIDATOR-DATA-VALIDATION-SANITIZATION
+  // ====================================================
+
+  // Validation middleware
+  const validate = [
+    check("email").isEmail().normalizeEmail().notEmpty().escape(),
+    check("password").isLength({ min: 2 }).notEmpty().escape(),
+    check("title").isString().trim().notEmpty().escape(),
+    check("message").isString().trim().notEmpty().escape(),
+    check("csrfToken").isString().trim().notEmpty().escape(),
+  ];
+
+  // Run validation middleware
+  await Promise.all(validate.map((validation) => validation.run(req)));
+
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  // ====================================================
+  // EXPRESS-VALIDATOR-DATA-VALIDATION-SANITIZATION
+  // ====================================================
+
+  const { email, password, title, message, csrfToken } = req.body;
+
+  ........
+  ........
+}
+
+```
 
 # Error Handling:
 

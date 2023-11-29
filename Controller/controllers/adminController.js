@@ -1,6 +1,10 @@
 // File-Deleting-fs.unlink
 const fs = require("fs");
 
+// EXPRESS-VALIDATOR-DATA-VALIDATION-SANITIZATION
+const { validationResult } = require('express-validator');
+const { check } = require("express-validator");
+
 const bcrypt = require("bcrypt");
 
 const { promisify } = require("util");
@@ -336,6 +340,32 @@ exports.getForumPage = async (req, res, next) => {
 };
 
 exports.postForumPage = async (req, res, next) => {
+  // ====================================================
+  // EXPRESS-VALIDATOR-DATA-VALIDATION-SANITIZATION
+  // ====================================================
+
+  // Validation middleware
+  const validate = [
+    check("email").isEmail().normalizeEmail().notEmpty().escape(),
+    check("password").isLength({ min: 2 }).notEmpty().escape(),
+    check("title").isString().trim().notEmpty().escape(),
+    check("message").isString().trim().notEmpty().escape(),
+    check("csrfToken").isString().trim().notEmpty().escape(),
+  ];
+
+  // Run validation middleware
+  await Promise.all(validate.map((validation) => validation.run(req)));
+
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  // ====================================================
+  // EXPRESS-VALIDATOR-DATA-VALIDATION-SANITIZATION
+  // ====================================================
+
   const { email, password, title, message, csrfToken } = req.body;
 
   const foundUser = await dbAdminOperation.getOneUserWithEmail(email);
