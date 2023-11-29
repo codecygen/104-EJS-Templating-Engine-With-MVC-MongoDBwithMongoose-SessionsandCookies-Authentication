@@ -345,7 +345,7 @@ exports.postForumPage = async (req, res, next) => {
   // ====================================================
 
   // Validation middleware
-  const validate = [
+  const inputList = [
     check("email").isEmail().normalizeEmail().notEmpty().escape(),
     check("password").isLength({ min: 2 }).notEmpty().escape(),
     check("title").isString().trim().notEmpty().escape(),
@@ -354,7 +354,7 @@ exports.postForumPage = async (req, res, next) => {
   ];
 
   // Run validation middleware
-  await Promise.all(validate.map((validation) => validation.run(req)));
+  await Promise.all(inputList.map((input) => input.run(req)));
 
   // Check for validation errors
   const errors = validationResult(req);

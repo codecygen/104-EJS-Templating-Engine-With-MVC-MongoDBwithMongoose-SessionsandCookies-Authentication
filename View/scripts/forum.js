@@ -64,7 +64,9 @@ button.addEventListener("click", async () => {
       console.log("Passed!");
     }
 
-    await res.json();
+    const data = await res.json();
+
+    console.log(data);
 
     // enteredTitle = "" will not work! It only makes the enteredTitle an empty
     // string. Basically it passes the data by value instead of the reference

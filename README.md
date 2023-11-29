@@ -292,17 +292,16 @@ exports.postForumPage = async (req, res, next) => {
   // EXPRESS-VALIDATOR-DATA-VALIDATION-SANITIZATION
   // ====================================================
 
-  // Validation middleware
-  const validate = [
+  const inputList = [
     check("email").isEmail().normalizeEmail().notEmpty().escape(),
-    check("password").isLength({ min: 2 }).notEmpty().escape(),
+    check("password").isLength({ min: 2 }).escape(),
     check("title").isString().trim().notEmpty().escape(),
     check("message").isString().trim().notEmpty().escape(),
     check("csrfToken").isString().trim().notEmpty().escape(),
   ];
 
   // Run validation middleware
-  await Promise.all(validate.map((validation) => validation.run(req)));
+  await Promise.all(inputList.map((input) => input.run(req)));
 
   // Check for validation errors
   const errors = validationResult(req);
@@ -829,7 +828,7 @@ exports.postAddProduct = async (req, res, next) => {
     // Multer-File-Upload-Download
     req.flash("add-product-message", "Please upload an image file!");
     return res.redirect("/admin/add-product");
-  } 
+  }
 }
 ```
 
@@ -901,11 +900,11 @@ path of the uploaded image will reside in database and in system as shown **path
 // app.use(express.static(path.join(__dirname, "uploads")));
 // app will think the file will be ready in
 // localhost:3000/1700158739221-40615879-01_World.jpg
-// But when you say 
-//  <img 
-  // src="/<%= product.productImg %>" 
-  // alt=<%= product.productName %>  
-  // height="300"
+// But when you say
+//  <img
+// src="/<%= product.productImg %>"
+// alt=<%= product.productName %>
+// height="300"
 //  >
 // src will look into localhost:3000/uploads/1700158739221-40615879-01_World.jpg
 // and this path does not exist
@@ -920,12 +919,8 @@ a static path is needed where application has to find uploads and then treats up
 
 ```html
 <!-- Multer-File-Upload-Download -->
-<img 
-  src="/<%= product.productImg %>" 
-  alt=<%= product.productName %> 
-  height="300"
->
-
+<img src="/<%= product.productImg %>" alt="<%" ="product.productName" % />
+height="300" >
 ```
 
 7. **STATIC PDF FILE DOWNLOAD**: If you want your clients to download a static PDF file whenever they need, refer to the keyword **multer-static-content-pdf-file-download**. Remember, the content of the PDF is static in this case. If you want pdf to be changed dynamically refer to the next step.
@@ -962,10 +957,7 @@ const isLoggedInTheInvoiceOwner = (req, res, next) => {
   if (loggedInUserId === requestedFileOwnerId) {
     return next();
   } else {
-
-    const err = new Error(
-      "Invalid Request: Unauthorized file access!"
-    );
+    const err = new Error("Invalid Request: Unauthorized file access!");
 
     err.httpStatusCode = 401;
     return next(err);
