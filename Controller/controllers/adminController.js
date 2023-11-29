@@ -356,6 +356,14 @@ exports.postForumPage = async (req, res, next) => {
     return res.status(500).json({ message: `Server error, ${err}!` });
   }
 
+  const csrfResult = checkCsrfToken(csrfToken, req.session.csrfToken);
+
+  // CSRF-Attacks-Prevention
+  // If client and server tokens don't match do nothing.
+  if (!csrfResult) {
+    return res.status(500).json({ message: "No Such CSRF Token!" });
+  }
+
   try {
     res.status(201).json({ message: "Forum post created successfully!" });
   } catch (err) {
