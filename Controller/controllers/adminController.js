@@ -2,7 +2,7 @@
 const fs = require("fs");
 
 // EXPRESS-VALIDATOR-DATA-VALIDATION-SANITIZATION
-const { validationResult } = require('express-validator');
+const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
 
 const bcrypt = require("bcrypt");
@@ -346,11 +346,34 @@ exports.postForumPage = async (req, res, next) => {
 
   // Validation middleware
   const inputList = [
-    check("email").isEmail().normalizeEmail().notEmpty().escape(),
-    check("password").isLength({ min: 2 }).escape(),
-    check("title").isString().trim().notEmpty().escape(),
-    check("message").isString().trim().notEmpty().escape(),
-    check("csrfToken").isString().trim().notEmpty().escape(),
+    check("email")
+      .isEmail()
+      .normalizeEmail()
+      .notEmpty()
+      .escape()
+      .withMessage("Invalid or empty email address!"),
+    check("password")
+      .isLength({ min: 2 })
+      .escape()
+      .withMessage("Password must have at least 2 characters!"),
+    check("title")
+      .isString()
+      .trim()
+      .notEmpty()
+      .escape()
+      .withMessage("Title cannot be empty!"),
+    check("message")
+      .isString()
+      .trim()
+      .notEmpty()
+      .escape()
+      .withMessage("Message cannot be empty!"),
+    check("csrfToken")
+      .isString()
+      .trim()
+      .notEmpty()
+      .escape()
+      .withMessage("CSRF token cannot be empty!"),
   ];
 
   // Run validation middleware
@@ -371,14 +394,40 @@ exports.postForumPage = async (req, res, next) => {
   const foundUser = await dbAdminOperation.getOneUserWithEmail(email);
 
   if (!foundUser) {
-    return res.status(401).json({ message: "Failed to find user!" });
+    // Changed format to do like this
+    // Because I want to use it in front end and
+    // this is the express-validator format for the input fields.
+    return res.status(401).json({
+      errors: [
+        {
+          location: "body",
+          msg: "There is no such user with that email!",
+          path: "email",
+          type: "field",
+          value: email,
+        },
+      ],
+    });
   }
 
   try {
     const result = await comparePass(password, foundUser.password);
 
     if (!result) {
-      return res.status(401).json({ message: "Wrong Password!" });
+      // Changed format to do like this
+      // Because I want to use it in front end and
+      // this is the express-validator format for the input fields.
+      return res.status(401).json({
+        errors: [
+          {
+            location: "body",
+            msg: "Password for the user does not match!",
+            path: "password",
+            type: "field",
+            value: "Entered password",
+          },
+        ],
+      });
     }
   } catch (err) {
     console.error(err);
