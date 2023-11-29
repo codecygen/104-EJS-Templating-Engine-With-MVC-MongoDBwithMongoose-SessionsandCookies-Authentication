@@ -347,7 +347,7 @@ exports.postForumPage = async (req, res, next) => {
   // Validation middleware
   const inputList = [
     check("email").isEmail().normalizeEmail().notEmpty().escape(),
-    check("password").isLength({ min: 2 }).notEmpty().escape(),
+    check("password").isLength({ min: 2 }).escape(),
     check("title").isString().trim().notEmpty().escape(),
     check("message").isString().trim().notEmpty().escape(),
     check("csrfToken").isString().trim().notEmpty().escape(),
