@@ -340,6 +340,10 @@ exports.getForumPage = async (req, res, next) => {
 };
 
 exports.postForumPage = async (req, res, next) => {
+  const { email, password, title, message, csrfToken } = req.body;
+
+  const inputs = Object.keys(req.body)
+
   // ====================================================
   // EXPRESS-VALIDATOR-DATA-VALIDATION-SANITIZATION
   // ====================================================
@@ -390,14 +394,12 @@ exports.postForumPage = async (req, res, next) => {
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({ errors: errors.array(), inputs });
   }
 
   // ====================================================
   // EXPRESS-VALIDATOR-DATA-VALIDATION-SANITIZATION
   // ====================================================
-
-  const { email, password, title, message, csrfToken } = req.body;
 
   const foundUser = await dbAdminOperation.getOneUserWithEmail(email);
 
@@ -415,6 +417,7 @@ exports.postForumPage = async (req, res, next) => {
           value: email,
         },
       ],
+      inputs,
     });
   }
 
@@ -435,6 +438,7 @@ exports.postForumPage = async (req, res, next) => {
             value: "not provided here",
           },
         ],
+        inputs,
       });
     }
   } catch (err) {
@@ -449,6 +453,7 @@ exports.postForumPage = async (req, res, next) => {
           msg: `Password checking error. Contact admin! ${err}`,
         },
       ],
+      inputs,
     });
   }
 
@@ -470,6 +475,7 @@ exports.postForumPage = async (req, res, next) => {
           value: "not provided here",
         },
       ],
+      inputs,
     });
   }
 
@@ -486,6 +492,7 @@ exports.postForumPage = async (req, res, next) => {
           msg: `Database storing error. Contact admin! ${err}`,
         },
       ],
+      inputs,
     });
   }
 };

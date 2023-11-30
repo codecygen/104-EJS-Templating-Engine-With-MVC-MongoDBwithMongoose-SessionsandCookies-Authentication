@@ -15,32 +15,31 @@ button.addEventListener("click", async () => {
   let enteredMessage = messageInput.value;
   let csrfToken = csrfTokenInput.value;
 
-  // const validatedEmail = sanitizeInput.email(enteredEmail);
-  // const validatedPassword =sanitizeInput.password(enteredPassword);
-  // const validatedTitle = sanitizeInput.title(enteredTitle);
-  // const validatedMessage = sanitizeInput.message(enteredMessage);
-
-  const validatedEmail = true;
-  const validatedPassword = true;
-  const validatedTitle = true;
-  const validatedMessage = true;
+  const validatedEmail = sanitizeInput.email(enteredEmail);
+  const validatedPassword =sanitizeInput.password(enteredPassword);
+  const validatedTitle = sanitizeInput.title(enteredTitle);
+  const validatedMessage = sanitizeInput.message(enteredMessage);
 
   let warningMessage = document.getElementById("warning-message");
 
   if (!validatedEmail) {
-    return warningMessage.textContent = "Wrong Email Format!";
+    return (warningMessage.textContent = "Wrong Email Format!");
   }
 
   if (!validatedPassword) {
-    return warningMessage.textContent = "No Password Provided!";
+    return (warningMessage.textContent = "No Password Provided!");
+  }
+
+  if (validatedPassword.length < 2) {
+    return (warningMessage.textContent = "Password must have at least 2 characters!");
   }
 
   if (!validatedTitle) {
-    return warningMessage.textContent = "Please Write a Title!";
+    return (warningMessage.textContent = "Please Write a Title!");
   }
 
   if (!validatedMessage) {
-    return warningMessage.textContent = "Please Provide a Forum Message!";
+    return (warningMessage.textContent = "Please Provide a Forum Message!");
   }
 
   try {
@@ -58,20 +57,27 @@ button.addEventListener("click", async () => {
       },
     });
 
+    const data = await res.json();
+
+    // Trying to rearrange the input fields in the same order with
+    // express-validator error array so if email fails it will only
+    // send email
+    if (data.errors && data.inputs) {
+      for (const input of data.inputs) {
+        for (const error of data.errors) {
+          console.log(`--- ${error.path}`);
+          if (input === error.path) {
+            return (warningMessage.textContent = await error.msg);
+          }
+        }
+      }
+    }
+
     warningMessage.textContent = "DONE!";
 
     if (res.status === 201) {
       console.log("Passed!");
     }
-
-    const data = await res.json();
-
-    warningMessage.textContent = await data.errors[0].msg;
-
-    console.log(res.status);
-    console.log(data);
-    console.log(data.errors);
-    console.log(typeof data.errors);
 
     // enteredTitle = "" will not work! It only makes the enteredTitle an empty
     // string. Basically it passes the data by value instead of the reference
