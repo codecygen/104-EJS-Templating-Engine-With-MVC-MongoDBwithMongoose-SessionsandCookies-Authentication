@@ -347,33 +347,41 @@ exports.postForumPage = async (req, res, next) => {
   // Validation middleware
   const inputList = [
     check("email")
+      .notEmpty()
+      .withMessage("Email field is empty!")
+      .bail()
       .isEmail()
       .normalizeEmail()
-      .notEmpty()
       .escape()
-      .withMessage("Invalid or empty email address!"),
+      .withMessage("Not the correct email format!"),
     check("password")
       .isLength({ min: 2 })
       .escape()
       .withMessage("Password must have at least 2 characters!"),
     check("title")
+      .notEmpty()
+      .withMessage("Title field is empty!")
+      .bail()
       .isString()
       .trim()
-      .notEmpty()
       .escape()
-      .withMessage("Title cannot be empty!"),
+      .withMessage("Title is not in String format!"),
     check("message")
+      .notEmpty()
+      .withMessage("Message field is empty!")
+      .bail()
       .isString()
       .trim()
-      .notEmpty()
       .escape()
-      .withMessage("Message cannot be empty!"),
+      .withMessage("Message is not in String format!"),
     check("csrfToken")
+      .notEmpty()
+      .withMessage("CSRF token field is empty!")
+      .bail()
       .isString()
       .trim()
-      .notEmpty()
       .escape()
-      .withMessage("CSRF token cannot be empty!"),
+      .withMessage("CSRF token is not in String format!"),
   ];
 
   // Run validation middleware
@@ -475,7 +483,7 @@ exports.postForumPage = async (req, res, next) => {
     return res.status(500).json({
       errors: [
         {
-          msg: `Database storing error. Contact admin! ${err}`
+          msg: `Database storing error. Contact admin! ${err}`,
         },
       ],
     });
