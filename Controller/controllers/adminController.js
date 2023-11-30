@@ -401,6 +401,8 @@ exports.postForumPage = async (req, res, next) => {
   // EXPRESS-VALIDATOR-DATA-VALIDATION-SANITIZATION
   // ====================================================
 
+  // This format is similar to what express-validator use to send front end
+  // I need same format if password and user check with database fails
   const jsonResponse = {
     errors: [],
     inputs,
@@ -471,7 +473,7 @@ exports.postForumPage = async (req, res, next) => {
     console.error(err);
 
     jsonResponse.errors.push({
-      path: "",
+      path: "server-error",
       msg: `Database storing error. Contact admin! ${err}`,
     });
 

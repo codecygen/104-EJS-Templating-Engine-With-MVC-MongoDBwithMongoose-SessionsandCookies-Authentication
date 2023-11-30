@@ -15,15 +15,10 @@ button.addEventListener("click", async () => {
   let enteredMessage = messageInput.value;
   let csrfToken = csrfTokenInput.value;
 
-  // const validatedEmail = sanitizeInput.email(enteredEmail);
-  // const validatedPassword = sanitizeInput.password(enteredPassword);
-  // const validatedTitle = sanitizeInput.title(enteredTitle);
-  // const validatedMessage = sanitizeInput.message(enteredMessage);
-
-  const validatedEmail = true;
-  const validatedPassword = true;
-  const validatedTitle = true;
-  const validatedMessage = true;
+  const validatedEmail = sanitizeInput.email(enteredEmail);
+  const validatedPassword = sanitizeInput.password(enteredPassword);
+  const validatedTitle = sanitizeInput.title(enteredTitle);
+  const validatedMessage = sanitizeInput.message(enteredMessage);
 
   let warningMessage = document.getElementById("warning-message");
 
@@ -68,12 +63,14 @@ button.addEventListener("click", async () => {
     // express-validator error array so if email fails it will only
     // send email
     if (data.errors && data.inputs) {
-      console.log(data.errors);
-      
+
       for (const input of data.inputs) {
         for (const error of data.errors) {
-          console.log(`--- ${error.path}`);
           if (input === error.path) {
+            return (warningMessage.textContent = await error.msg);
+          }
+
+          if (error.path === "server-error") {
             return (warningMessage.textContent = await error.msg);
           }
         }
