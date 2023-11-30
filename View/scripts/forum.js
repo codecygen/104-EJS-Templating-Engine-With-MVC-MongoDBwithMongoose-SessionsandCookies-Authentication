@@ -68,6 +68,8 @@ button.addEventListener("click", async () => {
     // express-validator error array so if email fails it will only
     // send email
     if (data.errors && data.inputs) {
+      console.log(data.errors);
+      
       for (const input of data.inputs) {
         for (const error of data.errors) {
           console.log(`--- ${error.path}`);

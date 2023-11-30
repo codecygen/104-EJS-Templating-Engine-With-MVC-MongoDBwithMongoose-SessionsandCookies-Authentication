@@ -402,69 +402,50 @@ exports.postForumPage = async (req, res, next) => {
   // ====================================================
 
   const jsonResponse = {
-    errors: [
-      {
-        msg: "",
-      },
-    ],
-    
+    errors: [],
     inputs,
   };
 
   const foundUser = await dbAdminOperation.getOneUserWithEmail(email);
 
   if (!foundUser) {
+    jsonResponse.errors.push({
+      path: "email",
+      msg: "There is no such user with that email!",
+    });
+
     // Changed format to do like this
     // Because I want to use it in front end and
     // this is the express-validator format for the input fields.
-    return res.status(401).json({
-      errors: [
-        {
-          location: "body",
-          msg: "There is no such user with that email!",
-          path: "email",
-          type: "field",
-          value: email,
-        },
-      ],
-      inputs,
-    });
+    return res.status(401).json(jsonResponse);
   }
 
   try {
     const result = await comparePass(password, foundUser.password);
 
     if (!result) {
+      jsonResponse.errors.push({
+        path: "password",
+        msg: "Password for the user does not match!",
+      });
+
       // Changed format to do like this
       // Because I want to use it in front end and
       // this is the express-validator format for the input fields.
-      return res.status(401).json({
-        errors: [
-          {
-            location: "body",
-            msg: "Password for the user does not match!",
-            path: "password",
-            type: "field",
-            value: "not provided here",
-          },
-        ],
-        inputs,
-      });
+      return res.status(401).json(jsonResponse);
     }
   } catch (err) {
     console.error(err);
 
+    jsonResponse.errors.push({
+      path: "password",
+      msg: `Password checking error. Contact admin! ${err}`,
+    });
+
     // Changed format to do like this
     // Because I want to use it in front end and
     // this is the express-validator format for the input fields.
-    return res.status(500).json({
-      errors: [
-        {
-          msg: `Password checking error. Contact admin! ${err}`,
-        },
-      ],
-      inputs,
-    });
+    return res.status(500).json(jsonResponse);
   }
 
   const csrfResult = checkCsrfToken(csrfToken, req.session.csrfToken);
@@ -472,37 +453,31 @@ exports.postForumPage = async (req, res, next) => {
   // CSRF-Attacks-Prevention
   // If client and server tokens don't match do nothing.
   if (!csrfResult) {
+
+    jsonResponse.errors.push({
+      path: "csrfToken",
+      msg: "Potential csrf attack prevented!",
+    });
+
     // Changed format to do like this
     // Because I want to use it in front end and
     // this is the express-validator format for the input fields.
-    return res.status(500).json({
-      errors: [
-        {
-          location: "body",
-          msg: "Potential csrf attack prevented!",
-          path: "csrfToken",
-          type: "field",
-          value: "not provided here",
-        },
-      ],
-      inputs,
-    });
+    return res.status(500).json(jsonResponse);
   }
 
   try {
     res.status(201).json({ message: "Forum post created successfully!" });
   } catch (err) {
     console.error(err);
+
+    jsonResponse.errors.push({
+      path: "",
+      msg: `Database storing error. Contact admin! ${err}`,
+    });
+
     // Changed format to do like this
     // Because I want to use it in front end and
     // this is the express-validator format for the input fields.
-    return res.status(500).json({
-      errors: [
-        {
-          msg: `Database storing error. Contact admin! ${err}`,
-        },
-      ],
-      inputs,
-    });
+    return res.status(500).json(jsonResponse);
   }
 };
