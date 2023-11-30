@@ -342,7 +342,7 @@ exports.getForumPage = async (req, res, next) => {
 exports.postForumPage = async (req, res, next) => {
   const { email, password, title, message, csrfToken } = req.body;
 
-  const inputs = Object.keys(req.body)
+  const inputs = Object.keys(req.body);
 
   // ====================================================
   // EXPRESS-VALIDATOR-DATA-VALIDATION-SANITIZATION
@@ -400,6 +400,16 @@ exports.postForumPage = async (req, res, next) => {
   // ====================================================
   // EXPRESS-VALIDATOR-DATA-VALIDATION-SANITIZATION
   // ====================================================
+
+  const jsonResponse = {
+    errors: [
+      {
+        msg: "",
+      },
+    ],
+    
+    inputs,
+  };
 
   const foundUser = await dbAdminOperation.getOneUserWithEmail(email);
 
