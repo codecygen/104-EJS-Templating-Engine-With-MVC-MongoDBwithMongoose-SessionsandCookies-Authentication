@@ -73,7 +73,7 @@ button.addEventListener("click", async () => {
       }
     }
 
-    warningMessage.textContent = "DONE!";
+    warningMessage.textContent = "Forum post created!";
 
     if (res.status === 201) {
       console.log("Passed!");
