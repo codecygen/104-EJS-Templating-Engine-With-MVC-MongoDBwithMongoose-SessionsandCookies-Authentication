@@ -469,7 +469,7 @@ exports.postForumPage = async (req, res, next) => {
 
   try {
     jsonResponse.success = {
-      userName: foundUser.userName,
+      forumUser: foundUser.userName,
       forumTitle: title,
       forumMessage: message,
       msg: "Forum post is created!",

@@ -109,7 +109,10 @@ button.addEventListener("click", async () => {
         "Success message is missing, contact admin!");
     }
 
-    console.log(data.success);
+    const { forumTitle, forumMessage, forumUser } = data.success;
+    console.log(forumTitle);
+    console.log(forumMessage);
+    console.log(forumUser);
 
     warningMessage.classList.add("success-message");
     return (warningMessage.textContent = data.success.msg);
