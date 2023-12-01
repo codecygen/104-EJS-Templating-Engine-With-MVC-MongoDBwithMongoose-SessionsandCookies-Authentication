@@ -77,10 +77,8 @@ button.addEventListener("click", async () => {
       }
     }
 
-    warningMessage.textContent = "Forum post created!";
-
-    if (res.status === 201) {
-      console.log("Passed!");
+    if (res.status !== 201) {
+      return warningMessage.textContent = "Cannot create forum post!";
     }
 
     // enteredTitle = "" will not work! It only makes the enteredTitle an empty
@@ -89,8 +87,12 @@ button.addEventListener("click", async () => {
     passwordInput.value = "";
     titleInput.value = "";
     messageInput.value = "";
+
+    return warningMessage.textContent = "Forum post is created!";
   } catch (err) {
     console.error(err);
+
+    return warningMessage.textContent = `Failed to fetch forum data! ${err}`;
   }
 });
 
