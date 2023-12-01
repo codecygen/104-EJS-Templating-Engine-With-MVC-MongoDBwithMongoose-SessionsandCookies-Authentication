@@ -17,18 +17,14 @@
   
 .flex-forum2 > article {
     width: 100%;
-    border: 1px solid #ddd;
+    border: 1px solid #443f3f;
     border-radius: 5px;
     padding: 2px;
     margin-bottom: 5px;
 }
 
 .flex-forum2 > article > h3 {
-    color: crimson;
-}
-
-.flex-forum2 > article > p {
-    color: #26372b;
+    color: #a31330;
 }
 
 .flex-forum2 > article > em {
