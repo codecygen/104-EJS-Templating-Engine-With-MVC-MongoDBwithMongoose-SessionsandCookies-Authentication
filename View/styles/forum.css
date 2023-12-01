@@ -1,8 +1,41 @@
 .flex-forum {
     display: flex;
     flex-direction: column;
-    width: 25vw;
+    width: 40vw;
     margin: auto;
+}
+
+.flex-forum2 {
+    display: flex;
+    flex-direction: column;
+    width: 40vw;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: flex-start;
+    align-items: center;
+}
+  
+.flex-forum2 > article {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 2px;
+    margin-bottom: 5px;
+}
+
+.flex-forum2 > article > h3 {
+    color: crimson;
+}
+
+.flex-forum2 > article > p {
+    color: #26372b;
+}
+
+.flex-forum2 > article > em {
+    display: block;
+    padding: 10px;
+    text-align: end;
+    color: blue;
 }
 
 .flex-forum > * {
