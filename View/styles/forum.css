@@ -1,7 +1,7 @@
 .flex-forum {
     display: flex;
     flex-direction: column;
-    width: 25%;
+    width: 25vw;
     margin: auto;
 }
 
