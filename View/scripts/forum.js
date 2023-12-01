@@ -71,7 +71,6 @@ button.addEventListener("click", async () => {
     if (data.errors && data.inputs) {
       for (const input of data.inputs) {
         for (const error of data.errors) {
-
           if (!error.path) {
             warningMessage.classList.add("warning-message");
             return (warningMessage.textContent =
@@ -93,7 +92,8 @@ button.addEventListener("click", async () => {
 
     if (res.status !== 201) {
       warningMessage.classList.add("warning-message");
-      return (warningMessage.textContent = "Cannot create forum post!");
+      return (warningMessage.textContent =
+        "Cannot create forum post! Contact admin!");
     }
 
     // enteredTitle = "" will not work! It only makes the enteredTitle an empty
@@ -103,8 +103,17 @@ button.addEventListener("click", async () => {
     titleInput.value = "";
     messageInput.value = "";
 
+    if (!data.success || !data.success.msg) {
+      warningMessage.classList.add("success-message");
+      return (warningMessage.textContent =
+        "Success message is missing, contact admin!");
+    }
+
+    console.log(data.success);
+
     warningMessage.classList.add("success-message");
-    return (warningMessage.textContent = "Forum post is created!");
+    return (warningMessage.textContent = data.success.msg);
+
   } catch (err) {
     console.error(err);
 

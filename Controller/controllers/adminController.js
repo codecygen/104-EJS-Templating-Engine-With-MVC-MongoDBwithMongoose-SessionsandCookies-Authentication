@@ -404,6 +404,7 @@ exports.postForumPage = async (req, res, next) => {
   // This format is similar to what express-validator use to send front end
   // I need same format if password and user check with database fails
   const jsonResponse = {
+    success: {},
     errors: [],
     inputs,
   };
@@ -455,7 +456,6 @@ exports.postForumPage = async (req, res, next) => {
   // CSRF-Attacks-Prevention
   // If client and server tokens don't match do nothing.
   if (!csrfResult) {
-
     jsonResponse.errors.push({
       path: "csrfToken",
       msg: "Potential csrf attack prevented!",
@@ -468,7 +468,14 @@ exports.postForumPage = async (req, res, next) => {
   }
 
   try {
-    res.status(201).json({ message: "Forum post created successfully!" });
+    jsonResponse.success = {
+      userName: foundUser.userName,
+      forumTitle: title,
+      forumMessage: message,
+      msg: "Forum post is created!",
+    };
+
+    res.status(201).json(jsonResponse);
   } catch (err) {
     console.error(err);
 
