@@ -23,22 +23,28 @@ button.addEventListener("click", async () => {
   let warningMessage = document.getElementById("warning-message");
 
   if (!validatedEmail) {
+    warningMessage.classList.add("warning-message");
     return (warningMessage.textContent = "Wrong Email Format!");
   }
 
   if (!validatedPassword) {
+    warningMessage.classList.add("warning-message");
     return (warningMessage.textContent = "No Password Provided!");
   }
 
   if (validatedPassword.length < 2) {
-    return (warningMessage.textContent = "Password must have at least 2 characters!");
+    warningMessage.classList.add("warning-message");
+    return (warningMessage.textContent =
+      "Password must have at least 2 characters!");
   }
 
   if (!validatedTitle) {
+    warningMessage.classList.add("warning-message");
     return (warningMessage.textContent = "Please Write a Title!");
   }
 
   if (!validatedMessage) {
+    warningMessage.classList.add("warning-message");
     return (warningMessage.textContent = "Please Provide a Forum Message!");
   }
 
@@ -63,14 +69,22 @@ button.addEventListener("click", async () => {
     // express-validator error array so if email fails it will only
     // send email
     if (data.errors && data.inputs) {
-
       for (const input of data.inputs) {
         for (const error of data.errors) {
+
+          if (!error.path) {
+            warningMessage.classList.add("warning-message");
+            return (warningMessage.textContent =
+              "Something went awry. Contact admin!");
+          }
+
           if (input === error.path) {
+            warningMessage.classList.add("warning-message");
             return (warningMessage.textContent = await error.msg);
           }
 
           if (error.path === "server-error") {
+            warningMessage.classList.add("warning-message");
             return (warningMessage.textContent = await error.msg);
           }
         }
@@ -78,7 +92,8 @@ button.addEventListener("click", async () => {
     }
 
     if (res.status !== 201) {
-      return warningMessage.textContent = "Cannot create forum post!";
+      warningMessage.classList.add("warning-message");
+      return (warningMessage.textContent = "Cannot create forum post!");
     }
 
     // enteredTitle = "" will not work! It only makes the enteredTitle an empty
@@ -88,11 +103,13 @@ button.addEventListener("click", async () => {
     titleInput.value = "";
     messageInput.value = "";
 
-    return warningMessage.textContent = "Forum post is created!";
+    warningMessage.classList.add("success-message");
+    return (warningMessage.textContent = "Forum post is created!");
   } catch (err) {
     console.error(err);
 
-    return warningMessage.textContent = `Failed to fetch forum data! ${err}`;
+    warningMessage.classList.add("warning-message");
+    return (warningMessage.textContent = `Failed to fetch forum data! ${err}`);
   }
 });
 

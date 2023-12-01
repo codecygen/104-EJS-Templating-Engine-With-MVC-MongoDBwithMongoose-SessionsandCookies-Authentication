@@ -20,3 +20,16 @@
 .flex-forum > textarea {
     margin: 10px 0 10px 0;
 }
+
+#warning-message {
+    background-color: #d0d0c1;
+    font-weight: bold
+}
+
+.warning-message {
+    color: crimson;
+}
+
+.success-message {
+    color: blue;
+}
