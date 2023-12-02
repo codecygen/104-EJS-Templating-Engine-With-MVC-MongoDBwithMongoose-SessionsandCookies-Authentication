@@ -129,7 +129,7 @@ button.addEventListener("click", async () => {
 
     const newEmTag = document.createElement("em");
     const emText = document.createTextNode(
-      new Date(Date.now()).toLocaleString().split(",")[0]
+      new Date(Date.now()).toLocaleString()
     );
     newEmTag.appendChild(emText);
 
