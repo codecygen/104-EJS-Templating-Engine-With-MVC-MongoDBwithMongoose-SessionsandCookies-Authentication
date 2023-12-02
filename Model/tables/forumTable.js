@@ -25,4 +25,13 @@ const forumSchema = new mongoose.Schema(
   { collection: "ForumTable" }
 );
 
+forumSchema.methods.createNewPost = async function () {
+  try {
+    const result = await this.save();
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 module.exports = mongoose.model("ForumTable", forumSchema);
