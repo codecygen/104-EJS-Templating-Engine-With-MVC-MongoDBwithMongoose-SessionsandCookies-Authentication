@@ -114,6 +114,29 @@ button.addEventListener("click", async () => {
     console.log(forumMessage);
     console.log(forumUser);
 
+    const forumContainer = document.getElementById("forum-container");
+    const firstChild = forumContainer.firstChild;
+    
+    const newArticleTag = document.createElement("article");
+
+    const newH3Tag = document.createElement("h3");
+    const h3Text = document.createTextNode(forumTitle);
+    newH3Tag.appendChild(h3Text);
+
+    const newPTag = document.createElement("p");
+    const pText = document.createTextNode(forumMessage);
+    newPTag.appendChild(pText);
+
+    const newEmTag = document.createElement("em");
+    const emText = document.createTextNode(forumUser);
+    newEmTag.appendChild(emText);
+
+    newArticleTag.appendChild(newH3Tag);
+    newArticleTag.appendChild(newPTag);
+    newArticleTag.appendChild(newEmTag);
+
+    forumContainer.insertBefore(newArticleTag, firstChild);
+
     warningMessage.classList.add("success-message");
     return (warningMessage.textContent = data.success.msg);
 
