@@ -12,6 +12,7 @@ const comparePass = promisify(bcrypt.compare);
 
 const dbProductOperation = require("../../Model/operations/dbProductOperation");
 const dbAdminOperation = require("../../Model/operations/dbAdminOperation");
+const dbForumOperation = require("../../Model/operations/dbForumOperation");
 
 const checkCsrfToken = require("./utils/checkCsrfToken");
 
@@ -468,13 +469,16 @@ exports.postForumPage = async (req, res, next) => {
   }
 
   try {
-    
-
-
-    jsonResponse.success = {
-      forumUser: foundUser.userName,
+    const newForumPostData = {
       forumTitle: title,
       forumMessage: message,
+      forumUser: foundUser.userName,
+    };
+
+    const result = await dbForumOperation.saveForumPost(newForumPostData);
+
+    jsonResponse.success = {
+      ...newForumPostData,
       msg: "Forum post is created!",
     };
 
