@@ -3,6 +3,7 @@ const ProductTable = require("./tables/productTable");
 const UserTable = require("./tables/userTable");
 const OrderTable = require("./tables/orderTable");
 const BlogTable = require("./tables/blogTable");
+const ForumTable = require("./tables/forumTable");
 
 
 module.exports = {
@@ -10,4 +11,5 @@ module.exports = {
   UserTable,
   OrderTable,
   BlogTable,
+  ForumTable,
 };
