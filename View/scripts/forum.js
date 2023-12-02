@@ -116,7 +116,7 @@ button.addEventListener("click", async () => {
 
     const forumContainer = document.getElementById("forum-container");
     const firstChild = forumContainer.firstChild;
-    
+
     const newArticleTag = document.createElement("article");
 
     const newH3Tag = document.createElement("h3");
@@ -128,18 +128,24 @@ button.addEventListener("click", async () => {
     newPTag.appendChild(pText);
 
     const newEmTag = document.createElement("em");
-    const emText = document.createTextNode(forumUser);
+    const emText = document.createTextNode(
+      new Date(Date.now()).toLocaleString().split(",")[0]
+    );
     newEmTag.appendChild(emText);
+
+    const newEmTag2 = document.createElement("em");
+    const emText2 = document.createTextNode(forumUser);
+    newEmTag2.appendChild(emText2);
 
     newArticleTag.appendChild(newH3Tag);
     newArticleTag.appendChild(newPTag);
     newArticleTag.appendChild(newEmTag);
+    newArticleTag.appendChild(newEmTag2);
 
     forumContainer.insertBefore(newArticleTag, firstChild);
 
     warningMessage.classList.add("success-message");
     return (warningMessage.textContent = data.success.msg);
-
   } catch (err) {
     console.error(err);
 
