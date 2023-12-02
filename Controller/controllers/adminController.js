@@ -472,13 +472,15 @@ exports.postForumPage = async (req, res, next) => {
     const newForumPostData = {
       forumTitle: title,
       forumMessage: message,
-      forumUser: foundUser.userName,
+      forumUserId: foundUser._id,
     };
 
     const result = await dbForumOperation.saveForumPost(newForumPostData);
 
     jsonResponse.success = {
-      ...newForumPostData,
+      forumTitle: title,
+      forumMessage: message,
+      forumUser: foundUser.userName,
       msg: "Forum post is created!",
     };
 

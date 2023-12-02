@@ -12,8 +12,9 @@ const forumSchema = new mongoose.Schema(
       required: true,
     },
 
-    forumUser: {
-      type: String,
+    forumUserId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserTable",
       required: true,
     },
 
