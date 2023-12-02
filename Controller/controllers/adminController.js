@@ -333,6 +333,9 @@ exports.getUsersPage = async (req, res, next) => {
 };
 
 exports.getForumPage = async (req, res, next) => {
+  const allForumPosts = await dbForumOperation.getAllForumPosts();
+  console.log(allForumPosts);
+
   res.render("admin/forum", {
     renderTitle: "Admin Forum",
     pagePath: "/admin/forum",

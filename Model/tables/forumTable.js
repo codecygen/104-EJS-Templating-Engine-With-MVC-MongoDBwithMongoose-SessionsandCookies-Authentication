@@ -35,4 +35,13 @@ forumSchema.methods.createNewPost = async function () {
   }
 };
 
+forumSchema.statics.getPosts = async function () {
+  try {
+    const allPosts = await this.find();
+    return allPosts;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 module.exports = mongoose.model("ForumTable", forumSchema);

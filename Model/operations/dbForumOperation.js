@@ -8,4 +8,9 @@ const saveForumPost = async (newForumPostData) => {
   return saveResult;
 };
 
-module.exports = { saveForumPost };
+const getAllForumPosts = async () => {
+  const allPosts = await Tables.ForumTable.getPosts();
+  return allPosts;
+};
+
+module.exports = { saveForumPost, getAllForumPosts };
