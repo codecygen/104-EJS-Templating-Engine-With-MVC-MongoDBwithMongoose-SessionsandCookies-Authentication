@@ -38,7 +38,7 @@ forumSchema.methods.createNewPost = async function () {
 forumSchema.statics.getPosts = async function () {
   try {
     const allPosts = await this.find()
-      .populate("forumUserId")
+      .populate("forumUserId") // populate forumUserId which is referenced to UserTable's _id value
       .sort({ forumDate: -1 }) // Sort by forumDate in descending order
       .exec();
     return allPosts;

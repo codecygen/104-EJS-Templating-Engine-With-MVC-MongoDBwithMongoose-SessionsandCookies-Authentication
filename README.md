@@ -1187,4 +1187,26 @@ blogSchema.statics.getBlogsPaginated = async function (
 };
 ```
 
-10. I am covering topics like sending request with fetch API to the backend, validate and sanitize inputs in front and backend, making client side JS code to handle single page request without having to reload the page. also learned about promisify utility function to convert functions that return Promises. It allows async/await syntax with functions that traditionally use callbacks. I also did referencing in database then finding it with find().populate().exec().
+10. **FETCH API FROM FRONT END AND JSON RESPONSE FROM BACK END**: This approach is commonly used in SPA (Single Page Application) for handling asyncronous requests. It improves the user . 
+
+In this section instead of posting the page with traditional POST method in Nodejs, we will rely on fetch API from front end javascript, sanitize and validate data both on front and back end. 
+
+There is also sections covering the topic like **promisify** utility function to convert functions that return Promises.
+
+There is also referencing section in the database that finds further info about forumUserId that references the value from BlogTable to UserTable. **find().populate("forumUserId").exec()**. Refer to [link](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js) for more info.
+
+Finally, I covered a section where it is possible to order data in decending or ascending order (-1 or 1). **find().sort({ forumDate: -1 }).exec()**. Refer to [link](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js) for more info.
+
+```javascript
+forumSchema.statics.getPosts = async function () {
+  try {
+    const allPosts = await this.find()
+      .populate("forumUserId") // populate forumUserId which is referenced to UserTable's _id value
+      .sort({ forumDate: -1 }) // Sort by forumDate in descending order
+      .exec();
+    return allPosts;
+  } catch (err) {
+    console.error(err);
+  }
+};
+```
