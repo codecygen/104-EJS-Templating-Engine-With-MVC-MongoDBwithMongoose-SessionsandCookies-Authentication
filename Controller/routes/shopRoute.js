@@ -38,6 +38,6 @@ router.get(
   shopController.getInvoice
 );
 
-router.get("/blog", isLoggedIn, shopController.getBlogPage);
+router.get("/blog", shopController.getBlogPage);
 
 module.exports = router;
