@@ -40,7 +40,7 @@
                     <article>
                         <h3><%= post.forumTitle %></h3>
                         <p><%= post.forumMessage %></p>
-                        <em><%= post.forumDate %></em>
+                        <em><%= new Date(post.forumDate.toString()).toLocaleString() %></em>
                         <em><%= post.forumUserId %></em>
                     </article>                     
                 <% }); %>
