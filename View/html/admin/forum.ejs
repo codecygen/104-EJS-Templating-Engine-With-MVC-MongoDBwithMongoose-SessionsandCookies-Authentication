@@ -36,6 +36,14 @@
             </div>
 
             <div class="flex-forum2" id="forum-container">
+                <% forumPosts.forEach(post => { %>
+                    <article>
+                        <h3><%= post.forumTitle %></h3>
+                        <p><%= post.forumMessage %></p>
+                        <em><%= post.forumDate %></em>
+                        <em><%= post.forumUserId %></em>
+                    </article>                     
+                <% }); %>
             </div>
         </section>
     </main>
