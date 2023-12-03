@@ -37,7 +37,10 @@ forumSchema.methods.createNewPost = async function () {
 
 forumSchema.statics.getPosts = async function () {
   try {
-    const allPosts = await this.find().populate("forumUserId").exec();
+    const allPosts = await this.find()
+      .populate("forumUserId")
+      .sort({ forumDate: -1 }) // Sort by forumDate in descending order
+      .exec();
     return allPosts;
   } catch (err) {
     console.error(err);
