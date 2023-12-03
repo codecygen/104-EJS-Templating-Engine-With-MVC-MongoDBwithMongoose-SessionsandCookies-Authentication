@@ -37,7 +37,7 @@ forumSchema.methods.createNewPost = async function () {
 
 forumSchema.statics.getPosts = async function () {
   try {
-    const allPosts = await this.find();
+    const allPosts = await this.find().populate("forumUserId").exec();
     return allPosts;
   } catch (err) {
     console.error(err);

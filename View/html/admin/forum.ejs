@@ -41,7 +41,7 @@
                         <h3><%= post.forumTitle %></h3>
                         <p><%= post.forumMessage %></p>
                         <em><%= new Date(post.forumDate.toString()).toLocaleString() %></em>
-                        <em><%= post.forumUserId %></em>
+                        <em><%= post.forumUserId.userName %></em>
                     </article>                     
                 <% }); %>
             </div>
