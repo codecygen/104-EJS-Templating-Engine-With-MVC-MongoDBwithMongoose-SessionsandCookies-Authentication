@@ -1230,7 +1230,7 @@ blogSchema.statics.getBlogsPaginated = async function (
 ```
 
 10. **NodeJS Utility Method That Return Promises**:
-Normally as you can see down below, in traditional methds, we need to put all our code inside the parenthesis. This may create a parentheses hell
+Normally as you can see down below, in traditional methods, we need to put all our code inside the parenthesis. This may create a parentheses hell.
 
 ```javascript
 const bcrypt = require("bcrypt");
@@ -1256,11 +1256,15 @@ const result = await comparePass(password, foundUser.password);
 }
 ```
 
-11. **FETCH API FROM FRONT END AND JSON RESPONSE FROM BACK END**: 
+The promify utility method also converts promise.then().catch() to more readable async/await form.
 
-- This approach is commonly used in SPA (Single Page Application) for handling asyncronous requests. It improves the user . 
+11. **FETCH API FROM FRONT END (EJS) AND JSON RESPONSE FROM BACK END**: 
 
-- In this section instead of posting the page with traditional POST method in Nodejs, we will rely on fetch API from front end javascript, sanitize and validate data both on front and back end. 
+- This approach is commonly used in SPA (Single Page Application) for handling asyncronous requests. It improves the user experience. 
+
+- There is a sanitization and validation section in this part. for more info refer to the title "Validation and Sanitization".
+
+- In this section instead of posting the page with traditional POST method in Nodejs, we will rely on fetch API from front end javascript, sanitize and validate data both on front and back end. [Refer to this fron end script for fetch API request to backend](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/View/scripts/forum.js). In this link, there is a function called **postForumPage** which is responsible of any post request that is coming to "/forum". This also handles the json response that is made from backend to front end for communicating.
 
 - There is also sections covering the topic like **promisify** utility function to convert functions that return Promises. Refer to title "NodeJS Utility Method That Return Promises" for more info.
 
