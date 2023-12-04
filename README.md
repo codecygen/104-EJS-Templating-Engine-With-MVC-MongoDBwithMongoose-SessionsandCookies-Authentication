@@ -79,7 +79,7 @@ EXPRESS_SESSION_KEY = "your-secret-key";
 
 - Referencing Database, Referencing a A Schema to Another with Mongoose **Mongoose-Populate**:
 
-(ForumTable's forumUserId is referencing UserTable's _id here)[https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js]
+[ForumTable's forumUserId is referencing UserTable's _id here](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js)
 ```javascript
 const forumSchema = new mongoose.Schema(
   {
