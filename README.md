@@ -68,16 +68,16 @@ URL =
 EXPRESS_SESSION_KEY = "your-secret-key";
 ```
 
-- **Mongoose-Connect-Database** <br>
+## **Mongoose-Connect-Database**
   Basically, **"./Model/database/dbConnection.js"** is used in **"./index.js"** to connect to database.
-- **MongoDB-Create-And-Associate-Models** <br>
+## **MongoDB-Create-And-Associate-Models**
   **"./Model/database/dbAssociation.js"** is used in **./index.js** so that all model associations and models are properly set. We need to only import dbAssociations.js in index.js.
-- **Express-Session-Keep-Cookie-in-req.session** <br>
+## **Express-Session-Keep-Cookie-in-req.session** <br>
   express-session is a package and it keeps some session files in it so the selected admin will be known by the system.
-- **Mongoose-Queries**
+## **Mongoose-Queries**
   All query related info kept inside "/Model/tables/orderTable.js", "/Model/tables/productTable.js" and "/Model/tables/userTable.js".
 
-- Referencing Database, Referencing a A Schema to Another with Mongoose **Mongoose-Populate**:
+## Referencing Database, Referencing a A Schema to Another with Mongoose **Mongoose-Referencing-Populate-Method**:
 
 [ForumTable's forumUserId is referencing UserTable's _id here](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js)
 ```javascript
@@ -97,22 +97,46 @@ const forumSchema = new mongoose.Schema(
 );
 ```
 
-Also the following methods work with find, findOne, findById and findOneAndUpdate methods as stated in the picture down below.
-
-![methods that work](https://github.com/codecygen/101-EJS-Templating-Engine-With-MVC-MongoDBwithMongoose/blob/main/Images/164075580-a4e6fa11-cf0f-4f5f-9265-d065f6456a95.png?raw=true)
+Then, in the same file, we can extract the info of UserTable based on the forumUserId which is the _id of UserTable. With the populate and exec method down below, we can extract info of all posts along with the post owner's user details which is written inside UserTable.
 
 ```javascript
-const user = await User.findById(userId).populate("productId");
-
-// Basically it says only show userName, userAge as a result
-// but populate the productId section by pulling the _id of the Product model
-// also only populate it with productName and no other details of that product.
-const user = await User.findById(userId)
-  .select("userName", "productId", "productName")
-  .populate("productId", "productName");
+forumSchema.statics.getPosts = async function () {
+  // Mongoose-Referencing-Populate-Method
+  // mongoose-order-query-in-descending-order
+  try {
+    const allPosts = await this.find()
+      .populate("forumUserId") // populate forumUserId which is referenced to UserTable's _id value
+      .sort({ forumDate: -1 }) // Sort by forumDate in descending order
+      .exec();
+    return allPosts;
+  } catch (err) {
+    console.error(err);
+  }
+};
 ```
+## Order Database Results Based on Date or Any Numerical Value:
 
-**Solution:** it means here that productId is directing us to "\_id" field of Product Model. Basically it searches through User model and tries to find User.\_id === userId. Also populates the productId by finding Product.\_id === productId then puts all product details under that user as well.
+The keyword is **mongoose-order-query-in-descending-order**
+
+In the code snippet down below, you can see sort method, which tells mongoose the extract database of ForumTable with find method, then order them in the descending order with sort method.
+
+[Ordering query in descending order is here](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js)
+
+```javascript
+forumSchema.statics.getPosts = async function () {
+  // Mongoose-Referencing-Populate-Method
+  // mongoose-order-query-in-descending-order
+  try {
+    const allPosts = await this.find()
+      .populate("forumUserId") // populate forumUserId which is referenced to UserTable's _id value
+      .sort({ forumDate: -1 }) // Sort by forumDate in descending order
+      .exec();
+    return allPosts;
+  } catch (err) {
+    console.error(err);
+  }
+};
+```
 
 # Sessions and Cookies:
 
@@ -1205,28 +1229,42 @@ blogSchema.statics.getBlogsPaginated = async function (
 };
 ```
 
-10. **FETCH API FROM FRONT END AND JSON RESPONSE FROM BACK END**: 
+10. **NodeJS Utility Method That Return Promises**:
+Normally as you can see down below, in traditional methds, we need to put all our code inside the parenthesis. This may create a parentheses hell
+
+```javascript
+const bcrypt = require("bcrypt");
+.........
+
+bcrypt.compare(enteredPassword, foundUser.password, async (err, result) => {
+  ...code here...
+}
+```
+
+In order to avoid it, we can use promisify utility method as given down below.
+
+```javascript
+const { promisify } = require("util");
+const comparePass = promisify(bcrypt.compare);
+
+..........
+
+try {
+const result = await comparePass(password, foundUser.password);
+} catch (err) {
+  ..........
+}
+```
+
+11. **FETCH API FROM FRONT END AND JSON RESPONSE FROM BACK END**: 
 
 - This approach is commonly used in SPA (Single Page Application) for handling asyncronous requests. It improves the user . 
 
 - In this section instead of posting the page with traditional POST method in Nodejs, we will rely on fetch API from front end javascript, sanitize and validate data both on front and back end. 
 
-- There is also sections covering the topic like **promisify** utility function to convert functions that return Promises.
+- There is also sections covering the topic like **promisify** utility function to convert functions that return Promises. Refer to title "NodeJS Utility Method That Return Promises" for more info.
 
-- There is also referencing section in the database that finds further info about forumUserId that references the value from BlogTable to UserTable. **find().populate("forumUserId").exec()**. Refer to [link](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js) for more info.
+- There is also referencing section in the database that finds further info about forumUserId that references the value from BlogTable to UserTable. **find().populate("forumUserId").exec()**. Refer to the title "Referencing Database" in README.md for details.
 
-Finally, I covered a section where it is possible to order data in decending or ascending order (-1 or 1). **find().sort({ forumDate: -1 }).exec()**. Refer to [link](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js) for more info.
+- Finally, I covered a section where it is possible to order data in decending or ascending order (-1 or 1). **find().sort({ forumDate: -1 }).exec()**. Refer to the title "Order Database Results Based on Date or Any Numerical Value" in README.md for details.
 
-```javascript
-forumSchema.statics.getPosts = async function () {
-  try {
-    const allPosts = await this.find()
-      .populate("forumUserId") // populate forumUserId which is referenced to UserTable's _id value
-      .sort({ forumDate: -1 }) // Sort by forumDate in descending order
-      .exec();
-    return allPosts;
-  } catch (err) {
-    console.error(err);
-  }
-};
-```

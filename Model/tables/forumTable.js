@@ -14,6 +14,7 @@ const forumSchema = new mongoose.Schema(
 
     forumUserId: {
       type: mongoose.Schema.Types.ObjectId,
+      // Mongoose-Referencing-Populate-Method
       ref: "UserTable",
       required: true,
     },
@@ -36,6 +37,8 @@ forumSchema.methods.createNewPost = async function () {
 };
 
 forumSchema.statics.getPosts = async function () {
+  // Mongoose-Referencing-Populate-Method
+  // mongoose-order-query-in-descending-order
   try {
     const allPosts = await this.find()
       .populate("forumUserId") // populate forumUserId which is referenced to UserTable's _id value
