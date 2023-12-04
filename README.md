@@ -76,8 +76,26 @@ EXPRESS_SESSION_KEY = "your-secret-key";
   express-session is a package and it keeps some session files in it so the selected admin will be known by the system.
 - **Mongoose-Queries**
   All query related info kept inside "/Model/tables/orderTable.js", "/Model/tables/productTable.js" and "/Model/tables/userTable.js".
-- **Mongoose-Populate**
-  This is a method that is supposed to work but I could not get it working in this project. Gives me null because I did not properly define it.
+
+- Referencing Database, Referencing a A Schema to Another with Mongoose **Mongoose-Populate**:
+
+(ForumTable's forumUserId is referencing UserTable's _id here)[https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js]
+```javascript
+const forumSchema = new mongoose.Schema(
+  {
+    .......................
+
+    forumUserId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserTable",
+      required: true,
+    },
+
+    .......................
+  },
+  { collection: "ForumTable" }
+);
+```
 
 Also the following methods work with find, findOne, findById and findOneAndUpdate methods as stated in the picture down below.
 
@@ -1187,13 +1205,15 @@ blogSchema.statics.getBlogsPaginated = async function (
 };
 ```
 
-10. **FETCH API FROM FRONT END AND JSON RESPONSE FROM BACK END**: This approach is commonly used in SPA (Single Page Application) for handling asyncronous requests. It improves the user . 
+10. **FETCH API FROM FRONT END AND JSON RESPONSE FROM BACK END**: 
 
-In this section instead of posting the page with traditional POST method in Nodejs, we will rely on fetch API from front end javascript, sanitize and validate data both on front and back end. 
+- This approach is commonly used in SPA (Single Page Application) for handling asyncronous requests. It improves the user . 
 
-There is also sections covering the topic like **promisify** utility function to convert functions that return Promises.
+- In this section instead of posting the page with traditional POST method in Nodejs, we will rely on fetch API from front end javascript, sanitize and validate data both on front and back end. 
 
-There is also referencing section in the database that finds further info about forumUserId that references the value from BlogTable to UserTable. **find().populate("forumUserId").exec()**. Refer to [link](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js) for more info.
+- There is also sections covering the topic like **promisify** utility function to convert functions that return Promises.
+
+- There is also referencing section in the database that finds further info about forumUserId that references the value from BlogTable to UserTable. **find().populate("forumUserId").exec()**. Refer to [link](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js) for more info.
 
 Finally, I covered a section where it is possible to order data in decending or ascending order (-1 or 1). **find().sort({ forumDate: -1 }).exec()**. Refer to [link](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js) for more info.
 
