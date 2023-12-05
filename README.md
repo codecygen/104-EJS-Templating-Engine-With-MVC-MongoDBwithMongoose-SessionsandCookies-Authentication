@@ -1272,3 +1272,6 @@ The promify utility method also converts promise.then().catch() to more readable
 
 - Finally, I covered a section where it is possible to order data in decending or ascending order (-1 or 1). **find().sort({ forumDate: -1 }).exec()**. Refer to the title "Order Database Results Based on Date or Any Numerical Value" in README.md for details.
 
+12. **Making Payment with Stripe**:
+
+
