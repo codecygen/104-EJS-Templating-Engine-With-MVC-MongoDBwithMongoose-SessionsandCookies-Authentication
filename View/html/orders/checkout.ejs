@@ -8,12 +8,14 @@
     <main class="centered">
         <h2>Checkout Page</h2>
         <div class="items">
-            <section>
-                <h3>aras</h3>
-                <p>aras</p>
-                <em>aras</em>
-                <em>aras</em>
-            </section>
+            <% cart.forEach((item) => { %>
+                <section>
+                    <h3><%= item.productName %></h3>
+                    <p><%= item.productDesc %></p>
+                    <em>Price: $<%= item.productPrice %></em>
+                    <em>Quantity: <%= item.qty %></em>
+                </section>
+            <% }) %>
         </div>
         <p>Total Price: <%= totalPrice %></p>
     </main>
