@@ -186,6 +186,7 @@ exports.getCheckoutPage = async (req, res, next) => {
 };
 
 exports.postCreateCheckoutSession = async (req, res, next) => {
+  console.log(process.env.STRIPE_KEY);
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
