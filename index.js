@@ -82,6 +82,7 @@ app.use(
     store: store,
     resave: false,
     saveUninitialized: false,
+    cookie: { maxAge: 10800000 } // Session timeout is 3 hours in ms.
   })
 );
 
