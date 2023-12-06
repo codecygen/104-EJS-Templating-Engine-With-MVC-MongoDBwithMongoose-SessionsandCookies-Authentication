@@ -1,5 +1,5 @@
 const stripe = require("stripe")(
-  "sk_test_51OJwXzHZqtEBHqz6K2UkaYjuIfDxLDyUpmyIvRUp2U207Y9p8yYDkbKK5cNyyKKs9BFCEl1vMmWSAzhuYUF63VHk00OrxFsXew"
+  process.env.STRIPE_KEY
 );
 
 const fs = require("fs");
@@ -186,8 +186,7 @@ exports.getCheckoutPage = async (req, res, next) => {
 };
 
 exports.postCreateCheckoutSession = async (req, res, next) => {
-  console.log(process.env.STRIPE_KEY);
-  const session = await stripe.checkout.sessions.create({
+  const stripe_session = await stripe.checkout.sessions.create({
     line_items: [
       {
         price_data: {
@@ -201,11 +200,11 @@ exports.postCreateCheckoutSession = async (req, res, next) => {
       },
     ],
     mode: "payment",
-    success_url: "http://localhost:4242/success",
-    cancel_url: "http://localhost:4242/cancel",
+    success_url: "http://localhost:3000/success",
+    cancel_url: "http://localhost:3000/cancel",
   });
 
-  res.redirect(303, session.url);
+  res.redirect(303, stripe_session.url);
 };
 
 // exports.orderCart = async (req, res, next) => {
