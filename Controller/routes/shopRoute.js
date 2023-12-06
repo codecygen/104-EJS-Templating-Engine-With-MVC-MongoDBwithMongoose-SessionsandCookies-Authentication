@@ -43,8 +43,7 @@ router.get(
 router.get("/blog", shopController.getBlogPage);
 
 router.post(
-  "create-checkout-session",
-  isLoggedIn,
+  "/create-checkout-session",
   shopController.postCreateCheckoutSession
 );
 
