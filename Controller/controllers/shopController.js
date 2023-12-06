@@ -1,3 +1,7 @@
+const stripe = require("stripe")(
+  "sk_test_51OJwXzHZqtEBHqz6K2UkaYjuIfDxLDyUpmyIvRUp2U207Y9p8yYDkbKK5cNyyKKs9BFCEl1vMmWSAzhuYUF63VHk00OrxFsXew"
+);
+
 const fs = require("fs");
 const path = require("path");
 
@@ -179,6 +183,28 @@ exports.getCheckoutPage = async (req, res, next) => {
     totalPrice,
     cart: currentUser.userCart,
   });
+};
+
+exports.postCreateCheckoutSession = async (req, res, next) => {
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: "T-shirt",
+          },
+          unit_amount: 2000,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: "payment",
+    success_url: "http://localhost:4242/success",
+    cancel_url: "http://localhost:4242/cancel",
+  });
+
+  res.redirect(303, session.url);
 };
 
 // exports.orderCart = async (req, res, next) => {

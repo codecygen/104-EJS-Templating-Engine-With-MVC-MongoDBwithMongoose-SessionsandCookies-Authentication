@@ -42,4 +42,10 @@ router.get(
 
 router.get("/blog", shopController.getBlogPage);
 
+router.post(
+  "create-checkout-session",
+  isLoggedIn,
+  shopController.postCreateCheckoutSession
+);
+
 module.exports = router;

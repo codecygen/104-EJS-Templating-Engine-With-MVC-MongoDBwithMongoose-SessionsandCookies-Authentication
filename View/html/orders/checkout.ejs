@@ -18,6 +18,9 @@
             <% }) %>
         </div>
         <p>Total Price: <%= totalPrice %></p>
+        <form action="/create-checkout-session" method="POST">
+            <button type="submit">Checkout</button>
+        </form>
     </main>
 
 </body>
