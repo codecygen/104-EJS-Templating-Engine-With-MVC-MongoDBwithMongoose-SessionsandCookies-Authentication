@@ -193,11 +193,11 @@ exports.postCreateCheckoutSession = async (req, res, next) => {
     return;
   }
 
-  const currentUser = await dbAdminOperation.getOneUser(req.session.userId);
+  const currentUser = await dbAdminOperation.getUserWithCartDetails(req.session.userId);
 
-  let totalPrice = 0;
-  for (const cartItem of currentUser.userCart) {
-    totalPrice += cartItem.productPrice * cartItem.qty;
+  // If the cart is empty
+  if (!currentUser.userCart) {
+    res.redirect("/cart");
   }
 
   let lineItems = [];
@@ -207,12 +207,12 @@ exports.postCreateCheckoutSession = async (req, res, next) => {
       price_data: {
         currency: "usd",
         product_data: {
-          name: item.productName,
-          description: item.productDesc,
-          // images: [some-image],
+          name: item._id.productName,
+          description: item._id.productDesc,
+          images: ["https://c1.wallpaperflare.com/preview/741/52/995/old-books-book-books-old.jpg"],
           // metadata: {color: "blue", size: "medium"}
         },
-        unit_amount: item.productPrice * 100, // Because stripe thinks result is divided by 100.
+        unit_amount: item._id.productPrice * 100, // Because stripe thinks result is divided by 100.
       },
       quantity: item.qty,
     };

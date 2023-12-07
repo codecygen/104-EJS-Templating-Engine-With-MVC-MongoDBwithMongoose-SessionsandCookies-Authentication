@@ -31,6 +31,11 @@ const updateUserData = async (updatedUserModel) => {
   return result;
 };
 
+const getUserWithCartDetails = async (userId) => {
+  const foundUser = await Tables.UserTable.getUserWithAllCartDetails(userId);
+  return foundUser;
+};
+
 module.exports = {
   getAllUsers,
   getOneUser,
@@ -38,4 +43,5 @@ module.exports = {
   checkLogin,
   getAdminProducts,
   updateUserData,
+  getUserWithCartDetails,
 };

@@ -211,4 +211,13 @@ userSchema.statics.removeAllCart = async function (userId) {
   }
 };
 
+userSchema.statics.getUserWithAllCartDetails = async function (userId) {
+  try {
+    const foundUser = await this.findById(userId).populate('userCart._id').exec();
+    return foundUser;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 module.exports = mongoose.model("UserTable", userSchema);
