@@ -44,6 +44,7 @@ router.get("/blog", shopController.getBlogPage);
 
 router.post(
   "/create-checkout-session",
+  isLoggedIn,
   shopController.postCreateCheckoutSession
 );
 
