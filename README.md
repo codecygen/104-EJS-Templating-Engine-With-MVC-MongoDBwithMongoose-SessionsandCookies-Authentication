@@ -8,16 +8,17 @@
 
 ```javascript
 # FOR MONGODB ATLAS
-URL =
+# URL =
   "mongodb+srv://UserName:UserPass@ClusterName.b99wetu.mongodb.net/DBName?retryWrites=true&w=majority";
 
 # FOR LOCAL MONGODB
-# URL="mongodb://username:password@0.0.0.0:27017/shoppingDB"
+URL="mongodb://username:password@0.0.0.0:27017/shoppingDB"
 
 EXPRESS_SESSION_KEY = "your-secret-key";
 
 EMAIL=passwordresetemail@email.com
 PASSWORD=password
+STRIPE_KEY=mykeyasdadsad_823952759
 ```
 
 - Start server with "npm start" command which will trigger "nodemon start".
