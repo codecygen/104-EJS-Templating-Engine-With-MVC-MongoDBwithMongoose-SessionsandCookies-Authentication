@@ -1,6 +1,4 @@
-const stripe = require("stripe")(
-  process.env.STRIPE_KEY
-);
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 const fs = require("fs");
 const path = require("path");
@@ -195,19 +193,33 @@ exports.postCreateCheckoutSession = async (req, res, next) => {
     return;
   }
 
-  const stripe_session = await stripe.checkout.sessions.create({
-    line_items: [
-      {
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: "T-shirt",
-          },
-          unit_amount: 2000,
+  const currentUser = await dbAdminOperation.getOneUser(req.session.userId);
+
+  let totalPrice = 0;
+  for (const cartItem of currentUser.userCart) {
+    totalPrice += cartItem.productPrice * cartItem.qty;
+  }
+
+  let lineItems = [];
+
+  lineItems = currentUser.userCart.map((item) => {
+    return {
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: item.productName,
+          description: item.productDesc,
+          // images: [some-image],
+          // metadata: {color: "blue", size: "medium"}
         },
-        quantity: 1,
+        unit_amount: item.productPrice,
       },
-    ],
+      quantity: item.qty,
+    };
+  });
+
+  const stripe_session = await stripe.checkout.sessions.create({
+    line_items: lineItems,
     mode: "payment",
     success_url: "http://localhost:3000/success",
     cancel_url: "http://localhost:3000/cancel",
