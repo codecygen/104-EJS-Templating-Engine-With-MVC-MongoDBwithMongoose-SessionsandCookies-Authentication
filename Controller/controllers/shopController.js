@@ -212,7 +212,7 @@ exports.postCreateCheckoutSession = async (req, res, next) => {
           // images: [some-image],
           // metadata: {color: "blue", size: "medium"}
         },
-        unit_amount: item.productPrice,
+        unit_amount: item.productPrice * 100, // Because stripe thinks result is divided by 100.
       },
       quantity: item.qty,
     };
