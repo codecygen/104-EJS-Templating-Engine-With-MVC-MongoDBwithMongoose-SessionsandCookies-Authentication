@@ -182,10 +182,18 @@ exports.getCheckoutPage = async (req, res, next) => {
     renderTitle: "Checkout Page",
     totalPrice,
     cart: currentUser.userCart,
+    csrfToken: req.session.csrfToken,
   });
 };
 
 exports.postCreateCheckoutSession = async (req, res, next) => {
+  const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
+
+  // If client and server tokens don't match do nothing.
+  if (!csrfResult) {
+    res.redirect("/checkout");
+    return;
+  }
 
   const stripe_session = await stripe.checkout.sessions.create({
     line_items: [

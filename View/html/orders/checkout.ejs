@@ -19,6 +19,7 @@
         </div>
         <p>Total Price: <%= totalPrice %></p>
         <form action="/create-checkout-session" method="POST">
+            <input type="hidden" id="csrf" name="_csrf" value=<%= csrfToken %>>
             <button type="submit">Checkout</button>
         </form>
     </main>
