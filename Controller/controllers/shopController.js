@@ -152,18 +152,51 @@ exports.getOrders = async (req, res, next) => {
 };
 
 exports.postOrdersPage = async (req, res, next) => {
-  // CSRF-Attacks-Prevention
-  // Arguments are (clientCsrfToken, serverCsrfToken)
   const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
 
-  // CSRF-Attacks-Prevention
   // If client and server tokens don't match do nothing.
   if (!csrfResult) {
-    res.redirect("/cart");
+    res.redirect("/checkout");
     return;
   }
 
-  res.redirect("/checkout");
+  const currentUser = await dbAdminOperation.getUserWithCartDetails(
+    req.session.userId
+  );
+
+  // If the cart is empty
+  if (!currentUser.userCart) {
+    res.redirect("/cart");
+  }
+
+  let lineItems = [];
+
+  lineItems = currentUser.userCart.map((item) => {
+    return {
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: item._id.productName,
+          description: item._id.productDesc,
+          images: [
+            "https://c1.wallpaperflare.com/preview/741/52/995/old-books-book-books-old.jpg",
+          ],
+          // metadata: {color: "blue", size: "medium"}
+        },
+        unit_amount: item._id.productPrice * 100, // Because stripe thinks result is divided by 100.
+      },
+      quantity: item.qty,
+    };
+  });
+
+  const stripe_session = await stripe.checkout.sessions.create({
+    line_items: lineItems,
+    mode: "payment",
+    success_url: "http://localhost:3000/success",
+    cancel_url: "http://localhost:3000/cancel",
+  });
+
+  res.redirect(303, stripe_session.url);
 };
 
 exports.getCheckoutPage = async (req, res, next) => {
@@ -193,7 +226,9 @@ exports.postCreateCheckoutSession = async (req, res, next) => {
     return;
   }
 
-  const currentUser = await dbAdminOperation.getUserWithCartDetails(req.session.userId);
+  const currentUser = await dbAdminOperation.getUserWithCartDetails(
+    req.session.userId
+  );
 
   // If the cart is empty
   if (!currentUser.userCart) {
@@ -209,7 +244,9 @@ exports.postCreateCheckoutSession = async (req, res, next) => {
         product_data: {
           name: item._id.productName,
           description: item._id.productDesc,
-          images: ["https://c1.wallpaperflare.com/preview/741/52/995/old-books-book-books-old.jpg"],
+          images: [
+            "https://c1.wallpaperflare.com/preview/741/52/995/old-books-book-books-old.jpg",
+          ],
           // metadata: {color: "blue", size: "medium"}
         },
         unit_amount: item._id.productPrice * 100, // Because stripe thinks result is divided by 100.
