@@ -199,14 +199,13 @@ exports.postOrdersPage = async (req, res, next) => {
   res.redirect(303, stripe_session.url);
 };
 
-exports.postSuccessPage = async (req, res, next) => {
-  const stripe_session_id = req.query.session_id;
+exports.getSuccessPage = async (req, res, next) => {
+  // const stripe_session_id = req.query.session_id;
 
-  const session = await stripe.checkout.sessions.retrieve(stripe_session_id);
-
+  const stripe_session = await stripe.checkout.sessions.retrieve("cs_test_b12z7IvUtd3RrjLG5nlJr7wVRgxPUOoeaVGcYWsmuVtZ5FxkKEYVagZSWt");
   // Now you can access information about the completed session, e.g., session.payment_status
 
-  console.log("Payment status:", session.payment_status);
+  console.log("Payment status:", stripe_session.payment_status);
 
   res.status(200).end();
 };
