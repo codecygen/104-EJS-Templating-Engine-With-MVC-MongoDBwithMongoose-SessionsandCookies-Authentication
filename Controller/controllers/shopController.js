@@ -199,6 +199,18 @@ exports.postOrdersPage = async (req, res, next) => {
   res.redirect(303, stripe_session.url);
 };
 
+exports.postSuccessPage = async (req, res, next) => {
+  const stripe_session_id = req.query.session_id;
+
+  const session = await stripe.checkout.sessions.retrieve(stripe_session_id);
+
+  // Now you can access information about the completed session, e.g., session.payment_status
+
+  console.log("Payment status:", session.payment_status);
+
+  res.status(200).end();
+};
+
 // exports.orderCart = async (req, res, next) => {
 //   // CSRF-Attacks-Prevention
 //   // Arguments are (clientCsrfToken, serverCsrfToken)
