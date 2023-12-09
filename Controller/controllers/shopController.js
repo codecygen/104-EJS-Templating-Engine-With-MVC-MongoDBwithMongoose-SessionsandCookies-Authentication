@@ -199,7 +199,7 @@ exports.postOrdersPage = async (req, res, next) => {
   res.redirect(303, stripe_session.url);
 };
 
-exports.getSuccessPage = async (req, res, next) => {
+exports.postPurchaseConfirmationPage = async (req, res, next) => {
   // const stripe_session_id = req.query.session_id;
 
   const stripe_session = await stripe.checkout.sessions.retrieve("cs_test_b12z7IvUtd3RrjLG5nlJr7wVRgxPUOoeaVGcYWsmuVtZ5FxkKEYVagZSWt");
