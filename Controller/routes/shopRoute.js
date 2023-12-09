@@ -30,10 +30,14 @@ router.post("/cart-delete-item", isLoggedIn, shopController.postDeleteCartItem);
 router.get("/orders", isLoggedIn, shopController.getOrders);
 router.post("/orders", isLoggedIn, shopController.postOrdersPage);
 
+// isLoggedIn middleware is not needed here
+// Because this post request is coming from Stripe server itself.
+// Not from your user so if you put that middleware, it will fail the entire
+// post request.
 router.post(
   "/purchase-confirmation",
-  isLoggedIn,
-  shopController.postPurchaseConfirmationPage
+  express.raw({ type: "application/json" }),
+  shopController.postPurchaseConfirmationPage,
 );
 
 // multer-static-content-pdf-file-download

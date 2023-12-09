@@ -200,14 +200,36 @@ exports.postOrdersPage = async (req, res, next) => {
 };
 
 exports.postPurchaseConfirmationPage = async (req, res, next) => {
-  // const stripe_session_id = req.query.session_id;
+  console.log("This is stripe CLI post message!");
 
-  const stripe_session = await stripe.checkout.sessions.retrieve("cs_test_b12z7IvUtd3RrjLG5nlJr7wVRgxPUOoeaVGcYWsmuVtZ5FxkKEYVagZSWt");
-  // Now you can access information about the completed session, e.g., session.payment_status
+  const sig = req.headers["stripe-signature"];
 
-  console.log("Payment status:", stripe_session.payment_status);
+  let event;
 
-  res.status(200).end();
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.STRIPE_WEBHOOK_KEY
+    );
+  } catch (err) {
+    res.status(400).send(`Webhook Error: ${err.message}`);
+    return;
+  }
+
+  // Handle the event
+  switch (event.type) {
+    case "payment_intent.succeeded":
+      const paymentIntentSucceeded = event.data.object;
+      // Then define and call a function to handle the event payment_intent.succeeded
+      break;
+    // ... handle other event types
+    default:
+      console.log(`Unhandled event type ${event.type}`);
+  }
+
+  // Return a 200 response to acknowledge receipt of the event
+  res.send();
 };
 
 // exports.orderCart = async (req, res, next) => {
