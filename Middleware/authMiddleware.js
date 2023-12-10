@@ -1,8 +1,6 @@
 const dbProductOperation = require("../Model/operations/dbProductOperation");
 
 const isLoggedIn = (req, res, next) => {
-  console.log(req.session);
-
   if (res.locals.selectedUser.userId) {
     next();
   } else {
