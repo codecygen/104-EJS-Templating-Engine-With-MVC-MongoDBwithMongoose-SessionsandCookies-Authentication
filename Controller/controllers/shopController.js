@@ -201,17 +201,19 @@ exports.postOrdersPage = async (req, res, next) => {
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_KEY;
 
-exports.postPurchaseConfirmationPage = async (req, res, next) => {
-  console.log(process.env.STRIPE_WEBHOOK_KEY);
-  console.log(`Request Method: ${req.method}`);
-  console.log(`Request URL: ${req.url}`);
-  console.log(`Request Headers: ${JSON.stringify(req.headers)}`);
-  console.log(`Request Body: ${JSON.stringify(req.body), null, "\t"}`);
-  console.log(
-    `sig = req.headers["stripe-signature"]: ${JSON.stringify(
-      req.headers["stripe-signature"], null, "\t"
-    )}`
-  );
+exports.postPurchaseConfirmationPage = (req, res, next) => {
+  // console.log(process.env.STRIPE_WEBHOOK_KEY);
+  // console.log(`Request Method: ${req.method}`);
+  // console.log(`Request URL: ${req.url}`);
+  // console.log(`Request Headers: ${JSON.stringify(req.headers)}`);
+  // console.log(`Request Body: ${(JSON.stringify(req.body), null, "\t")}`);
+  // console.log(
+  //   `sig = req.headers["stripe-signature"]: ${JSON.stringify(
+  //     req.headers["stripe-signature"],
+  //     null,
+  //     "\t"
+  //   )}`
+  // );
 
   const sig = req.headers["stripe-signature"];
 
@@ -219,13 +221,39 @@ exports.postPurchaseConfirmationPage = async (req, res, next) => {
 
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    console.log(event);
   } catch (err) {
+    console.log(err.message);
     res.status(400).send(`Webhook Error: ${err.message}`);
     return;
   }
 
+  console.log(event);
   // Handle the event
   console.log(`Unhandled event type ${event.type}`);
+
+  // Handle the event
+  switch (event.type) {
+    case "charge.succeeded":
+      const chargeSucceeded = event.data.object;
+      // Then define and call a function to handle the event charge.succeeded
+      break;
+    case "checkout.session.completed":
+      const checkoutSessionCompleted = event.data.object;
+      // Then define and call a function to handle the event checkout.session.completed
+      break;
+    case "payment_intent.created":
+      const paymentIntentCreated = event.data.object;
+      // Then define and call a function to handle the event payment_intent.created
+      break;
+    case "payment_intent.succeeded":
+      const paymentIntentSucceeded = event.data.object;
+      // Then define and call a function to handle the event payment_intent.succeeded
+      break;
+    // ... handle other event types
+    default:
+      console.log(`Unhandled event type ${event.type}`);
+  }
 
   // Return a 200 response to acknowledge receipt of the event
   res.send();

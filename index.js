@@ -32,14 +32,6 @@ const store = new MongoDBStore({
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.json({ limit: "50mb" }));
 
-app.use((req, res, next) => {
-  if (req.originalUrl.includes("/purchase-confirmation")) {
-    next();
-  } else {
-    express.json({ limit: "1mb" })(req, res, next);
-  }
-});
-
 // Specify CSS file location
 app.use(express.static(path.join(__dirname, "View/styles")));
 
