@@ -200,8 +200,6 @@ exports.postOrdersPage = async (req, res, next) => {
 };
 
 exports.postPurchaseConfirmationPage = async (req, res, next) => {
-  console.log("This is stripe CLI post message!");
-
   const sig = req.headers["stripe-signature"];
 
   let event;
@@ -229,7 +227,7 @@ exports.postPurchaseConfirmationPage = async (req, res, next) => {
   }
 
   // Return a 200 response to acknowledge receipt of the event
-  res.send();
+  res.status(200).send();
 };
 
 // exports.orderCart = async (req, res, next) => {
