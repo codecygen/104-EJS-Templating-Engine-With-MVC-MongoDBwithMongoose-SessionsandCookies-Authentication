@@ -37,7 +37,7 @@ router.post("/orders", isLoggedIn, shopController.postOrdersPage);
 // post request.
 router.post(
   "/webhook",
-  // express.raw({ type: "application/json" }),
+  express.raw({ type: "application/json" }),
   shopController.postPurchaseConfirmationPage,
 );
 

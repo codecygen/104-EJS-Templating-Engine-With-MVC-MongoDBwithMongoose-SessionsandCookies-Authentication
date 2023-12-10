@@ -202,27 +202,19 @@ exports.postOrdersPage = async (req, res, next) => {
 const endpointSecret = process.env.STRIPE_WEBHOOK_KEY;
 
 exports.postPurchaseConfirmationPage = (req, res, next) => {
-  // console.log(process.env.STRIPE_WEBHOOK_KEY);
-  // console.log(`Request Method: ${req.method}`);
-  // console.log(`Request URL: ${req.url}`);
-  // console.log(`Request Headers: ${JSON.stringify(req.headers)}`);
-  // console.log(`Request Body: ${(JSON.stringify(req.body), null, "\t")}`);
-  // console.log(
-  //   `sig = req.headers["stripe-signature"]: ${JSON.stringify(
-  //     req.headers["stripe-signature"],
-  //     null,
-  //     "\t"
-  //   )}`
-  // );
-
   const sig = req.headers["stripe-signature"];
 
   let event;
 
   const rawBody = req.body.toString();
 
+  console.log("req.headers:", req.headers)
+  console.log("req.body:", req.body);
+  console.log("rawBody:", rawBody);
+  console.log("sig:", sig);
+
   try {
-    event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
     console.log(event);
   } catch (err) {
     console.log(err.message);
