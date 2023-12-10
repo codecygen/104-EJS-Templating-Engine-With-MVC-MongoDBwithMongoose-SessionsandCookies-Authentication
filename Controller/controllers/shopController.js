@@ -219,8 +219,10 @@ exports.postPurchaseConfirmationPage = (req, res, next) => {
 
   let event;
 
+  const rawBody = req.body.toString();
+
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
     console.log(event);
   } catch (err) {
     console.log(err.message);

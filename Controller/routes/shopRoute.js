@@ -1,4 +1,5 @@
 const express = require("express");
+
 const shopController = require("../controllers/shopController");
 const router = express.Router();
 
@@ -36,7 +37,7 @@ router.post("/orders", isLoggedIn, shopController.postOrdersPage);
 // post request.
 router.post(
   "/webhook",
-  express.raw({ type: "application/json" }),
+  // express.raw({ type: "application/json" }),
   shopController.postPurchaseConfirmationPage,
 );
 
