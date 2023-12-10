@@ -206,13 +206,6 @@ exports.postPurchaseConfirmationPage = (req, res, next) => {
 
   let event;
 
-  const rawBody = req.body.toString();
-
-  console.log("req.headers:", req.headers)
-  console.log("req.body:", req.body);
-  console.log("rawBody:", rawBody);
-  console.log("sig:", sig);
-
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
     console.log(event);
