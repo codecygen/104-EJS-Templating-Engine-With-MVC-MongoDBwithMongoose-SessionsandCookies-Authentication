@@ -227,7 +227,7 @@ exports.postPurchaseConfirmationPage = async (req, res, next) => {
   }
 
   // Return a 200 response to acknowledge receipt of the event
-  res.status(200).send();
+  res.send();
 };
 
 // exports.orderCart = async (req, res, next) => {
