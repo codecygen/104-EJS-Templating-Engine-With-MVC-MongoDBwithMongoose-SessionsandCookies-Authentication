@@ -199,32 +199,33 @@ exports.postOrdersPage = async (req, res, next) => {
   res.redirect(303, stripe_session.url);
 };
 
+const endpointSecret = process.env.STRIPE_WEBHOOK_KEY;
+
 exports.postPurchaseConfirmationPage = async (req, res, next) => {
+  console.log(process.env.STRIPE_WEBHOOK_KEY);
+  console.log(`Request Method: ${req.method}`);
+  console.log(`Request URL: ${req.url}`);
+  console.log(`Request Headers: ${JSON.stringify(req.headers)}`);
+  console.log(`Request Body: ${JSON.stringify(req.body), null, "\t"}`);
+  console.log(
+    `sig = req.headers["stripe-signature"]: ${JSON.stringify(
+      req.headers["stripe-signature"], null, "\t"
+    )}`
+  );
+
   const sig = req.headers["stripe-signature"];
 
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(
-      req.body,
-      sig,
-      process.env.STRIPE_WEBHOOK_KEY
-    );
+    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
   } catch (err) {
     res.status(400).send(`Webhook Error: ${err.message}`);
     return;
   }
 
   // Handle the event
-  switch (event.type) {
-    case "payment_intent.succeeded":
-      const paymentIntentSucceeded = event.data.object;
-      // Then define and call a function to handle the event payment_intent.succeeded
-      break;
-    // ... handle other event types
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
+  console.log(`Unhandled event type ${event.type}`);
 
   // Return a 200 response to acknowledge receipt of the event
   res.send();
