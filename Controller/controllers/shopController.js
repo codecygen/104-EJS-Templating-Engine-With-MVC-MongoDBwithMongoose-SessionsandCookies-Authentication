@@ -192,7 +192,7 @@ exports.postOrdersPage = async (req, res, next) => {
   const stripe_session = await stripe.checkout.sessions.create({
     line_items: lineItems,
     mode: "payment",
-    success_url: "http://localhost:3000/orders?ordered=true",
+    success_url: "http://localhost:3000/success",
     cancel_url: "http://localhost:3000/cancel",
   });
 
@@ -208,38 +208,18 @@ exports.postPurchaseConfirmationPage = (req, res, next) => {
 
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-    console.log(event);
   } catch (err) {
     console.log(err.message);
     res.status(400).send(`Webhook Error: ${err.message}`);
     return;
   }
 
-  console.log(event);
-  // Handle the event
-  console.log(`Unhandled event type ${event.type}`);
-
-  // Handle the event
-  switch (event.type) {
-    case "charge.succeeded":
-      const chargeSucceeded = event.data.object;
-      // Then define and call a function to handle the event charge.succeeded
-      break;
-    case "checkout.session.completed":
-      const checkoutSessionCompleted = event.data.object;
-      // Then define and call a function to handle the event checkout.session.completed
-      break;
-    case "payment_intent.created":
-      const paymentIntentCreated = event.data.object;
-      // Then define and call a function to handle the event payment_intent.created
-      break;
-    case "payment_intent.succeeded":
-      const paymentIntentSucceeded = event.data.object;
-      // Then define and call a function to handle the event payment_intent.succeeded
-      break;
-    // ... handle other event types
-    default:
-      console.log(`Unhandled event type ${event.type}`);
+  if (event.type === "charge.succeeded") {
+    const chargeSucceeded = event.data.object;
+    // Then define and call a function to handle the event charge.succeeded
+    console.log("Payment done!");
+  } else {
+    console.log(`Unhandled event type ${event.type}`);
   }
 
   // Return a 200 response to acknowledge receipt of the event
