@@ -6,6 +6,8 @@
 - Create a database called "shopping-website" in MySQL
 - Create .env file and provide the given content.
 
+Download .env file [here](https://github.com/codecygen/106-ENV-FILE-EJS-Templating-Engine-With-MVC-MongoDBwithMongoose-SessionsandCookies-Authentication/blob/main/env).
+
 ```bash
 # FOR MONGODB ATLAS
 # URL = "mongodb+srv://UserName:UserPass@ClusterName.b99wetu.mongodb.net/DBName?retryWrites=true&w=majority";
