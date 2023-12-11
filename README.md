@@ -1276,3 +1276,5 @@ The promify utility method also converts promise.then().catch() to more readable
 12. **Making Payment with Stripe**:
 
 ![Stripe Image](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Images/Stripe-Image.png?raw=true)
+
+- 

@@ -192,7 +192,7 @@ exports.postOrdersPage = async (req, res, next) => {
   const stripe_session = await stripe.checkout.sessions.create({
     line_items: lineItems,
     mode: "payment",
-    success_url: "http://localhost:3000/success",
+    success_url: "http://localhost:3000/orders?ordered=true",
     cancel_url: "http://localhost:3000/cancel",
   });
 
