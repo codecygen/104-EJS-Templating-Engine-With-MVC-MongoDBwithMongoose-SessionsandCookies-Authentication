@@ -33,7 +33,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 // app.use(express.json({ limit: "50mb" }));
 
 app.use((req, res, next) => {
-  if (req.originalUrl === '/webhook') {
+  if (req.originalUrl === "/payment-confirmation") {
     next();
   } else {
     express.json({ limit: "50mb" })(req, res, next);
@@ -54,11 +54,11 @@ app.use(express.static(path.join(__dirname, "View/scripts")));
 // app.use(express.static(path.join(__dirname, "uploads")));
 // app will think the file will be ready in
 // localhost:3000/1700158739221-40615879-01_World.jpg
-// But when you say 
-//  <img 
-  // src="/<%= product.productImg %>" 
-  // alt=<%= product.productName %>  
-  // height="300"
+// But when you say
+//  <img
+// src="/<%= product.productImg %>"
+// alt=<%= product.productName %>
+// height="300"
 //  >
 // src will look into localhost:3000/uploads/1700158739221-40615879-01_World.jpg
 // and this path does not exist
@@ -90,7 +90,7 @@ app.use(
     store: store,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 10800000 } // Session timeout is 3 hours in ms.
+    cookie: { maxAge: 10800000 }, // Session timeout is 3 hours in ms.
   })
 );
 

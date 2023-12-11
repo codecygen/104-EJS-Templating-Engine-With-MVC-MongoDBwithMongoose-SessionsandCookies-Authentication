@@ -36,7 +36,7 @@ router.post("/orders", isLoggedIn, shopController.postOrdersPage);
 // Not from your user so if you put that middleware, it will fail the entire
 // post request.
 router.post(
-  "/webhook",
+  "/payment-confirmation",
   express.raw({ type: "application/json" }),
   shopController.postPurchaseConfirmationPage,
 );
