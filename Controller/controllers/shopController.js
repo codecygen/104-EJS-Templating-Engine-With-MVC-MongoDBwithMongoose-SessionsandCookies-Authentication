@@ -190,7 +190,9 @@ exports.postOrdersPage = async (req, res, next) => {
   });
 
   const stripe_session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
     line_items: lineItems,
+    client_reference_id: req.session.userEmail,
     mode: "payment",
     success_url: "http://localhost:3000/success",
     cancel_url: "http://localhost:3000/cancel",
