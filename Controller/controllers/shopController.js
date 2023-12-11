@@ -199,12 +199,12 @@ exports.postOrdersPage = async (req, res, next) => {
   res.redirect(303, stripe_session.url);
 };
 
-const endpointSecret = process.env.STRIPE_WEBHOOK_KEY;
-
 exports.postPurchaseConfirmationPage = (req, res, next) => {
   const sig = req.headers["stripe-signature"];
 
   let event;
+
+  const endpointSecret = process.env.STRIPE_WEBHOOK_KEY;
 
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);

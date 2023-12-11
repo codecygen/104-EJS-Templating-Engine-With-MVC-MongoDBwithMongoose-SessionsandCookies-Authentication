@@ -6,10 +6,9 @@
 - Create a database called "shopping-website" in MySQL
 - Create .env file and provide the given content.
 
-```javascript
+```bash
 # FOR MONGODB ATLAS
-# URL =
-  "mongodb+srv://UserName:UserPass@ClusterName.b99wetu.mongodb.net/DBName?retryWrites=true&w=majority";
+# URL = "mongodb+srv://UserName:UserPass@ClusterName.b99wetu.mongodb.net/DBName?retryWrites=true&w=majority";
 
 # FOR LOCAL MONGODB
 URL="mongodb://username:password@0.0.0.0:27017/shoppingDB"
@@ -18,7 +17,12 @@ EXPRESS_SESSION_KEY = "your-secret-key";
 
 EMAIL=passwordresetemail@email.com
 PASSWORD=password
+
+# Needed to be able to import stripe library
 STRIPE_KEY=mykeyasdadsad_823952759
+
+# Needed for stripe webhooks
+STRIPE_WEBHOOK_KEY=mywebhook_346367
 ```
 
 - Start server with "npm start" command which will trigger "nodemon start".
@@ -70,17 +74,25 @@ EXPRESS_SESSION_KEY = "your-secret-key";
 ```
 
 ## **Mongoose-Connect-Database**
-  Basically, **"./Model/database/dbConnection.js"** is used in **"./index.js"** to connect to database.
+
+Basically, **"./Model/database/dbConnection.js"** is used in **"./index.js"** to connect to database.
+
 ## **MongoDB-Create-And-Associate-Models**
-  **"./Model/database/dbAssociation.js"** is used in **./index.js** so that all model associations and models are properly set. We need to only import dbAssociations.js in index.js.
+
+**"./Model/database/dbAssociation.js"** is used in **./index.js** so that all model associations and models are properly set. We need to only import dbAssociations.js in index.js.
+
 ## **Express-Session-Keep-Cookie-in-req.session** <br>
-  express-session is a package and it keeps some session files in it so the selected admin will be known by the system.
+
+express-session is a package and it keeps some session files in it so the selected admin will be known by the system.
+
 ## **Mongoose-Queries**
-  All query related info kept inside "/Model/tables/orderTable.js", "/Model/tables/productTable.js" and "/Model/tables/userTable.js".
+
+All query related info kept inside "/Model/tables/orderTable.js", "/Model/tables/productTable.js" and "/Model/tables/userTable.js".
 
 ## Referencing Database, Referencing a A Schema to Another with Mongoose **Mongoose-Referencing-Populate-Method**:
 
-[ForumTable's forumUserId is referencing UserTable's _id here](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js)
+[ForumTable's forumUserId is referencing UserTable's \_id here](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Model/tables/forumTable.js)
+
 ```javascript
 const forumSchema = new mongoose.Schema(
   {
@@ -98,7 +110,7 @@ const forumSchema = new mongoose.Schema(
 );
 ```
 
-Then, in the same file, we can extract the info of UserTable based on the forumUserId which is the _id of UserTable. With the populate and exec method down below, we can extract info of all posts along with the post owner's user details which is written inside UserTable.
+Then, in the same file, we can extract the info of UserTable based on the forumUserId which is the \_id of UserTable. With the populate and exec method down below, we can extract info of all posts along with the post owner's user details which is written inside UserTable.
 
 ```javascript
 forumSchema.statics.getPosts = async function () {
@@ -115,6 +127,7 @@ forumSchema.statics.getPosts = async function () {
   }
 };
 ```
+
 ## Order Database Results Based on Date or Any Numerical Value:
 
 The keyword is **mongoose-order-query-in-descending-order**
@@ -1231,7 +1244,7 @@ blogSchema.statics.getBlogsPaginated = async function (
 ```
 
 10. **NodeJS Utility Method That Return Promises**:
-Normally as you can see down below, in traditional methods, we need to put all our code inside the parenthesis. This may create a parentheses hell.
+    Normally as you can see down below, in traditional methods, we need to put all our code inside the parenthesis. This may create a parentheses hell.
 
 ```javascript
 const bcrypt = require("bcrypt");
@@ -1259,9 +1272,9 @@ const result = await comparePass(password, foundUser.password);
 
 The promify utility method also converts promise.then().catch() to more readable async/await form.
 
-11. **FETCH API FROM FRONT END (EJS) AND JSON RESPONSE FROM BACK END**: 
+11. **FETCH API FROM FRONT END (EJS) AND JSON RESPONSE FROM BACK END**:
 
-- This approach is commonly used in SPA (Single Page Application) for handling asyncronous requests. It improves the user experience. 
+- This approach is commonly used in SPA (Single Page Application) for handling asyncronous requests. It improves the user experience.
 
 - There is a sanitization and validation section in this part. for more info refer to the title "Validation and Sanitization".
 
@@ -1277,4 +1290,4 @@ The promify utility method also converts promise.then().catch() to more readable
 
 ![Stripe Image](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Images/Stripe-Image.png?raw=true)
 
-- 
+-
