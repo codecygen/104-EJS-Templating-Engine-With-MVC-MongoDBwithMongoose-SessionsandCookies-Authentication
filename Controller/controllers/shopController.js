@@ -216,8 +216,7 @@ exports.postPurchaseConfirmationPage = (req, res, next) => {
 
   if (event.type === "charge.succeeded") {
     const chargeSucceeded = event.data.object;
-    // Then define and call a function to handle the event charge.succeeded
-    console.log("Payment done!");
+    console.log(chargeSucceeded);
   } else {
     console.log(`Unhandled event type ${event.type}`);
   }
