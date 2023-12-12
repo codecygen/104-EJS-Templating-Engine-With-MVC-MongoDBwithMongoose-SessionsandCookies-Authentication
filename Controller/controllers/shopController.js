@@ -166,7 +166,7 @@ exports.postOrdersPage = async (req, res, next) => {
 
   // If the cart is empty
   if (!currentUser.userCart) {
-    res.redirect("/cart");
+    return res.redirect("/cart");
   }
 
   let lineItems = [];
@@ -192,7 +192,8 @@ exports.postOrdersPage = async (req, res, next) => {
   const stripe_session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: lineItems,
-    client_reference_id: req.session.userEmail,
+    // This will be picked up from webhook session to identify who paid
+    customer_email: req.session.userEmail,
     mode: "payment",
     success_url: "http://localhost:3000/success",
     cancel_url: "http://localhost:3000/cancel",
@@ -217,8 +218,8 @@ exports.postPurchaseConfirmationPage = (req, res, next) => {
   }
 
   if (event.type === "charge.succeeded") {
-    const chargeSucceeded = event.data.object;
-    console.log(chargeSucceeded);
+    const chargeResult = event.data.object;
+    console.log(chargeResult.billing_details.email);
   } else {
     console.log(`Unhandled event type ${event.type}`);
   }
