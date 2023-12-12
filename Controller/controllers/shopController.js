@@ -195,8 +195,8 @@ exports.postOrdersPage = async (req, res, next) => {
     // This will be picked up from webhook session to identify who paid
     customer_email: req.session.userEmail,
     mode: "payment",
-    success_url: "http://localhost:3000/success",
-    cancel_url: "http://localhost:3000/cancel",
+    success_url: "http://localhost:3000/orders?paidOrder=true",
+    cancel_url: "http://localhost:3000/cart",
   });
 
   res.redirect(303, stripe_session.url);
