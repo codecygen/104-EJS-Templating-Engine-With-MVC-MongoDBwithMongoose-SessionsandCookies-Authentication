@@ -244,31 +244,6 @@ exports.postPurchaseConfirmationPage = async (req, res, next) => {
   res.send();
 };
 
-// exports.orderCart = async (req, res, next) => {
-//   // CSRF-Attacks-Prevention
-//   // Arguments are (clientCsrfToken, serverCsrfToken)
-//   const csrfResult = checkCsrfToken(req.body._csrf, req.session.csrfToken);
-
-//   // CSRF-Attacks-Prevention
-//   // If client and server tokens don't match do nothing.
-//   if (!csrfResult) {
-//     res.redirect("/cart");
-//     return;
-//   }
-
-//   const loggedInUser = res.locals.selectedUser;
-
-//   // Updates user cart if there is any update in the actual product
-//   const currentUser = await dbAdminOperation.getOneUser(req.session.userId);
-//   const [cartProductList, cartTotalPrice] =
-//     await dbCartOperation.getCartProducts(currentUser);
-
-//   // Posts cart to the /orders page
-//   await dbOrderOperation.postCartToOrders(loggedInUser);
-
-//   res.redirect("/orders");
-// };
-
 // ========================================================
 // ================= STATIC PDF CREATION =================
 // ========================================================
