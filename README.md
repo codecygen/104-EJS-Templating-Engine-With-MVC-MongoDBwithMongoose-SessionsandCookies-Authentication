@@ -547,7 +547,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/gfg", (req, res) => {
-  res.send(req.flash("message"));
+  const message = req.flash("message");
+  res.json({ message: message })
 });
 
 app.listen(port, (err) => {

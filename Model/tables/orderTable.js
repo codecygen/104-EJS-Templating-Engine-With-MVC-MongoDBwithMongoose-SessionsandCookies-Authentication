@@ -61,7 +61,7 @@ orderSchema.statics.getOrderList = async function (userId) {
     throw err;
   }
 
-  if(!foundOrders) {
+  if (!foundOrders) {
     foundOrders = {};
     foundOrders.orders = [];
   }

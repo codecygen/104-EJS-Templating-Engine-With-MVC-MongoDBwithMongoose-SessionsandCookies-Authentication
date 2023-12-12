@@ -142,12 +142,21 @@ exports.getOrders = async (req, res, next) => {
   const loggedInUser = res.locals.selectedUser;
 
   const orderList = await dbOrderOperation.getOrders(loggedInUser);
+  const totalOrderNumber = orderList.length;
+
+  const orderPaid = req.query["order-paid"];
+  let orderMessage;
+
+  if (orderPaid) {
+    orderMessage = `Order ${totalOrderNumber}'s payment is received!`;
+  }
 
   return res.render("orders/index", {
     pagePath: "/orders",
     renderTitle: "Orders",
     orderList,
     userId: loggedInUser.userId.toString(),
+    orderMessage: orderMessage,
   });
 };
 
@@ -195,7 +204,7 @@ exports.postOrdersPage = async (req, res, next) => {
     // This will be picked up from webhook session to identify who paid
     customer_email: req.session.userEmail,
     mode: "payment",
-    success_url: "http://localhost:3000/orders?paidOrder=true",
+    success_url: "http://localhost:3000/orders?order-paid=true",
     cancel_url: "http://localhost:3000/cart",
   });
 
@@ -236,6 +245,12 @@ exports.postPurchaseConfirmationPage = async (req, res, next) => {
 
     // Posts cart to the /orders page
     await dbOrderOperation.postCartToOrders(loggedInPaidUser);
+  } else if (
+    event.type === "payment_intent.succeeded" ||
+    event.type === "payment_intent.created" ||
+    event.type === "checkout.session.completed"
+  ) {
+    // Do nothing!
   } else {
     console.log(`Unhandled event type ${event.type}`);
   }
