@@ -147,7 +147,7 @@ exports.getOrders = async (req, res, next) => {
   const orderPaid = req.query["order-paid"];
   let orderMessage;
 
-  if (orderPaid) {
+  if (orderPaid && totalOrderNumber) {
     orderMessage = `Order ${totalOrderNumber}'s payment is received!`;
   }
 
