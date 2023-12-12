@@ -202,7 +202,7 @@ exports.postOrdersPage = async (req, res, next) => {
   res.redirect(303, stripe_session.url);
 };
 
-exports.postPurchaseConfirmationPage = (req, res, next) => {
+exports.postPurchaseConfirmationPage = async (req, res, next) => {
   const sig = req.headers["stripe-signature"];
 
   let event;
@@ -219,7 +219,23 @@ exports.postPurchaseConfirmationPage = (req, res, next) => {
 
   if (event.type === "charge.succeeded") {
     const chargeResult = event.data.object;
-    console.log(chargeResult.billing_details.email);
+    const billingEmail = chargeResult.billing_details.email;
+
+    const paidUser = await dbAdminOperation.getOneUserWithEmail(billingEmail);
+
+    const [cartProductList, cartTotalPrice] =
+      await dbCartOperation.getCartProducts(paidUser);
+
+    const loggedInPaidUser = {
+      userId: paidUser._id,
+      userName: paidUser.userName,
+      userEmail: paidUser.userEmail,
+      adminId: paidUser.adminId,
+      csrfToken: paidUser.csrfToken,
+    };
+
+    // Posts cart to the /orders page
+    await dbOrderOperation.postCartToOrders(loggedInPaidUser);
   } else {
     console.log(`Unhandled event type ${event.type}`);
   }
