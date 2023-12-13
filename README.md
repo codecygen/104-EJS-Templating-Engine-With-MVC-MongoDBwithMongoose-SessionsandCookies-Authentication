@@ -1500,7 +1500,7 @@ router.post(
 ./stripe trigger payment_intent.succeeded
 ```
 
-- Once you make the payment in your website, you have to make sure that the server answers with 200 codes like this. For which credit card info to enter for test purposes, refer [here](https://stripe.com/docs/payments/accept-a-payment). I use "4242 4242 4242 4242" as a credit card number, any future date for expiry date, 111 for CVC. If postal code is asked, you can enter any postal code info. Finally click Pay button.
+- Once you make the payment in your website, you have to make sure that the Stripe API server answers with 200 responses like this. For a test credit card details, refer [here](https://stripe.com/docs/payments/accept-a-payment). I use "4242 4242 4242 4242" as a credit card number, any future date for expiry date, "111" for CVC. If postal code is asked, you can enter any postal code info. Finally click on Pay button to test this section of your app.
 
 ```bash
 2023-12-13 06:05:13   --> charge.succeeded [evt_3OMqFXHZqtEBHqz61RAAKh3C]
@@ -1513,5 +1513,5 @@ router.post(
 2023-12-13 06:05:13  <--  [200] POST http://localhost:3000/payment-confirmation [evt_3OMqFXHZqtEBHqz611AA59S2]
 ```
 
-- You can also see these reponse messages inside Stripe by going to [here](https://dashboard.stripe.com/test/webhooks/create?endpoint_location=local). Once you are in that page, go to "Received events" tab and re-trigger the payment event to examine the Stripe API server log.
+- You can also see these reponse messages inside Stripe by going [here](https://dashboard.stripe.com/test/webhooks/create?endpoint_location=local). Once you are in that page, go to "Received events" tab and re-trigger the payment event to examine the Stripe API server log.
 
