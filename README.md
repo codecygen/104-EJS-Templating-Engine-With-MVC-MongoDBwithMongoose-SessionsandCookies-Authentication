@@ -1356,16 +1356,20 @@ exports.postOrdersPage = async (req, res, next) => {
 - Once you are inside "/stripe" folder, run the following command to login to Stripe CLI. Details are [here](https://stripe.com/docs/stripe-cli#login-account).
 
 ```bash
+# Stripe CLI
+# Command line
 ./stripe login
 ```
 
 - When you login, since your test server is run locally on port 3000, you have to redirect incoming requests to port 3000 with next command. Upcoming command will reveal the webhook key on the command line. Copy this key and paste it in .env file in the section of STRIPE_WEBHOOK_KEY.
 
 ```bash
+# Stripe CLI
+# Command line
 ./stripe listen --forward-to http://localhost:3000/payment-confirmation
 ```
 
-- Finally you can start working on "/payment-confirmation" route on your server to communicate with Stripe API. Refer [here](https://stripe.com/docs/webhooks) for more info. Also, [this page](https://dashboard.stripe.com/test/webhooks) will show both "Local listeners" that you forwarded in the previous section. You can also click on "Add local listerner" button to get more info about how to do the webhook event. Once you click on the button, you can also switch to "Received events" tab to see Strip API server response.
+- Finally you can start working on "/payment-confirmation" route on your server to communicate with Stripe API. Refer [here](https://stripe.com/docs/webhooks) for more info. Also, [this page](https://dashboard.stripe.com/test/webhooks) will show "Local listeners" that you forwarded in the previous section. You can also click on "Add local listerner" button to get more info about how to do the webhook event. Once you click on the button, you can also switch to "Received events" tab to see Strip API server response.
 
 [shopRoute.js](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Controller/routes/shopRoute.js)
 ```javascript
@@ -1471,6 +1475,7 @@ app.use((req, res, next) => {
 
 ```bash
 # Stripe CLI
+# Command line
 ./stripe listen --forward-to http://localhost:3000/payment-confirmation
 ```
 
@@ -1497,6 +1502,8 @@ router.post(
 - Alternatively, you can also trigger the payment method with
 
 ```bash
+# Stripe CLI
+# Command line
 ./stripe trigger payment_intent.succeeded
 ```
 
