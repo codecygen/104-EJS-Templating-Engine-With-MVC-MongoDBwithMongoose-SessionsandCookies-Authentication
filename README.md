@@ -1348,7 +1348,7 @@ exports.postOrdersPage = async (req, res, next) => {
 }
 ```
 
-- Test this section is by entering the credit card info. For a test credit card details, refer [here](https://stripe.com/docs/payments/accept-a-payment). I use "4242 4242 4242 4242" as a credit card number, any future date for expiry date, "111" for CVC. If postal code is asked, you can enter any postal code info. Finally click on Pay button to test this section of your app.
+- Test this section by entering the credit card info. For a test credit card details, refer [here](https://stripe.com/docs/payments/accept-a-payment). I use "4242 4242 4242 4242" as a credit card number, any future date for expiry date, "111" for CVC. If postal code is asked, you can enter any postal code info. Finally click on Pay button to test this section of your app.
 
 - When you are done with the payment section, you need to focus on getting the Stripe webhook work. Webhook will be an extension in your server that is dedicated to communication in between your server and Stripe API to let your app know that the payment is received and confirmed by Stripe API so that you can change the cart status in your database from here. Because you will run the API to interact with a localhost server, you need to download Stripe CLI [here](https://stripe.com/docs/stripe-cli#login-account). Go to the Linux tab and follow the instructions to download the CLI file. This file is already downloaded and readily available under "/stripe" folder in this project.
 
