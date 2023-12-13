@@ -1289,8 +1289,226 @@ The promify utility method also converts promise.then().catch() to more readable
 
 - Finally, I covered a section where it is possible to order data in decending or ascending order (-1 or 1). **find().sort({ forumDate: -1 }).exec()**. Refer to the title "Order Database Results Based on Date or Any Numerical Value" in README.md for details.
 
-12. **Making Payment with Stripe**:
+12. **Making Payment with Stripe API**:
 
 ![Stripe Image](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Images/Stripe-Image.png?raw=true)
 
--
+We will only introduce Stripe API test. This will not be a production ready app.
+
+- First thing is you need to have a Stripe Key. You have to access to the dashboard [here](https://dashboard.stripe.com/test/apikeys). Find the "Secret key" tab and reveal the test key. Remember that this key will go to STRIPE_KEY section in .env file.
+
+- Secondly, you can start working on the construction of the payment page. More instructions on how to do it is [here](https://stripe.com/docs/payments/accept-a-payment).
+
+[shopRoute.js](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Controller/routes/shopRoute.js)
+```javascript
+// shopRoute.js
+router.post("/orders", isLoggedIn, shopController.postOrdersPage);
+```
+
+(shopController.js)[https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Controller/controllers/shopController.js]
+```javascript
+// shopController.js
+const stripe = require("stripe")(process.env.STRIPE_KEY);
+..........
+
+exports.postOrdersPage = async (req, res, next) => {
+  .....
+
+  let lineItems = [];
+
+  lineItems = currentUser.userCart.map((item) => {
+    return {
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: item._id.productName,
+          description: item._id.productDesc,
+          images: [
+            "https://c1.wallpaperflare.com/preview/741/52/995/old-books-book-books-old.jpg",
+          ],
+          // metadata: {color: "blue", size: "medium"}
+        },
+        unit_amount: item._id.productPrice * 100, // Because stripe thinks result is divided by 100.
+      },
+      quantity: item.qty,
+    };
+  });
+
+  const stripe_session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: lineItems,
+    // This will be picked up from webhook session to identify who paid
+    customer_email: req.session.userEmail,
+    mode: "payment",
+    success_url: "http://localhost:3000/orders?order-paid=true",
+    cancel_url: "http://localhost:3000/cart",
+  });
+
+  res.redirect(303, stripe_session.url);
+}
+```
+
+- Test if this section is by entering the credit card info. For which credit card info to enter for test purposes, refer [here](https://stripe.com/docs/payments/accept-a-payment). I use "4242 4242 4242 4242" as a credit card number, any future date for expiry date, "111" for CVC. If postal code is asked, you can enter any postal code info. Finally click Pay button.
+
+- When you are done with this section you need to focus on getting the Stripe webhook work. Webhook will be an extension in your server that is dedicated to communication in between your server and Stripe API to let your app know that the payment is received and confirmed by Stripe API so that you can change the purchase state in your server. Because you will run the API to interact with a localhost, you need to download Stripe CLI [here](https://stripe.com/docs/stripe-cli#login-account). Go to the Linux tab and follow the instructions to download the CLI file. This file is already downloaded and readily available under "/stripe" folder in this project.
+
+
+- Once you are inside "/stripe" folder, run the following command to login to Stripe CLI. Details are [here](https://stripe.com/docs/stripe-cli#login-account).
+
+```bash
+./stripe login
+```
+
+- When you login, since your test server is run locally on port 3000, you have to redirect incoming requests to be directed to port 3000 with this command.
+
+```bash
+./stripe listen --forward-to http://localhost:3000/payment-confirmation
+```
+
+- Finally you can start working on "/payment-confirmation" route on your server to communicate with Stripe API.
+
+[shopRoute.js](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Controller/routes/shopRoute.js)
+```javascript
+// shopRoute.js
+router.post(
+  "/payment-confirmation",
+  express.raw({ type: "application/json" }),
+  shopController.postPurchaseConfirmationPage,
+);
+```
+
+then
+
+(shopController.js)[https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Controller/controllers/shopController.js]
+```javascript
+// shopController.js
+exports.postPurchaseConfirmationPage = async (req, res, next) => {
+  const sig = req.headers["stripe-signature"];
+
+  let event;
+
+  const endpointSecret = process.env.STRIPE_WEBHOOK_KEY;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).send(`Webhook Error: ${err.message}`);
+    return;
+  }
+
+  if (event.type === "charge.succeeded") {
+    const chargeResult = event.data.object;
+    const billingEmail = chargeResult.billing_details.email;
+
+    const paidUser = await dbAdminOperation.getOneUserWithEmail(billingEmail);
+
+    const [cartProductList, cartTotalPrice] =
+      await dbCartOperation.getCartProducts(paidUser);
+
+    const loggedInPaidUser = {
+      userId: paidUser._id,
+      userName: paidUser.userName,
+      userEmail: paidUser.userEmail,
+      adminId: paidUser.adminId,
+      csrfToken: paidUser.csrfToken,
+    };
+
+    // Posts cart to the /orders page
+    await dbOrderOperation.postCartToOrders(loggedInPaidUser);
+  } else if (
+    event.type === "payment_intent.succeeded" ||
+    event.type === "payment_intent.created" ||
+    event.type === "checkout.session.completed"
+  ) {
+    // Do nothing!
+  } else {
+    console.log(`Unhandled event type ${event.type}`);
+  }
+
+  // Return a 200 response to acknowledge receipt of the event
+  res.send();
+};
+```
+
+- As a last step, you have to adjust index.js' express.json section from this
+
+```javascript
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+express.json({ limit: "50mb" })(req, res, next);
+```
+
+to this
+
+(index.js)[https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/index.js]
+```javascript
+// index.js
+
+..................
+
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+app.use((req, res, next) => {
+  if (req.originalUrl === "/payment-confirmation") {
+    next();
+  } else {
+    express.json({ limit: "50mb" })(req, res, next);
+  }
+});
+
+..................
+```
+
+- You have to make sure that the 
+ a. stripe CLI link forwarding, 
+ b. express.json configuration in index.js 
+ c. routing link in shopRoute.js to direct Stripe API to the same extension for this to work 
+ 
+ which is "localhost:3000/payment-configuration" for this particular project.
+
+```bash
+# Stripe CLI
+./stripe listen --forward-to http://localhost:3000/payment-confirmation
+```
+
+```javascript
+// express.json configuration in index.js
+app.use((req, res, next) => {
+  if (req.originalUrl === "/payment-confirmation") {
+    next();
+  } else {
+    express.json({ limit: "50mb" })(req, res, next);
+  }
+});
+```
+
+```javascript
+// routing link in shopRoute.js
+router.post(
+  "/payment-confirmation",
+  express.raw({ type: "application/json" }),
+  shopController.postPurchaseConfirmationPage,
+);
+```
+
+- Alternatively, you can also trigger the payment method with
+
+```bash
+./stripe trigger payment_intent.succeeded
+```
+
+- Once you make the payment in your website, you have to make sure that the server answers with 200 codes like this. For which credit card info to enter for test purposes, refer [here](https://stripe.com/docs/payments/accept-a-payment). I use "4242 4242 4242 4242" as a credit card number, any future date for expiry date, 111 for CVC. If postal code is asked, you can enter any postal code info. Finally click Pay button.
+
+```bash
+2023-12-13 06:05:13   --> charge.succeeded [evt_3OMqFXHZqtEBHqz61RAAKh3C]
+2023-12-13 06:05:13  <--  [200] POST http://localhost:3000/payment-confirmation [evt_3OMqFXHZqtEBHqz61RAAKh3C]
+2023-12-13 06:05:13   --> checkout.session.completed [evt_1OMqFZHZqtEBHqz6Z5nZuAY2]
+2023-12-13 06:05:13  <--  [200] POST http://localhost:3000/payment-confirmation [evt_1OMqFZHZqtEBHqz6Z5nZuAY2]
+2023-12-13 06:05:13   --> payment_intent.succeeded [evt_3OMqFXHZqtEBHqz61rliNIG6]
+2023-12-13 06:05:13  <--  [200] POST http://localhost:3000/payment-confirmation [evt_3OMqFXHZqtEBHqz61rliNIG6]
+2023-12-13 06:05:13   --> payment_intent.created [evt_3OMqFXHZqtEBHqz611AA59S2]
+2023-12-13 06:05:13  <--  [200] POST http://localhost:3000/payment-confirmation [evt_3OMqFXHZqtEBHqz611AA59S2]
+```
+
+- You can also see these reponse messages inside Stripe by going to [here](https://dashboard.stripe.com/test/webhooks/create?endpoint_location=local). Once you are in that page, go to "Received events" tab and re-trigger the payment event to examine the Stripe API server log.
+
