@@ -1305,7 +1305,7 @@ We will only introduce Stripe API test. This will not be a production ready app.
 router.post("/orders", isLoggedIn, shopController.postOrdersPage);
 ```
 
-(shopController.js)[https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Controller/controllers/shopController.js]
+[shopController.js](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Controller/controllers/shopController.js)
 ```javascript
 // shopController.js
 const stripe = require("stripe")(process.env.STRIPE_KEY);
