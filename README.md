@@ -1361,7 +1361,7 @@ exports.postOrdersPage = async (req, res, next) => {
 ./stripe login
 ```
 
-- When you login, since your test server is run locally on port 3000, you have to redirect incoming requests to port 3000 with next command. Upcoming command will reveal the webhook key on the command line. Copy this key and paste it in .env file in the section of STRIPE_WEBHOOK_KEY.
+- When you login, since your test server is run locally on port 3000, you have to redirect incoming requests to port 3000 with next command. Upcoming command will reveal the webhook key on the command line. Copy this key and paste it as STRIPE_WEBHOOK_KEY in .env file.
 
 ```bash
 # Stripe CLI
