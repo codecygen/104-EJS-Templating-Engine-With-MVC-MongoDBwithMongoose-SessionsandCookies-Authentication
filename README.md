@@ -30,7 +30,7 @@ STRIPE_WEBHOOK_KEY=mywebhook_346367
 - For both payment and server to run, you have to run the both command. First go to the root folder of the project and run.
 
 ```bash
-npm run
+npm start
 ```
 
 - Secondly, go to "/stripe" folder and run. This will allow payment page to work for your development app. Refer to Stripe API section in this documentation to get the payment page work.
