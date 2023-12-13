@@ -1440,7 +1440,7 @@ express.json({ limit: "50mb" })(req, res, next);
 
 to this
 
-(index.js)[https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/index.js]
+[index.js](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/index.js)
 ```javascript
 // index.js
 
@@ -1460,9 +1460,12 @@ app.use((req, res, next) => {
 ```
 
 - You have to make sure that the 
+
  a. stripe CLI link forwarding, 
- b. express.json configuration in index.js 
- c. routing link in shopRoute.js to direct Stripe API to the same extension for this to work 
+
+ b. express.json configuration in index.js,
+
+ c. routing link in shopRoute.js to direct Stripe API to the same extension for this to work.
  
  which is "localhost:3000/payment-configuration" for this particular project.
 
