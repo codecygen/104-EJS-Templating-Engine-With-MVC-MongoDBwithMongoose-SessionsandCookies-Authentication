@@ -1365,7 +1365,7 @@ exports.postOrdersPage = async (req, res, next) => {
 ./stripe listen --forward-to http://localhost:3000/payment-confirmation
 ```
 
-- Finally you can start working on "/payment-confirmation" route on your server to communicate with Stripe API.
+- Finally you can start working on "/payment-confirmation" route on your server to communicate with Stripe API. Refer [here](https://stripe.com/docs/webhooks) for more info. Also, [this page](https://dashboard.stripe.com/test/webhooks) will show both "Local listeners" that you forwarded in the previous section. You can also click on "Add local listerner" button to get more info about how to do the webhook event. Once you click on the button, you can also switch to "Received events" tab to see Strip API server response.
 
 [shopRoute.js](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Controller/routes/shopRoute.js)
 ```javascript
