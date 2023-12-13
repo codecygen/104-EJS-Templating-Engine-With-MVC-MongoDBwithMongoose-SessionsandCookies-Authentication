@@ -1359,7 +1359,7 @@ exports.postOrdersPage = async (req, res, next) => {
 ./stripe login
 ```
 
-- When you login, since your test server is run locally on port 3000, you have to redirect incoming requests to be directed to port 3000 with this command.
+- When you login, since your test server is run locally on port 3000, you have to redirect incoming requests to be directed to port 3000 with this command. Running this command will reveal a webhook key on the command line. Copy this key and paste it in .env file like STRIPE_WEBHOOK_KEY.
 
 ```bash
 ./stripe listen --forward-to http://localhost:3000/payment-confirmation
