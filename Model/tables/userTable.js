@@ -66,8 +66,11 @@ const userSchema = new mongoose.Schema(
   },
   // This section enforces collection name to be "UserTable"
   // instead of the default "usertables"
-  // also timestamps: true adds createAt, updatedAt fields
-  { collection: "UserTable", timestamps: true }
+  // timestamps: true adds createAt, updatedAt fields
+  {
+    collection: "UserTable",
+    timestamps: true,
+  }
 );
 
 // methods keyword creates a function that can be used with

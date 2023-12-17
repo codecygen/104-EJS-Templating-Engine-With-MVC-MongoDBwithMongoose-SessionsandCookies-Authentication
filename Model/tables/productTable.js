@@ -30,7 +30,11 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { collection: "ProductTable" }
+  // timestamps: true adds createAt, updatedAt fields
+  { 
+    collection: "ProductTable", 
+    // timestamps: true 
+  }
 );
 
 // methods keyword creates a function that can be used with

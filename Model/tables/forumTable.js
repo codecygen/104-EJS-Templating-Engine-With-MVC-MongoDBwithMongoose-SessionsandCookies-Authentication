@@ -24,7 +24,11 @@ const forumSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { collection: "ForumTable" }
+  // timestamps: true adds createAt, updatedAt fields
+  {
+    collection: "ForumTable",
+    // timestamps: true,
+  }
 );
 
 forumSchema.methods.createNewPost = async function () {

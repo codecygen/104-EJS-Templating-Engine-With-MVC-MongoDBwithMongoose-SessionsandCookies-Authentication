@@ -28,7 +28,11 @@ const orderSchema = new mongoose.Schema(
       ],
     ],
   },
-  { collection: "OrderTable" }
+  // timestamps: true adds createAt, updatedAt fields
+  {
+    collection: "OrderTable",
+    // timestamps: true,
+  }
 );
 
 orderSchema.statics.saveOrder = async function (orderList, userId) {

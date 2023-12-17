@@ -12,7 +12,11 @@ const blogSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { collection: "BlogTable" }
+  // timestamps: true adds createAt, updatedAt fields
+  {
+    collection: "BlogTable",
+    // timestamps: true,
+  }
 );
 
 blogSchema.statics.autoAddBlogs = async function () {
