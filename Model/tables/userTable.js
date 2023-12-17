@@ -66,7 +66,8 @@ const userSchema = new mongoose.Schema(
   },
   // This section enforces collection name to be "UserTable"
   // instead of the default "usertables"
-  { collection: "UserTable" }
+  // also timestamps: true adds createAt, updatedAt fields
+  { collection: "UserTable", timestamps: true }
 );
 
 // methods keyword creates a function that can be used with
@@ -213,7 +214,9 @@ userSchema.statics.removeAllCart = async function (userId) {
 
 userSchema.statics.getUserWithAllCartDetails = async function (userId) {
   try {
-    const foundUser = await this.findById(userId).populate('userCart._id').exec();
+    const foundUser = await this.findById(userId)
+      .populate("userCart._id")
+      .exec();
     return foundUser;
   } catch (err) {
     console.error(err);
