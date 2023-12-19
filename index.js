@@ -125,12 +125,16 @@ app.use(NoRoute);
 // Error-Page-Middleware
 app.use(errorPageMiddleWare);
 
+const PORT_NUMBER = 3000
 // Mongoose-Connect-Database
+// If it cannot connect to the local MongoDB's "shoppingDB" collection
+// Make sure to create user and password for that specific collection
+// Refer to notes
 mongoose
-  .connect(process.env.URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.URL)
   .then((result) => {
-    app.listen(3000, () => {
-      console.log("Server started on port 3000");
+    app.listen(PORT_NUMBER, () => {
+      console.log(`Server started on port ${PORT_NUMBER}`);
     });
   })
   .catch((err) => {

@@ -64,9 +64,12 @@ const userSchema = new mongoose.Schema(
       tokenExpiry: Date,
     },
   },
-  // This section enforces collection name to be "UserTable"
-  // instead of the default "usertables"
   // timestamps: true adds createAt, updatedAt fields
+  // if (collection: "UserTable"), it means use this as a collection name in DB.
+  // if not existent, from
+  // module.exports = mongoose.model("UserTable", userSchema);
+  // program takes "UserTable", 
+  // lowercase it as usertable and pluriliuze it as "usertables" in DB.
   {
     collection: "UserTable",
     timestamps: true,
@@ -226,4 +229,5 @@ userSchema.statics.getUserWithAllCartDetails = async function (userId) {
   }
 };
 
+// "UserTable" means export the object as UserTable to be used in NodeJS
 module.exports = mongoose.model("UserTable", userSchema);

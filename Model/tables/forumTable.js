@@ -25,6 +25,11 @@ const forumSchema = new mongoose.Schema(
     },
   },
   // timestamps: true adds createAt, updatedAt fields
+  // if (collection: "ForumTable"), it means use this as a collection name in DB.
+  // if not existent, from
+  // module.exports = mongoose.model("ForumTable", forumSchema);
+  // program takes "ForumTable", 
+  // lowercase it as forumtable and pluriliuze it as "forumtables" in DB.
   {
     collection: "ForumTable",
     // timestamps: true,
@@ -54,4 +59,5 @@ forumSchema.statics.getPosts = async function () {
   }
 };
 
+// "ForumTable" means export the object as ForumTable to be used in NodeJS
 module.exports = mongoose.model("ForumTable", forumSchema);

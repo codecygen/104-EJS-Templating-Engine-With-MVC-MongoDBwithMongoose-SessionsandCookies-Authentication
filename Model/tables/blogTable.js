@@ -13,6 +13,11 @@ const blogSchema = new mongoose.Schema(
     },
   },
   // timestamps: true adds createAt, updatedAt fields
+  // if (collection: "BlogTable"), it means use this as a collection name in DB.
+  // if not existent, from
+  // module.exports = mongoose.model("BlogTable", blogSchema);
+  // program takes "BlogTable", 
+  // lowercase it as blogtable and pluriliuze it as "blogtables" in DB.
   {
     collection: "BlogTable",
     // timestamps: true,
@@ -104,4 +109,5 @@ blogSchema.statics.getBlogsPaginated = async function (
   }
 };
 
+// "BlogTable" means export the object as BlogTable to be used in NodeJS
 module.exports = mongoose.model("BlogTable", blogSchema);

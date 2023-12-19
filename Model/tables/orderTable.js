@@ -29,6 +29,11 @@ const orderSchema = new mongoose.Schema(
     ],
   },
   // timestamps: true adds createAt, updatedAt fields
+  // if (collection: "OrderTable"), it means use this as a collection name in DB.
+  // if not existent, from
+  // module.exports = mongoose.model("OrderTable", orderSchema);
+  // program takes "OrderTable", 
+  // lowercase it as ordertable and pluriliuze it as "ordertables" in DB.
   {
     collection: "OrderTable",
     // timestamps: true,
@@ -75,4 +80,5 @@ orderSchema.statics.getOrderList = async function (userId) {
   return productIdsAndQty;
 };
 
+// "OrderTable" means export the object as OrderTable to be used in NodeJS
 module.exports = mongoose.model("OrderTable", orderSchema);
