@@ -105,6 +105,7 @@ productSchema.statics.updateProduct = async function (productData) {
     productData;
 
   try {
+    // if new: true returns the modified document.
     await this.findOneAndUpdate({ _id: _id }, productData, {
       new: true,
     });
