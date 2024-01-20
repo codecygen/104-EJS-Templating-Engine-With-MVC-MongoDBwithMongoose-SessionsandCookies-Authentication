@@ -820,6 +820,7 @@ const multer = require("multer");
 // Multer-File-Upload-Download
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
+    // images will be uploaded to "uploads" directory
     cb(null, "uploads");
   },
   filename: (req, file, cb) => {
