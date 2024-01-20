@@ -1228,7 +1228,9 @@ exports.getInvoice = async (req, res, next) => {
 };
 ```
 
-9. **PAGINATION**: In this section I will cover pagination and I will use "/blog" page for this purpose. Blog page will have a querying parameter like "/blog?page=2" which will get that page. In total it will have 5 pages for this example.
+# **Pagination**: 
+
+In this section I will cover pagination and I will use "/blog" page for this purpose. Blog page will have a querying parameter like "/blog?page=2" which will get that page. In total it will have 5 pages for this example.
 
 The keyword is **NodeJS-Mongoose-Pagination**. Other than the snippet down below, there are also files like **shopController.js**, **dbBlogoperation.js**, **blogTable.js**, and **blog.ejs**.
 
@@ -1284,7 +1286,7 @@ const result = await comparePass(password, foundUser.password);
 
 The promify utility method also converts promise.then().catch() to more readable async/await form.
 
-11. **FETCH API FROM FRONT END (EJS) AND JSON RESPONSE FROM BACK END**:
+# **FETCH API FROM FRONT END (EJS) AND JSON RESPONSE FROM BACK END**:
 
 - This approach is commonly used in SPA (Single Page Application) for handling asyncronous requests. It improves the user experience.
 
@@ -1298,7 +1300,7 @@ The promify utility method also converts promise.then().catch() to more readable
 
 - Finally, I covered a section where it is possible to order data in decending or ascending order (-1 or 1). **find().sort({ forumDate: -1 }).exec()**. Refer to the title "Order Database Results Based on Date or Any Numerical Value" in README.md for details.
 
-12. **Making Payment with Stripe API**:
+# **Making Payment with Stripe API**:
 
 ![Stripe Image](https://github.com/codecygen/104-EJS-Templating-Engine-With-MVC-Mongoose-SessionsandCookies-Authentication-Authorization/blob/main/Images/Stripe-Image.png?raw=true)
 
