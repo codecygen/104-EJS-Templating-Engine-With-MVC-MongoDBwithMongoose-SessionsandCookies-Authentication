@@ -843,6 +843,7 @@ const fileFilter = (req, file, cb) => {
     // To accept file, pass true, or false if you don't want!
     cb(null, true);
   } else {
+    // cb(null, false);
     req.notAllowedFileExtension = fileExtension;
     return cb(null, false, req.notAllowedFileExtension);
   }
